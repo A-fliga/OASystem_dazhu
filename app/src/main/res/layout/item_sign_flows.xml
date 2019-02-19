@@ -38,15 +38,16 @@
 
         <ImageView
             android:id="@+id/sign_status_img"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/not_sign" />
 
         <ImageView
             android:id="@+id/sign_line_img"
             android:layout_width="130dp"
-            android:layout_height="4dp"
+            android:layout_height="2dp"
+            android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/sign_status_img"
             android:src="@mipmap/sign_gray_line" />
