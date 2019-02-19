@@ -8,7 +8,7 @@ import android.util.Log;
  * Created by www on 3/16/17.
  */
 public final class LogUtil {
-    public static boolean isDebug = false;
+    public static boolean isDebug = true;
     private static final String TAG = "OASystem";
 
     public static void d(String debug) {

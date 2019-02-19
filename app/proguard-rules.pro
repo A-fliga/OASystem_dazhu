@@ -190,6 +190,9 @@
   public *;
 }
 
+#保持itext不被混淆
+-keep class com.lowagie.** {*; }
+
 
 -ignorewarnings
 
