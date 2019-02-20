@@ -59,7 +59,7 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
             urgent = bean.getDispatch().getUrgent();
         setText(holder.official_title, bean.getDispatch().getName(), urgent);
         setText(holder.official_step, "流程步骤：" + bean.getName(), urgent);
-        setText(holder.official_time, "发起日期：" + bean.getDispatch().getCreated_at(), urgent);
+        setText(holder.official_time, "发起时间：" + bean.getDispatch().getCreated_at(), urgent);
         setText(holder.official_last_time, "最后操作：" + bean.getDispatch().getUpdated_at(), urgent);
         Glide.with(context).load(FirmingTypeManager.getInstance().getTypeImg(bean.getDispatch().getForm_type())).placeholder(R.mipmap.ic_launcher_round)
                 .into(holder.official_left_img);

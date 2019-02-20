@@ -124,6 +124,12 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 accessoryList.add(Integer.parseInt(dispatchBean.getAccessory_list().get(i).getSource_id()));
             }
         }
+
+//        StringBuffer sb = new StringBuffer();
+//        for (int i = 0; i < accessoryList.size(); i++) {
+//            sb.append(accessoryList.get(i)+" ");
+//        }
+//        LogUtil.d("paixu", "接收到的" + sb.toString());
         initView(done);
         viewDelegate.setOnClickListener(onClickListener, R.id.save_img, R.id.pen_img, R.id.clear_img, R.id.yinzhang_img, R.id.biaozhu_img);
         initNotDoneView();

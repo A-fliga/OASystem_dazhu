@@ -108,8 +108,9 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                             newBeanList.add(beanList.get(i));
                         }
                     }
+                    newBeanList = (SortUtl.sort(newBeanList));
                     RecyclerView recyclerView = viewDelegate.get(R.id.home_recyclerView);
-                    adapter = new OfficialDocumentAdapter(false, getActivity(), SortUtl.sort(newBeanList));
+                    adapter = new OfficialDocumentAdapter(false, getActivity(), newBeanList);
                     viewDelegate.setRecycler(recyclerView, adapter, true);
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
@@ -153,18 +154,22 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                 case R.id.to_sort_create:
                     isPositive_create = !isPositive_create;
                     isPositive_update = false;
-                    adapter.setBeanList(SortUtl.sort(newBeanList, isPositive_create ? POSITIVE : REVERSE, true));
+                    newBeanList = SortUtl.sort(newBeanList, isPositive_create ? POSITIVE : REVERSE, true);
+                    adapter.setBeanList(newBeanList);
                     adapter.notifyDataSetChanged();
                     break;
                 case R.id.to_sort_update:
                     isPositive_create = false;
                     isPositive_update = !isPositive_update;
-                    adapter.setBeanList(SortUtl.sort(newBeanList, isPositive_update ? POSITIVE : REVERSE, false));
+                    newBeanList = SortUtl.sort(newBeanList, isPositive_update ? POSITIVE : REVERSE, false);
+                    adapter.setBeanList(newBeanList);
                     adapter.notifyDataSetChanged();
                     break;
                 case R.id.refresh:
                     isPositive_update = false;
                     isPositive_create = false;
+                    if (newBeanList != null)
+                        newBeanList.clear();
                     getNotDoneList(new ScreenBean());
                     break;
 

@@ -62,10 +62,12 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
                     if (bean.getData().getData().size() == 0) {
                         ToastUtil.l("暂无数据");
                     }
+                    if (newBeanList != null)
+                        newBeanList.clear();
                     newBeanList = new ArrayList<DocumentBean.DataBean>();
-                    newBeanList.addAll(bean.getData().getData());
+                    newBeanList.addAll(SortUtl.sort(bean.getData().getData()));
                     RecyclerView recyclerView = viewDelegate.get(R.id.file_monitor_recyclerView);
-                    adapter = new OfficialDocumentAdapter(false, FileMonitorActivity.this, SortUtl.sort(newBeanList));
+                    adapter = new OfficialDocumentAdapter(false, FileMonitorActivity.this, newBeanList);
                     viewDelegate.setRecycler(recyclerView, adapter, true);
                     adapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
@@ -101,12 +103,14 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
                 case R.id.to_sort_create:
                     isPositive_create = !isPositive_create;
                     isPositive_update = false;
-                    adapter.setBeanList(SortUtl.sort(newBeanList, isPositive_create ? POSITIVE : REVERSE, true));
+                    newBeanList = SortUtl.sort(newBeanList, isPositive_create ? POSITIVE : REVERSE, true);
+                    adapter.setBeanList(newBeanList);
                     adapter.notifyDataSetChanged();
                 case R.id.to_sort_update:
                     isPositive_update = !isPositive_update;
                     isPositive_create = false;
-                    adapter.setBeanList(SortUtl.sort(newBeanList, isPositive_update ? POSITIVE : REVERSE, false));
+                    newBeanList = SortUtl.sort(newBeanList, isPositive_update ? POSITIVE : REVERSE, false);
+                    adapter.setBeanList(newBeanList);
                     adapter.notifyDataSetChanged();
                     break;
                 case R.id.refresh:

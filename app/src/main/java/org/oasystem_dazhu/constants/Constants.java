@@ -15,23 +15,29 @@ public final class Constants {
     public static final String WANYUAN_URL = "http://112.35.6.11:9098/api/";
     public static final String DAZHU_URL = "http://112.35.1.224:9099/api/";
 
+    private static final String PACKAGE_PATH = "OASystem_dazhu";
+    //已处理的文件路径
     public static final String OFFICE_PREVIEW = Environment.getExternalStorageDirectory().toString() +
-            File.separator + "OASystem_dazhu" + File.separator+"OfficePreView";
+            File.separator + PACKAGE_PATH + File.separator+"OfficePreView";
     public static int currenPage = 0;
+
+    //准备签字的路径
     public static final String SIGN_OFFICIAL = Environment.getExternalStorageDirectory().toString() +
-            File.separator + "OASystem_dazhu" + File.separator+"SignOfficial";
+            File.separator + PACKAGE_PATH + File.separator+"SignOfficial";
 
 //    public static int SIGN_BITMAP_WIDTH = 0,SIGN_BITMAP_HEIGHT = 0;
+    //签完字的路径
     public static final String SIGN_RESULT = Environment.getExternalStorageDirectory().toString() +
-            File.separator + "OASystem_dazhu" + File.separator+"SignResult";
+            File.separator +PACKAGE_PATH + File.separator+"SignResult";
 
+    //下载更新包的路径
     public static final String DOWNLOAD_UPDATE = Environment.getExternalStorageDirectory().toString() +
-            File.separator + "OASystem_dazhu" + File.separator+"Apk";
+            File.separator + PACKAGE_PATH + File.separator+"Apk";
     //极光别名，不可修改
     public static final String JPUSH_NAME = "USER_ID";
 
     public static final String SP_COOKIE = "BAOSHENG_VILLAGE";
-    public static final String OA_SYSTEM = "OA_SYSTEM_DAZHU";
+    public static final String OA_SYSTEM = PACKAGE_PATH;
     public static final String CONTENT_TYPE = "application/json;charset=UTF-8";
 
     //调用相机请求码

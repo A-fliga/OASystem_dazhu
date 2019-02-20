@@ -69,19 +69,23 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
             getNotDoneDocument(new ScreenBean());
     }
 
-    public void notifyDataSetChanged(Boolean done, Boolean positive,Boolean isCreate) {
+    public void notifyDataSetChanged(Boolean done, Boolean positive, Boolean isCreate) {
         if (done) {
-            if (positive)
-                doneAdapter.setBeanList(SortUtl.sort(doneBeanList, SortUtl.POSITIVE,isCreate));
-            else {
-                doneAdapter.setBeanList(SortUtl.sort(doneBeanList, SortUtl.REVERSE,isCreate));
+            if (positive) {
+                doneBeanList = SortUtl.sort(doneBeanList, SortUtl.POSITIVE, isCreate);
+                doneAdapter.setBeanList(doneBeanList);
+            } else {
+                doneBeanList = SortUtl.sort(doneBeanList, SortUtl.REVERSE, isCreate);
+                doneAdapter.setBeanList(doneBeanList);
             }
             doneAdapter.notifyDataSetChanged();
         } else {
-            if (positive)
-                notDoneAdapter.setBeanList(SortUtl.sort(notDoneBeanList, SortUtl.POSITIVE,isCreate));
-            else {
-                notDoneAdapter.setBeanList(SortUtl.sort(notDoneBeanList, SortUtl.REVERSE,isCreate));
+            if (positive) {
+                notDoneBeanList = SortUtl.sort(notDoneBeanList, SortUtl.POSITIVE, isCreate);
+                notDoneAdapter.setBeanList(notDoneBeanList);
+            } else {
+                notDoneBeanList = SortUtl.sort(notDoneBeanList, SortUtl.REVERSE, isCreate);
+                notDoneAdapter.setBeanList(notDoneBeanList);
             }
             notDoneAdapter.notifyDataSetChanged();
         }
@@ -95,6 +99,8 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
             public void onNext(final BaseEntity<DocumentBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
+                    if (doneBeanList != null)
+                        doneBeanList.clear();
                     doneBeanList = new ArrayList<>();
                     doneBeanList.addAll(SortUtl.sort(bean.getData().getData()));
                     doneAdapter = new OfficialDocumentAdapter(true, getActivity(), doneBeanList);
@@ -104,7 +110,21 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
                         public void onItemClick(int position) {
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("done", done);
-                            bundle.putSerializable("DocumentDataBean", bean.getData().getData().get(position));
+                            bundle.putSerializable("DocumentDataBean", doneBeanList.get(position));
+//                            StringBuffer sb = new StringBuffer();
+////                            for (int i = 0; i < bean.getData().getData().get(position).getDispatch().getAccessory_list().size(); i++) {
+////                                sb.append(bean.getData().getData().get(position).getDispatch().getAccessory_list().get(i).getSource_id() + "  ");
+////                            }
+////                            sb.append(bean.getData().getData().get(position).getDispatch().getForm_source_id() + "");
+////                            LogUtil.d("paixu", "得到的" + sb.toString());
+////
+////                            sb.setLength(0);
+//                            sb.append(doneBeanList.get(position).getForm_source_id() + "");
+//                            for (int i = 0; i < doneBeanList.get(position).getDispatch().getAccessory_list().size(); i++) {
+//                                sb.append(doneBeanList.get(position).getDispatch().getAccessory_list().get(i).getSource_id() + " ");
+//                            }
+//
+//                            LogUtil.d("paixu", "排序后的" + sb.toString());
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });
@@ -122,6 +142,8 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
             public void onNext(final BaseEntity<DocumentBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
+                    if (notDoneBeanList != null)
+                        notDoneBeanList.clear();
                     notDoneBeanList = new ArrayList<>();
                     notDoneBeanList.addAll(SortUtl.sort(bean.getData().getData()));
                     notDoneAdapter = new OfficialDocumentAdapter(false, getActivity(), notDoneBeanList);
@@ -131,7 +153,7 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
                         public void onItemClick(int position) {
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("done", done);
-                            bundle.putSerializable("DocumentDataBean", bean.getData().getData().get(position));
+                            bundle.putSerializable("DocumentDataBean", notDoneBeanList.get(position));
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });
