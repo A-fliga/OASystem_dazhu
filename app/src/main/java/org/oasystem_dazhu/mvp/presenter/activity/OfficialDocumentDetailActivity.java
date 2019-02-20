@@ -24,7 +24,6 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
-
 import com.tencent.smtt.sdk.TbsReaderView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -320,6 +319,12 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private void downLoadFile(final int id, final String type) {
         PublicModel.getInstance().getSource(new MSubscribe<ResponseBody>() {
             @Override
+            public void onError(Throwable e) {
+                super.onError(e);
+                ToastUtil.l("下载文件出现错误");
+            }
+
+            @Override
             public void onNext(final ResponseBody bean) {
                 super.onNext(bean);
                 new Thread(new Runnable() {
@@ -376,7 +381,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     }
                 }).start();
             }
-        }, id + "");
+        },id+"");
     }
 
 
