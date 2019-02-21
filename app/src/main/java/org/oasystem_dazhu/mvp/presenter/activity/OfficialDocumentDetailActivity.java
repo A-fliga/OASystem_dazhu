@@ -321,7 +321,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
-                ToastUtil.l("下载文件出现错误");
+                ToastUtil.l("下载文件出现错误\n" + e.toString());
             }
 
             @Override
@@ -381,7 +381,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     }
                 }).start();
             }
-        },id+"");
+        }, id + "");
     }
 
 
@@ -920,7 +920,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     clearCanvas(null);
                     noSigning();
                 }
-                if(opType == 4){
+                if (opType == 4) {
                     clearCanvas(null);
                     noSigning();
                 }

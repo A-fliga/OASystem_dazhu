@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -15,7 +12,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.http.MSubscribe;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
-import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.adapter.HomeTypeAdapter;
 import org.oasystem_dazhu.mvp.adapter.OfficialDocumentAdapter;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
@@ -71,7 +67,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         viewDelegate.setOnClickListener(onClickListener,
                 R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
         setOnItemClickListener();
-        Glide.with(this).load(UserManager.getInstance().getUserInfo().getCompany().getCompany_logo()).into((ImageView) viewDelegate.get(R.id.home_logo));
+//        Glide.with(this).load(UserManager.getInstance().getUserInfo().getCompany().getCompany_logo()).into((ImageView) viewDelegate.get(R.id.home_logo));
     }
 
     private void setOnItemClickListener() {

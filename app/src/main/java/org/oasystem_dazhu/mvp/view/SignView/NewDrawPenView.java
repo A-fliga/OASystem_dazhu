@@ -206,20 +206,19 @@ public class NewDrawPenView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_STYLUS ) {
+        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_STYLUS) {
             return stylusMode(event);
-        }
-        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_ERASER && Constants.ClearEraser) {
+        } else if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_ERASER && Constants.ClearEraser) {
             return eraserMode(event);
         } else {
             return isFingerMode(event);
         }
-
     }
+
+
 
     private boolean eraserMode(MotionEvent event) {
         if (signatureView.getCanSigning()) {
-            //TODO 里要做橡皮擦事件
             float x = event.getX();
             float y = event.getY();
             switch (event.getAction()) {
