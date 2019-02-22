@@ -206,13 +206,15 @@ public class NewDrawPenView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_STYLUS) {
+        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_STYLUS ) {
             return stylusMode(event);
-        } else if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_ERASER && Constants.ClearEraser) {
+        }
+        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_ERASER && Constants.ClearEraser) {
             return eraserMode(event);
         } else {
             return isFingerMode(event);
         }
+
     }
 
 
