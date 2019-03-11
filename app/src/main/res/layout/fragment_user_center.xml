@@ -132,6 +132,8 @@
 
 
     <LinearLayout
+        android:id="@+id/changePwd"
+        android:clickable="true"
         android:layout_width="match_parent"
         android:layout_height="116px"
         android:gravity="center_vertical"

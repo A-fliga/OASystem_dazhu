@@ -43,6 +43,13 @@ public class PublicModel implements IModel {
     }
 
     /**
+     * 修改密码
+     */
+    public void updatePwd(Subscriber<BaseEntity> subscriber, String ypass, String npass) {
+        HttpClient.getInstance().updatePwd(subscriber, ypass, npass);
+    }
+
+    /**
      * 获取用户信息
      */
     public void getUserInfo(Subscriber<BaseEntity<UserInfo>> subscriber) {
@@ -130,11 +137,12 @@ public class PublicModel implements IModel {
     public void getAllUser(Subscriber<BaseEntity<AllUserBean>> subscriber) {
         HttpClient.getInstance().getAllUser(subscriber);
     }
+
     /**
      * 加签
      */
     public void add_countersign(Subscriber<BaseEntity> subscriber, int id, String user_id) {
-        HttpClient.getInstance().add_countersign(subscriber,id,user_id);
+        HttpClient.getInstance().add_countersign(subscriber, id, user_id);
     }
 
     /**
@@ -148,6 +156,6 @@ public class PublicModel implements IModel {
      * 文件监控
      */
     public void getMonitorList(Subscriber<BaseEntity<DocumentBean>> subscriber, ScreenBean bean) {
-        HttpClient.getInstance().getMonitorList(subscriber,bean);
+        HttpClient.getInstance().getMonitorList(subscriber, bean);
     }
 }

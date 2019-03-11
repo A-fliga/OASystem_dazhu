@@ -209,6 +209,15 @@ public final class HttpClient {
     }
 
     /**
+     * 修改密码
+     */
+    public void updatePwd(Subscriber<BaseEntity> subscriber, String ypass, String npass) {
+        Observable observable = mApi.updatePwd(addToken(),
+                getMapRequestBody(getBodyMap(getStrings("ypass,npass"), getStrings(ypass, npass))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
      * 获取用户信息
      */
     public void getUserInfo(Subscriber<BaseEntity<UserInfo>> subscriber) {
@@ -328,6 +337,7 @@ public final class HttpClient {
                 getStrings(String.valueOf(id), user_id))));
         toSubscribe(observable, subscriber);
     }
+
     /**
      * 获取固定分类
      */
@@ -335,6 +345,7 @@ public final class HttpClient {
         Observable observable = mApi.getType(addToken());
         toSubscribe(observable, subscriber);
     }
+
     /**
      * 文件监控
      */
@@ -343,7 +354,7 @@ public final class HttpClient {
         HashMap<String, String> bodyMap = new HashMap<>();
         bodyMap.put("param", data);
 
-        Observable observable = mApi.getMonitorList(addToken(),getMapRequestBody(bodyMap));
+        Observable observable = mApi.getMonitorList(addToken(), getMapRequestBody(bodyMap));
         toSubscribe(observable, subscriber);
     }
 }
