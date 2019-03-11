@@ -16,7 +16,6 @@ import com.github.barteksc.pdfviewer.PDFView;
 import com.lowagie.text.Document;
 
 import org.greenrobot.eventbus.EventBus;
-import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.mvp.model.bean.IsEraserMode;
 import org.oasystem_dazhu.mvp.model.bean.IsSigningBean;
 import org.oasystem_dazhu.mvp.model.bean.TransformBean;
@@ -206,10 +205,10 @@ public class NewDrawPenView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_STYLUS ) {
+        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_STYLUS) {
             return stylusMode(event);
         }
-        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_ERASER && Constants.ClearEraser) {
+        if (createMotionElement(event).tooltype == MotionEvent.TOOL_TYPE_ERASER) {
             return eraserMode(event);
         } else {
             return isFingerMode(event);
@@ -217,10 +216,9 @@ public class NewDrawPenView extends View {
 
     }
 
-
-
     private boolean eraserMode(MotionEvent event) {
         if (signatureView.getCanSigning()) {
+            //TODO 里要做橡皮擦事件
             float x = event.getX();
             float y = event.getY();
             switch (event.getAction()) {
@@ -250,7 +248,7 @@ public class NewDrawPenView extends View {
     private boolean stylusMode(MotionEvent event) {
         float x = event.getX();
         float y = event.getY();
-        if (signatureView.getCanSigning() && !isEraserMode) {
+        if (signatureView.getCanSigning() && !isEraserMode && signatureView.getPDFView().getZoom() <= 1f) {
             mStokeBrushPen.onTouchEvent(event, mCanvas);
         }
         //event会被下一次事件重用，这里必须生成新的，否则会有问题
@@ -275,6 +273,10 @@ public class NewDrawPenView extends View {
             case MotionEvent.ACTION_UP:
                 //只需要发送一次事件
                 if (!signatureView.getCanSigning()) {
+                    IsSigningBean bean = new IsSigningBean();
+                    bean.isSigning = true;
+                    EventBus.getDefault().post(bean);
+                } else if (signatureView.getPDFView().getZoom() > 1f) {
                     IsSigningBean bean = new IsSigningBean();
                     bean.isSigning = true;
                     EventBus.getDefault().post(bean);

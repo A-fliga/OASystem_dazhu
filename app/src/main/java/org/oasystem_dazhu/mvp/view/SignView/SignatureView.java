@@ -25,7 +25,6 @@ import com.lowagie.text.pdf.PdfReader;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.model.bean.TransformBean;
 import org.oasystem_dazhu.mvp.view.customView.NoAnimationViewPager;
-import org.oasystem_dazhu.utils.LogUtil;
 import org.oasystem_dazhu.utils.ProgressDialogUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
@@ -55,6 +54,8 @@ public class SignatureView extends FrameLayout {
     private int defaultPage = 0;
     private NewDrawPenView penView;
     private File sourceFile;
+    //    private float scale, tagScale, currentXOffset, tagXOffset, currentYOffset, tagYOffset;
+//    private int currentPage = 0, tagPage = 0;
     private Boolean autoSpacing = false;
     private TransformBean bean;
 
@@ -121,29 +122,30 @@ public class SignatureView extends FrameLayout {
 ////            if(page == 0)
 ////            viewPager.scrollTo((int) (-pdf_view.getCurrentXOffset() / pdf_view.getZoom()), 0);
 //            LogUtil.d("pianyi", "  偏移" + (-pdf_view.getCurrentXOffset()) + "  " + pdf_view.getCurrentYOffset() + " " + pdf_view.getZoom());
-            if (pdf_view.getZoom() > 1f && canSave.get()) {
-                canSave.set(false);
-//                LogUtil.d("pianyi", "签字文件的路径" + sourcePath);
-                addSignature2Pdf(sourcePath, true, new DataFinishListener() {
-                    @Override
-                    public void onFinished(String path) {
-//                        LogUtil.d("pianyi", "签完字后的路径" + path);
-                        defaultPage = getCurrentPage();
-                        canSave.set(true);
-                        loadFile(new File(path), true);
-                    }
-
-                    @Override
-                    public void nothingChange() {
-                        canSave.set(true);
-                    }
-
-                    @Override
-                    public void onFailed() {
-                        canSave.set(true);
-                    }
-                });
-            }
+//            if (pdf_view.getZoom() > 1f && canSave.get()) {
+//                canSave.set(false);
+////                LogUtil.d("pianyi", "签字文件的路径" + sourcePath);
+//                addSignature2Pdf(sourcePath, true, new DataFinishListener() {
+//                    @Override
+//                    public void onFinished(String path) {
+////                        LogUtil.d("pianyi", "签完字后的路径" + path);
+//                        defaultPage = getCurrentPage();
+//                        canSave.set(true);
+//                        loadFile(new File(path), true);
+//                    }
+//
+//                    @Override
+//                    public void nothingChange() {
+//                        LogUtil.d("pianyi", "nothingChange");
+//                        canSave.set(true);
+//                    }
+//
+//                    @Override
+//                    public void onFailed() {
+//                        canSave.set(true);
+//                    }
+//                });
+//            }
         }
     };
 
@@ -298,8 +300,7 @@ public class SignatureView extends FrameLayout {
             loadFile(file);
     }
 
-    public synchronized void addSignature2Pdf(String path, Boolean auto, DataFinishListener listener) {
-        LogUtil.d("pianyi", "提交签字的路径" + path);
+    public void addSignature2Pdf(String path, Boolean auto, DataFinishListener listener) {
         //得到有签字痕迹的页面
         if (needSignature) {
             NewDrawPenView penView;
@@ -313,15 +314,11 @@ public class SignatureView extends FrameLayout {
                 }
             }
             if (signPageList.size() == 0) {
-                if (auto) {
+                if (!auto)
+                    ToastUtil.l("没有已签字的页面");
+                else {
                     if (listener != null) {
                         listener.nothingChange();
-                    }
-                } else if (TextUtils.isEmpty(newPath)) {
-                    ToastUtil.l("没有已签字的页面");
-                } else {
-                    if (listener != null) {
-                        listener.onFinished(newPath);
                     }
                 }
             } else {
@@ -344,7 +341,6 @@ public class SignatureView extends FrameLayout {
 
 
     private void toSaveSignature(String path, TransformBean bean, DataFinishListener listener, List<NewDrawPenView> newDrawPenViewList, List<Integer> signPageList) {
-//        LogUtil.d("pianyi", "第" + bean.getCurrentPage() + "页" + "  偏移" + pdf_view.getPositionOffset() + "  " + bean.getCurrentYOffset() + "  " + bean.getZoom());
         SavePdf savePdf = new SavePdf();
         savePdf.setPdfView(getPDFView());
         savePdf.setPenViewList(newDrawPenViewList);
@@ -387,7 +383,6 @@ public class SignatureView extends FrameLayout {
         @Override
         protected Object doInBackground(Object[] params) {
             newPath = savePdf.addImg();
-            LogUtil.d("pianyi", "自动签完后的路径" + newPath);
             return null;
         }
 
@@ -509,6 +504,10 @@ public class SignatureView extends FrameLayout {
         return pdf_view.getPageCount();
     }
 
+
+    public TransformBean getTransformBean() {
+        return bean;
+    }
 
     public void setTransformBean(TransformBean bean) {
         this.bean = bean;

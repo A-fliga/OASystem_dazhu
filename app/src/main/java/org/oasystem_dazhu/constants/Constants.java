@@ -11,7 +11,7 @@ import java.io.File;
 
 public final class Constants {
     public static Boolean CORE_INIT = false;
-    public static Boolean ClearEraser = false;
+    public static Boolean ClearEraser = true;
     public static final String WANYUAN_URL = "http://112.35.6.11:9098/api/";
     public static final String DAZHU_URL = "http://112.35.1.224:9099/api/";
 
