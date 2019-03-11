@@ -32,6 +32,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
+import org.oasystem_dazhu.http.HttpClient;
 import org.oasystem_dazhu.http.MSubscribe;
 import org.oasystem_dazhu.mvp.adapter.SignOfficialAdapter;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
@@ -49,6 +50,7 @@ import org.oasystem_dazhu.mvp.view.SignView.SignatureView;
 import org.oasystem_dazhu.utils.DialogUtil;
 import org.oasystem_dazhu.utils.FileUtil;
 import org.oasystem_dazhu.utils.LogUtil;
+import org.oasystem_dazhu.utils.NetUtil;
 import org.oasystem_dazhu.utils.ProgressDialogUtil;
 import org.oasystem_dazhu.utils.RealPathFromUriUtils;
 import org.oasystem_dazhu.utils.ToastUtil;
@@ -318,6 +320,18 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void downLoadFile(final int id, final String type) {
         PublicModel.getInstance().getSource(new MSubscribe<ResponseBody>() {
+
+            @Override
+            public void onStart() {
+                ProgressDialogUtil.instance().startLoad("下载中");
+                if (!NetUtil.isConnect()) {
+                    this.unsubscribe();
+                    HttpClient.finishRequest();
+                    ProgressDialogUtil.instance().stopLoad();
+
+                }
+            }
+
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
@@ -327,6 +341,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             @Override
             public void onNext(final ResponseBody bean) {
                 super.onNext(bean);
+                ProgressDialogUtil.instance().stopLoad();
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -355,6 +370,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                             }
                             fos.flush();
                             tempFile.renameTo(new File(getPath(id, type)));
+                            ProgressDialogUtil.instance().stopLoad();
                             LogUtil.d(TAG, "文件下载成功,准备展示文件。");
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -370,12 +386,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                             try {
                                 if (is != null)
                                     is.close();
-                            } catch (IOException e) {
-                            }
-                            try {
                                 if (fos != null)
                                     fos.close();
-                            } catch (IOException e) {
+                            } catch (IOException ignored) {
                             }
                         }
                     }
@@ -388,6 +401,11 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private Boolean isFileExist(int id, String type) {
         File file = new File(getPath(id, type));
         if (file.length() == 0) {
+            file.delete();
+            return false;
+        }
+        String suffix = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+        if (suffix.equals("temp")) {
             file.delete();
             return false;
         }

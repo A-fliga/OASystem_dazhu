@@ -22,8 +22,7 @@ public abstract class MSubscribe<T> extends Subscriber<T> {
     @Override
     public void onCompleted() {
         HttpClient.finishRequest();
-        if (HttpClient.getTaskNum() == 0)
-            ProgressDialogUtil.instance().stopLoad();
+        ProgressDialogUtil.instance().stopLoad();
     }
 
     @Override
