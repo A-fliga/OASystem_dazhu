@@ -95,6 +95,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private AlertDialog dialog, addAccessoryDialog;
     private float width = PenWidth.DEFAULT.getWidth(), tagWidth;
     private List<AllUserBean.DataBean> userBeanList;
+    public List<String> cacheFileList = new ArrayList<>();
 
     @Override
     public Class<OfficialDocumentDetailDelegate> getDelegateClass() {
@@ -121,9 +122,11 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         itemId = dataBean.getId();
         accessoryList = new ArrayList<>();
         accessoryList.add(dispatchBean.getForm_source_id());
+        cacheFileList.add("");
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
                 accessoryList.add(Integer.parseInt(dispatchBean.getAccessory_list().get(i).getSource_id()));
+                cacheFileList.add("");
             }
         }
 
@@ -213,7 +216,10 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 //用自己的view加载
                 viewDelegate.get(R.id.mSignatureView).setVisibility(View.VISIBLE);
                 viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
-                disPlayBySignView(new File(getPath(id, type)));
+                if (!cacheFileList.get(tagPosition).isEmpty())
+                    disPlayBySignView(new File(cacheFileList.get(tagPosition)));
+                else
+                    disPlayBySignView(new File(getPath(id, type)));
             } else {
                 viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
                 viewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
@@ -483,7 +489,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     //切换界面要恢复一下设置
                     if (mSignatureView != null) {
                         mSignatureView.resetConfig();
-                        mSignatureView.setNewPath("");
+                        mSignatureView.setNewPath(cacheFileList.get(position));
                     }
                     tagPosition = position;
                     //回收掉原来的tbsView，否则不能显示
@@ -939,7 +945,10 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 }
                 if (opType == 3) {
                     setSelectedSates(viewDelegate.get(R.id.toolBar_img_right));
-                    clearCanvas(null);
+                    if (cacheFileList.get(tagPosition).isEmpty())
+                        clearCanvas(null);
+                    else
+                        clearCanvas(cacheFileList.get(tagPosition));
                     noSigning();
                 }
                 if (opType == 4) {
@@ -980,10 +989,15 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void clearCanvas(String path) {
-        if (path != null)
+        if (path != null) {
+            //签字完成后保存一下文件路径
+            cacheFileList.set(tagPosition, path);
             mSignatureView.clearCanvas(new File(path));
-        else {
-//            mSignatureView.clearCanvas(null);
+        } else {
+            //清除字迹的时候要清除掉缓存的文件路径
+            if (cacheFileList != null && cacheFileList.size() != 0) {
+                cacheFileList.set(tagPosition, "");
+            }
             mSignatureView.setNewPath("");
             mSignatureView.clearCanvas(new File(getPath(id, type)));
         }
@@ -1072,6 +1086,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         File file = new File(SIGN_RESULT);
         FileUtil.deleteFile(file);
         EventBus.getDefault().unregister(this);
+        if (cacheFileList != null) {
+            cacheFileList.clear();
+        }
     }
 
 
