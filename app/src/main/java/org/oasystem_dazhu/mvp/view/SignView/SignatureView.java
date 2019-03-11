@@ -315,7 +315,7 @@ public class SignatureView extends FrameLayout {
             }
             if (signPageList.size() == 0) {
                 if (!auto)
-                    ToastUtil.l("没有已签字的页面");
+                    ToastUtil.l("没有新签字的页面");
                 else {
                     if (listener != null) {
                         listener.nothingChange();

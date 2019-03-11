@@ -568,15 +568,6 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     break;
                 //清除
                 case R.id.clear_img:
-//                    eraser = !eraser;
-//                    if (eraser) {
-//                        setSelectedSates(view);
-//                        mSignatureView.initEraserMode(Color.TRANSPARENT, width + 30f);
-//                    } else {
-//                        setSelectedSates(viewDelegate.get(R.id.pen_ll));
-//                        mSignatureView.setPenColor(color);
-//                        mSignatureView.setPenWidth(width);
-//                    }
                     opType = 4;
                     DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "您确定要清除签字吗？", "确定", "取消", dOnClickListener);
                     break;
