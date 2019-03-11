@@ -2,39 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
     android:background="#eeefef"
+    android:focusable="true"
     android:focusableInTouchMode="true"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar"/>
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
-        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:layout_marginTop="40dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
         <ImageView
-            android:src="@mipmap/login_top"
             android:id="@+id/login_top_img"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/login_top" />
     </LinearLayout>
 
     <LinearLayout
-        android:layout_marginTop="40dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -44,27 +44,27 @@
                 android:src="@mipmap/login_username" />
 
             <EditText
-                android:textSize="16sp"
-                android:layout_marginLeft="30dp"
                 android:id="@+id/source_password"
                 style="@style/MyEditText"
+                android:layout_marginLeft="30dp"
                 android:background="@null"
                 android:hint="原密码"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
             android:layout_width="300dp"
             android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
             android:background="@color/color_f5f5f5" />
 
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -76,27 +76,27 @@
                 android:src="@mipmap/login_password" />
 
             <EditText
-                android:textSize="16sp"
-                android:layout_marginLeft="30dp"
-                android:hint="新密码"
                 android:id="@+id/new_password"
                 style="@style/MyEditText"
+                android:layout_marginLeft="30dp"
                 android:background="@null"
+                android:hint="新密码"
                 android:inputType="textPassword"
-                android:maxLines="1" />
+                android:maxLines="1"
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
-            android:layout_marginTop="20px"
-            android:layout_gravity="center_horizontal"
             android:layout_width="600px"
             android:layout_height="1dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20px"
             android:background="@color/color_f5f5f5" />
 
         <LinearLayout
-            android:layout_gravity="center_horizontal"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="40dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
@@ -119,13 +119,26 @@
         </LinearLayout>
 
 
-
-        <ImageView
-            android:layout_gravity="center_horizontal"
+        <FrameLayout
             android:id="@+id/sure_btn"
             android:layout_width="625px"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:layout_marginTop="90px"
-            android:src="@mipmap/login_btn" />
+            android:clickable="true">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@mipmap/change_pwd_btn" />
+
+            <TextView
+                android:textColor="@color/color_ffffff"
+                android:layout_gravity="center"
+                android:text="确定"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
