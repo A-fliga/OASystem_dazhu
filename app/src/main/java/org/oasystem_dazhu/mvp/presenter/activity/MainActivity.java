@@ -4,10 +4,14 @@ import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -17,6 +21,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -67,7 +72,6 @@ public class MainActivity extends ActivityPresenter {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getUserInfo();
         checkLocationPermission();
     }
 
@@ -76,10 +80,9 @@ public class MainActivity extends ActivityPresenter {
         String[] s = version.split("\\.");
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < s.length; i++) {
-            if(i == 0){
+            if (i == 0) {
                 sb.append(s[i]).append(".");
-            }
-            else sb.append(s[i]);
+            } else sb.append(s[i]);
         }
         if (Float.parseFloat(AppUtil.getVersionName()) < Float.parseFloat(sb.toString())) {
             //开始下载更新并安装
@@ -203,6 +206,8 @@ public class MainActivity extends ActivityPresenter {
                 != PackageManager.PERMISSION_GRANTED) {
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_STORAGE_CODE);
+        } else {
+            getUserInfo();
         }
     }
 
@@ -211,10 +216,42 @@ public class MainActivity extends ActivityPresenter {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == WRITE_STORAGE_CODE) {
             if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                ToastUtil.l("请打开内存卡读写权限");
+                DialogUtil.showDialog(MainActivity.this, "需要打开存储(内存卡)权限才可以正常使用", "去打开", "取消", onClickListener);
+            } else {
+                getUserInfo();
             }
         }
     }
+
+    private DialogInterface.OnClickListener onClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialogInterface, int i) {
+            if (i == -1) {
+                Intent intent = new Intent();
+                try {
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    // 将用户引导到系统设置页面
+                    if (Build.VERSION.SDK_INT >= 9) {
+                        Log.e("HLQ_Struggle", "APPLICATION_DETAILS_SETTINGS");
+                        intent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+                        intent.setData(Uri.fromParts("package", getPackageName(), null));
+                    } else if (Build.VERSION.SDK_INT <= 8) {
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
+                        intent.putExtra("com.android.settings.ApplicationPkgName", getPackageName());
+                    }
+                    startActivity(intent);
+                    finish();
+                } catch (Exception e) {//抛出异常就直接打开设置页面
+                    intent = new Intent(Settings.ACTION_SETTINGS);
+                    startActivity(intent);
+                    finish();
+                }
+            } else {
+                finish();
+            }
+        }
+    };
 
 
     private void getUserInfo() {

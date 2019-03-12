@@ -11,6 +11,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import java.io.File;
@@ -72,9 +73,9 @@ public class PackageUtils {
      * @return
      */
     public static final int install(Context context, String filePath) {
-        if (PackageUtils.isSystemApplication(context) || ShellUtils.checkRootPermission()) {
-            return installSilent(context, filePath);
-        }
+//        if (PackageUtils.isSystemApplication(context) || ShellUtils.checkRootPermission()) {
+//            return installSilent(context, filePath);
+//        }
         return installNormal(context, filePath) ? INSTALL_SUCCEEDED : INSTALL_FAILED_INVALID_URI;
     }
 
@@ -87,13 +88,18 @@ public class PackageUtils {
      */
     public static boolean installNormal(Context context, String filePath) {
         Intent i = new Intent(Intent.ACTION_VIEW);
-        File file = new File(filePath);
-        if (file == null || !file.exists() || !file.isFile() || file.length() <= 0) {
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        File apkFile = new File(filePath);
+        if (!apkFile.exists() || !apkFile.isFile() || apkFile.length() <= 0) {
             return false;
         }
-
-        i.setDataAndType(Uri.parse("file://" + filePath), "application/vnd.android.package-archive");
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            Uri contentUri = FileProvider.getUriForFile(context,"org.oasystem_dazhu.fileprovider" ,apkFile);
+            i.setDataAndType(contentUri, "application/vnd.android.package-archive");
+        } else {
+            i.setDataAndType(Uri.fromFile(apkFile), "application/vnd.android.package-archive");
+        }
         context.startActivity(i);
         return true;
     }
