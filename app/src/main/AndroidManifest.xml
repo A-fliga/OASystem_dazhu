@@ -55,6 +55,8 @@
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.OfficialHandleActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.ChangePassWordActivity" />
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.MeetingsActivity" />
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.MeetingDetailActivity" />
 
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.TestActivity"></activity>
 

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/not_start_meeting"
+            android:layout_width="144dp"
+            android:layout_height="40dp"
+            android:src="@drawable/meeting_not_start_selector" />
+
+        <ImageView
+            android:id="@+id/going_meeting"
+            android:layout_width="144dp"
+            android:layout_height="40dp"
+            android:src="@drawable/meeting_going_selector" />
+
+        <ImageView
+            android:id="@+id/end_meeting"
+            android:layout_width="144dp"
+            android:layout_height="40dp"
+            android:src="@drawable/meeting_end_selector" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:id="@+id/meeting_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

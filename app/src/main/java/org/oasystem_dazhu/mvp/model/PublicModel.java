@@ -6,6 +6,8 @@ import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
+import org.oasystem_dazhu.mvp.model.bean.MeetingDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.MeetingListBean;
 import org.oasystem_dazhu.mvp.model.bean.OfficeListBean;
 import org.oasystem_dazhu.mvp.model.bean.OfficeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
@@ -157,5 +159,26 @@ public class PublicModel implements IModel {
      */
     public void getMonitorList(Subscriber<BaseEntity<DocumentBean>> subscriber, ScreenBean bean) {
         HttpClient.getInstance().getMonitorList(subscriber, bean);
+    }
+
+    /**
+     * 获取会议列表
+     */
+    public void getMeetingList(Subscriber<BaseEntity<MeetingListBean>> subscriber, String status) {
+        HttpClient.getInstance().getMeetingList(subscriber, status);
+    }
+
+    /**
+     * 获取会议详情
+     */
+    public void getMeetingDetail(Subscriber<BaseEntity<MeetingDetailBean>> subscriber, String id) {
+        HttpClient.getInstance().getMeetingDetail(subscriber, id);
+    }
+
+    /**
+     * 会议签到
+     */
+    public void countersign(Subscriber<BaseEntity> subscriber, String id,String status,String remark) {
+        HttpClient.getInstance().countersign(subscriber, id,status,remark);
     }
 }

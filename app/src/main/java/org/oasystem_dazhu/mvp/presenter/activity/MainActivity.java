@@ -57,6 +57,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -194,7 +195,24 @@ public class MainActivity extends ActivityPresenter {
             @Override
             public void onNext(BaseEntity<HomeTypeBean> bean) {
                 super.onNext(bean);
-                FirmingTypeManager.getInstance().addBeanList(bean.getData().getData());
+                List<HomeTypeBean.DataBean> beanList = new ArrayList<HomeTypeBean.DataBean>();
+                beanList.addAll(bean.getData().getData());
+                for (int i = 0; i < 3; i++) {
+                    HomeTypeBean.DataBean bean1 = new HomeTypeBean.DataBean();
+                    if(i == 0){
+
+                        bean1.setName("会议管理");
+                    }
+                    if(i == 1){
+                        bean1.setName("考勤管理");
+                    }
+                    if(i == 2){
+                        bean1.setName("用车管理");
+                    }
+                    bean1.setDispatch_flow_list_count(1);
+                    beanList.add(bean1);
+                }
+                FirmingTypeManager.getInstance().addBeanList(beanList);
                 initTabView();
                 checkUpdate();
             }

@@ -4,7 +4,6 @@ package org.oasystem_dazhu.http;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-
 import org.oasystem_dazhu.BuildConfig;
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
@@ -14,6 +13,8 @@ import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
+import org.oasystem_dazhu.mvp.model.bean.MeetingDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.MeetingListBean;
 import org.oasystem_dazhu.mvp.model.bean.OfficeListBean;
 import org.oasystem_dazhu.mvp.model.bean.OfficeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
@@ -355,6 +356,29 @@ public final class HttpClient {
         bodyMap.put("param", data);
 
         Observable observable = mApi.getMonitorList(addToken(), getMapRequestBody(bodyMap));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取会议列表
+     */
+    public void getMeetingList(Subscriber<BaseEntity<MeetingListBean>> subscriber, String status) {
+        Observable observable = mApi.getMeetingList(addToken(), getMapRequestBody(getBodyMap(getStrings("status"), getStrings(status))));
+        toSubscribe(observable, subscriber);
+    }
+    /**
+     * 获取会议详情
+     */
+    public void getMeetingDetail(Subscriber<BaseEntity<MeetingDetailBean>> subscriber, String id) {
+        Observable observable = mApi.getMeetingDetail(addToken(), getMapRequestBody(getBodyMap(getStrings("id"), getStrings(id))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 会议签到
+     */
+    public void countersign(Subscriber<BaseEntity> subscriber, String id,String status,String remark) {
+        Observable observable = mApi.countersign(addToken(), getMapRequestBody(getBodyMap(getStrings("id","status","remark"), getStrings(id,status,remark))));
         toSubscribe(observable, subscriber);
     }
 }

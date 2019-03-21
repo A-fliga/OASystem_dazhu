@@ -2,6 +2,7 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/libs/droidText.0.5.jar" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/java/org/oasystem_dazhu/mvp/presenter/activity/MeetingDetailActivity.java" charset="UTF-8" />
     <file url="PROJECT" charset="UTF-8" />
   </component>
 </project>

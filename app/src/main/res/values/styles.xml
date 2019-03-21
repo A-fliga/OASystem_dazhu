@@ -34,5 +34,17 @@
         <item name="android:paddingBottom">5dp</item>
         <item name="android:paddingTop">5dp</item>
     </style>
+    <!--输入框-->
+    <style name="MyEditText1" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/color_a4a4a4</item>
+        <item name="colorControlActivated">@color/color_a4a4a4</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">150dp</item>
+        <item name="android:background">@drawable/et</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:paddingTop">5dp</item>
+    </style>
 
 </resources>

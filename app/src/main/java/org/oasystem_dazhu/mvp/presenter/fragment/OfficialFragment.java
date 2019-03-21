@@ -18,8 +18,10 @@ import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
+import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
 import org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity;
+import org.oasystem_dazhu.mvp.presenter.activity.MeetingsActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.OfficialDocumentDetailActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.OfficialHandleActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.ScreenActivity;
@@ -75,9 +77,14 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
             @Override
             public void onItemClick(int position) {
                 //这些是固定分类
-                if (position <= FirmingTypeManager.getInstance().getBeanList().size() - 1)
-                    start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
-                    //有多的代表有文件监控
+                if (position <= FirmingTypeManager.getInstance().getBeanList().size() - 1) {
+                    List<HomeTypeBean.DataBean> beanList = FirmingTypeManager.getInstance().getBeanList();
+                    if (beanList.get(position).getName().equals("会议管理"))
+                        startMyActivity(MeetingsActivity.class, null);
+                    else
+                        start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
+                }
+                //有多的代表有文件监控
                 else {
                     startMyActivity(FileMonitorActivity.class, null);
                 }
@@ -93,7 +100,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
                     if (bean.getData().getData().size() == 0) {
-                        ToastUtil.l("暂无数据");
+                        ToastUtil.s("暂无数据");
                     }
                     List<DocumentBean.DataBean> beanList = bean.getData().getData();
                     newBeanList = new ArrayList<DocumentBean.DataBean>();

@@ -7,6 +7,8 @@ import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
+import org.oasystem_dazhu.mvp.model.bean.MeetingDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.MeetingListBean;
 import org.oasystem_dazhu.mvp.model.bean.OfficeListBean;
 import org.oasystem_dazhu.mvp.model.bean.OfficeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.UpFileBean;
@@ -170,4 +172,25 @@ public interface Api {
     @Headers({"Content-Type: application/json"})
     @POST("dispatch/monitoring")
     Observable<BaseEntity<DocumentBean>> getMonitorList(@Header("Authorization") String token,@Body RequestBody body);
+
+    /**
+     * 获取会议列表
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("conference/index")
+    Observable<BaseEntity<MeetingListBean>> getMeetingList(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 获取会议详情
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("conference/details")
+    Observable<BaseEntity<MeetingDetailBean>> getMeetingDetail(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 会议签到
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("conference/countersign")
+    Observable<BaseEntity> countersign(@Header("Authorization") String token, @Body RequestBody body);
 }
