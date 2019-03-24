@@ -77,10 +77,6 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
                         selectedId = view.getId();
                     }
                     break;
-
-                case R.id.toolBar_img_right:
-
-                    break;
             }
         }
     };

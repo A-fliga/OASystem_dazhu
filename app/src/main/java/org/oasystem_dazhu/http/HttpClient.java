@@ -10,6 +10,10 @@ import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.http.cookie.CookiesManager;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
+import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
@@ -379,6 +383,64 @@ public final class HttpClient {
      */
     public void countersign(Subscriber<BaseEntity> subscriber, String id,String status,String remark) {
         Observable observable = mApi.countersign(addToken(), getMapRequestBody(getBodyMap(getStrings("id","status","remark"), getStrings(id,status,remark))));
+        toSubscribe(observable, subscriber);
+    }
+
+
+    /**
+     * 获取用车申请列表
+     */
+    public void getApplyBean(Subscriber<BaseEntity<CarApplyListBean>> subscriber) {
+        Observable observable = mApi.getApplyBean(addToken());
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取待我审批的用车列表
+     */
+    public void getApproveBean(Subscriber<BaseEntity<CarApplyListBean>> subscriber) {
+        Observable observable = mApi.getApproveBean(addToken());
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取申请详情
+     */
+    public void getApplyDetailBean(Subscriber<BaseEntity<CarApplyDetailBean>> subscriber,String id) {
+        Observable observable = mApi.getApplyDetailBean(addToken(),getMapRequestBody(getBodyMap(getStrings("id"),getStrings(id))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取申请类型
+     */
+    public void getCarTypeBean(Subscriber<CarTypeListBean> subscriber) {
+        Observable observable = mApi.getCarTypeBean(addToken());
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 新增用车申请
+     */
+    public void car_apply(Subscriber<BaseEntity> subscriber,CarApplyBean bean) {
+        Observable observable = mApi.car_apply(addToken(),getObjRequestBody(bean));
+        toSubscribe(observable, subscriber);
+    }
+
+
+    /**
+     * 审批用车通过
+     */
+    public void approveAgree(Subscriber<BaseEntity> subscriber,String examine_id,String id) {
+        Observable observable = mApi.approveAgree(addToken(),getMapRequestBody(getBodyMap(getStrings("examine_id","id"),getStrings(examine_id,id))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 审批用车不通过
+     */
+    public void approveReject(Subscriber<BaseEntity> subscriber,String examine_id,String text) {
+        Observable observable = mApi.approveReject(addToken(),getMapRequestBody(getBodyMap(getStrings("examine_id","text"),getStrings(examine_id,text))));
         toSubscribe(observable, subscriber);
     }
 }

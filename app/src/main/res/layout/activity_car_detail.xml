@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="申请信息"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_type_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_apply_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_car_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_during_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_user_mileage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_user_target"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/car_apply_detail_user_approver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/apply_detail_recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp" />
+
+        <LinearLayout
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
+            android:id="@+id/approve_ll"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:clickable="true"
+                android:id="@+id/car_apply_agree_img"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/car_apply_agree" />
+
+            <ImageView
+                android:clickable="true"
+                android:layout_marginLeft="50dp"
+                android:id="@+id/car_apply_agree_refuse"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:src="@mipmap/car_apply_refuse" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

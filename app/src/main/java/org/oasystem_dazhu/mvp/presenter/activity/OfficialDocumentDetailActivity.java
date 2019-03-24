@@ -674,7 +674,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     booleanList[i] = false;
                     userBeanList.get(i).setSelected(false);
                 }
-                DialogUtil.showChoiceDialog(this, "确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
+                DialogUtil.showChoiceDialog(this, "请选择人员","确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
             }
         }
     }

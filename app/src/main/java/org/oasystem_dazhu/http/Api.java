@@ -1,9 +1,11 @@
 package org.oasystem_dazhu.http;
 
 
-
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
+import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
@@ -50,7 +52,7 @@ public interface Api {
      */
     @Headers({"Content-Type: application/json"})
     @POST("user/update_pass")
-    Observable<BaseEntity> updatePwd(@Header("Authorization") String token,@Body RequestBody pwd);
+    Observable<BaseEntity> updatePwd(@Header("Authorization") String token, @Body RequestBody pwd);
 
 
     /**
@@ -80,7 +82,6 @@ public interface Api {
     Observable<BaseEntity<OfficeTypeBean>> getOfficeType(@Header("Authorization") String token, @Body RequestBody body);
 
 
-
     /**
      * 获取个人文档
      *
@@ -89,7 +90,6 @@ public interface Api {
     @Headers({"Content-Type: application/json"})
     @POST("document/personage")
     Observable<BaseEntity<OfficeListBean>> getOfficeList(@Header("Authorization") String token, @Body RequestBody body);
-
 
 
     /**
@@ -171,7 +171,7 @@ public interface Api {
      */
     @Headers({"Content-Type: application/json"})
     @POST("dispatch/monitoring")
-    Observable<BaseEntity<DocumentBean>> getMonitorList(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<BaseEntity<DocumentBean>> getMonitorList(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
      * 获取会议列表
@@ -193,4 +193,56 @@ public interface Api {
     @Headers({"Content-Type: application/json"})
     @POST("conference/countersign")
     Observable<BaseEntity> countersign(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 获取用车申请列表
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/index")
+    Observable<BaseEntity<CarApplyListBean>> getApplyBean(@Header("Authorization") String token);
+
+    /**
+     * 获取待我审批的用车列表
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/lists")
+    Observable<BaseEntity<CarApplyListBean>> getApproveBean(@Header("Authorization") String token);
+
+    /**
+     * 获取申请详情
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/details")
+    Observable<BaseEntity<CarApplyDetailBean>> getApplyDetailBean(@Header("Authorization") String token, @Body RequestBody body);
+
+
+    /**
+     * 获取申请类型
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/typelist")
+    Observable<CarTypeListBean> getCarTypeBean(@Header("Authorization") String token);
+
+    /**
+     * 新增用车申请
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/create")
+    Observable<BaseEntity> car_apply(@Header("Authorization") String token,@Body RequestBody body);
+
+    /**
+     * 审批用车通过
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/agree")
+    Observable<BaseEntity> approveAgree(@Header("Authorization") String token,@Body RequestBody body);
+
+    /**
+     * 审批用车不通过
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("car/reject")
+    Observable<BaseEntity> approveReject(@Header("Authorization") String token,@Body RequestBody body);
+
+
 }

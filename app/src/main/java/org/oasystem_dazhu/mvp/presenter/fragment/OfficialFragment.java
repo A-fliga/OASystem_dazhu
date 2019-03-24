@@ -20,6 +20,7 @@ import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
+import org.oasystem_dazhu.mvp.presenter.activity.CarManagementActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.MeetingsActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.OfficialDocumentDetailActivity;
@@ -81,6 +82,8 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     List<HomeTypeBean.DataBean> beanList = FirmingTypeManager.getInstance().getBeanList();
                     if (beanList.get(position).getName().equals("会议管理"))
                         startMyActivity(MeetingsActivity.class, null);
+                    else if (beanList.get(position).getName().equals("用车管理"))
+                        startMyActivity(CarManagementActivity.class, null);
                     else
                         start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
                 }

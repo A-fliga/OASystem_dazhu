@@ -57,9 +57,10 @@
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.ChangePassWordActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.MeetingsActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.MeetingDetailActivity" />
-
-        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.TestActivity"></activity>
-
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.CarManagementActivity"/>
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AddCarApplyActivity"/>
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.CarApplyDetailActivity"/>
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.TestActivity"/>
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="org.oasystem_dazhu.fileprovider"

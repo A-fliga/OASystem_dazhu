@@ -31,12 +31,12 @@ public class DialogUtil {
     /**
      * 复选对话框
      */
-    public static void showChoiceDialog(Context context, String sure,
+    public static void showChoiceDialog(Context context, String title,String sure,
                                         String cancel,String[] data, boolean[] booleanList,
                                         DialogInterface.OnClickListener listener,
                                         DialogInterface.OnMultiChoiceClickListener multiChoiceClickListener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("请选择人员").setCancelable(false).setPositiveButton(sure, listener).
+        builder.setTitle(title).setCancelable(false).setPositiveButton(sure, listener).
                 setNegativeButton(cancel, listener).setMultiChoiceItems(data,booleanList,multiChoiceClickListener).show();
     }
 

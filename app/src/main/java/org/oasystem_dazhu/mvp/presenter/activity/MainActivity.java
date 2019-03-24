@@ -209,7 +209,7 @@ public class MainActivity extends ActivityPresenter {
                     if(i == 2){
                         bean1.setName("用车管理");
                     }
-                    bean1.setDispatch_flow_list_count(1);
+                    bean1.setDispatch_flow_list_count(0);
                     beanList.add(bean1);
                 }
                 FirmingTypeManager.getInstance().addBeanList(beanList);

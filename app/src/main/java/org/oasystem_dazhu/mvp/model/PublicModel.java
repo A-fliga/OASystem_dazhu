@@ -3,6 +3,10 @@ package org.oasystem_dazhu.mvp.model;
 
 import org.oasystem_dazhu.http.HttpClient;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
+import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
@@ -180,5 +184,55 @@ public class PublicModel implements IModel {
      */
     public void countersign(Subscriber<BaseEntity> subscriber, String id,String status,String remark) {
         HttpClient.getInstance().countersign(subscriber, id,status,remark);
+    }
+
+    /**
+     * 获取用车申请列表
+     */
+    public void getApplyBean(Subscriber<BaseEntity<CarApplyListBean>> subscriber) {
+        HttpClient.getInstance().getApplyBean(subscriber);
+    }
+
+    /**
+     * 获取待我审批的用车列表
+     */
+    public void getApproveBean(Subscriber<BaseEntity<CarApplyListBean>> subscriber) {
+        HttpClient.getInstance().getApproveBean(subscriber);
+    }
+
+
+    /**
+     * 获取申请详情
+     */
+    public void getApplyDetailBean(Subscriber<BaseEntity<CarApplyDetailBean>> subscriber,String id) {
+        HttpClient.getInstance().getApplyDetailBean(subscriber,id);
+    }
+
+    /**
+     * 获取申请类型
+     */
+    public void getCarTypeBean(Subscriber<CarTypeListBean> subscriber) {
+        HttpClient.getInstance().getCarTypeBean(subscriber);
+    }
+
+    /**
+     * 新增用车申请
+     */
+    public void car_apply(Subscriber<BaseEntity> subscriber, CarApplyBean bean) {
+        HttpClient.getInstance().car_apply(subscriber,bean);
+    }
+
+    /**
+     * 审批用车通过
+     */
+    public void approveAgree(Subscriber<BaseEntity> subscriber,String examine_id,String id) {
+        HttpClient.getInstance().approveAgree(subscriber,examine_id,id);
+    }
+
+    /**
+     * 审批用车不通过
+     */
+    public void approveReject(Subscriber<BaseEntity> subscriber,String examine_id,String text) {
+        HttpClient.getInstance().approveReject(subscriber,examine_id,text);
     }
 }
