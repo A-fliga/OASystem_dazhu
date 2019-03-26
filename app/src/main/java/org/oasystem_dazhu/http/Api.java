@@ -3,6 +3,8 @@ package org.oasystem_dazhu.http;
 
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.AttendanceBean;
+import org.oasystem_dazhu.mvp.model.bean.AttendanceStatisticsBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
 import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
@@ -228,21 +230,43 @@ public interface Api {
      */
     @Headers({"Content-Type: application/json"})
     @POST("car/create")
-    Observable<BaseEntity> car_apply(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<BaseEntity> car_apply(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
      * 审批用车通过
      */
     @Headers({"Content-Type: application/json"})
     @POST("car/agree")
-    Observable<BaseEntity> approveAgree(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<BaseEntity> approveAgree(@Header("Authorization") String token, @Body RequestBody body);
 
     /**
      * 审批用车不通过
      */
     @Headers({"Content-Type: application/json"})
     @POST("car/reject")
-    Observable<BaseEntity> approveReject(@Header("Authorization") String token,@Body RequestBody body);
+    Observable<BaseEntity> approveReject(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 考勤详情
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("attendance/clock_info")
+    Observable<BaseEntity<AttendanceBean>> getAttendanceInfo(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 提交打卡
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("attendance/clock")
+    Observable<BaseEntity> addAttendance(@Header("Authorization") String token, @Body RequestBody body);
+
+    /**
+     * 获取考勤统计
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("attendance/clock_statistics")
+    Observable<BaseEntity<AttendanceStatisticsBean>> getAttendanceStatistics(@Header("Authorization") String token, @Body RequestBody body);
+
 
 
 }

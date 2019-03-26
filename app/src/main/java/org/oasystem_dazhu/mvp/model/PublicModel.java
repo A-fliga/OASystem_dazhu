@@ -3,6 +3,8 @@ package org.oasystem_dazhu.mvp.model;
 
 import org.oasystem_dazhu.http.HttpClient;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.AttendanceBean;
+import org.oasystem_dazhu.mvp.model.bean.AttendanceStatisticsBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
@@ -182,8 +184,8 @@ public class PublicModel implements IModel {
     /**
      * 会议签到
      */
-    public void countersign(Subscriber<BaseEntity> subscriber, String id,String status,String remark) {
-        HttpClient.getInstance().countersign(subscriber, id,status,remark);
+    public void countersign(Subscriber<BaseEntity> subscriber, String id, String status, String remark) {
+        HttpClient.getInstance().countersign(subscriber, id, status, remark);
     }
 
     /**
@@ -204,8 +206,8 @@ public class PublicModel implements IModel {
     /**
      * 获取申请详情
      */
-    public void getApplyDetailBean(Subscriber<BaseEntity<CarApplyDetailBean>> subscriber,String id) {
-        HttpClient.getInstance().getApplyDetailBean(subscriber,id);
+    public void getApplyDetailBean(Subscriber<BaseEntity<CarApplyDetailBean>> subscriber, String id) {
+        HttpClient.getInstance().getApplyDetailBean(subscriber, id);
     }
 
     /**
@@ -219,20 +221,41 @@ public class PublicModel implements IModel {
      * 新增用车申请
      */
     public void car_apply(Subscriber<BaseEntity> subscriber, CarApplyBean bean) {
-        HttpClient.getInstance().car_apply(subscriber,bean);
+        HttpClient.getInstance().car_apply(subscriber, bean);
     }
 
     /**
      * 审批用车通过
      */
-    public void approveAgree(Subscriber<BaseEntity> subscriber,String examine_id,String id) {
-        HttpClient.getInstance().approveAgree(subscriber,examine_id,id);
+    public void approveAgree(Subscriber<BaseEntity> subscriber, String examine_id, String id) {
+        HttpClient.getInstance().approveAgree(subscriber, examine_id, id);
     }
 
     /**
      * 审批用车不通过
      */
-    public void approveReject(Subscriber<BaseEntity> subscriber,String examine_id,String text) {
-        HttpClient.getInstance().approveReject(subscriber,examine_id,text);
+    public void approveReject(Subscriber<BaseEntity> subscriber, String examine_id, String text) {
+        HttpClient.getInstance().approveReject(subscriber, examine_id, text);
+    }
+
+    /**
+     * 考勤详情
+     */
+    public void getAttendanceInfo(Subscriber<BaseEntity<AttendanceBean>> subscriber, String date) {
+        HttpClient.getInstance().getAttendanceInfo(subscriber, date);
+    }
+
+    /**
+     * 提交打卡
+     */
+    public void addAttendance(Subscriber<BaseEntity> subscriber, String type, String date, String lat, String lng) {
+        HttpClient.getInstance().addAttendance(subscriber, type, date, lat, lng);
+    }
+
+    /**
+     * 获取考勤统计
+     */
+    public void getAttendanceStatistics(Subscriber<BaseEntity<AttendanceStatisticsBean>> subscriber, String start_time, String end_time) {
+        HttpClient.getInstance().getAttendanceStatistics(subscriber, start_time, end_time);
     }
 }

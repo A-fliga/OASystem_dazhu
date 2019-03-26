@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_f0f0f0"
+    android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:background="@color/color_f0f0f0">
+
+            <ImageView
+                android:id="@+id/sign_in_icon"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="19dp"
+                android:layout_marginTop="14dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/sign_in_icon"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sign_in_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#424242"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/sign_in_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:textColor="#424242"
+                    android:textSize="16sp" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/sign_in_nowTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="19dp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="80dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:src="@mipmap/sign_morning" />
+
+            <TextView
+                android:id="@+id/sign_working_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="上班打卡"
+                android:textColor="#424242"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="14dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sign_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/sign_regular"
+                android:layout_width="45dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/zhengchang"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/sign_late"
+                android:layout_width="45dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/chidao"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="100dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="11dp"
+                android:layout_height="11dp"
+                android:src="@mipmap/sign_after" />
+
+            <TextView
+                android:id="@+id/sign_work_off_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="下班打卡"
+                android:textColor="#424242"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="14sp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/sign_off_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/sign_regular_off"
+                android:layout_width="45dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/zhengchang"
+                android:visibility="gone" />
+
+            <ImageView
+                android:id="@+id/sign_leave"
+                android:layout_width="45dp"
+                android:layout_height="22dp"
+                android:layout_marginLeft="15dp"
+                android:src="@mipmap/zaotui"
+                android:visibility="gone" />
+        </LinearLayout>
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp">
+
+            <ImageView
+                android:id="@+id/to_sign_in"
+                android:layout_width="208dp"
+                android:layout_height="208dp"
+                android:clickable="true"
+                android:src="@mipmap/sign_in" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="11dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/sign_in_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#ffffff"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/sign_in_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:textColor="#ffffff"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </FrameLayout>
+    </LinearLayout>
+</LinearLayout>

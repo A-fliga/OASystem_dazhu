@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--公共的toolbar-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    >
+    android:layout_height="50dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -39,18 +38,16 @@
             android:textSize="@dimen/text_size_20" />
 
         <ImageView
-            android:clickable="true"
             android:id="@+id/toolBar_img_right"
             android:layout_width="43dp"
             android:layout_height="43dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:clickable="true"
             android:padding="5dp"
-            android:scaleType="centerCrop"
-          />
+            android:scaleType="centerCrop" />
 
         <RelativeLayout
-
             android:id="@+id/toolbar_right_rl"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
@@ -59,12 +56,20 @@
             android:visibility="gone">
 
             <TextView
+                android:id="@+id/toolbar_right_tv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/color_ffffff" />
+
+            <TextView
+                android:layout_toRightOf="@+id/toolbar_right_tv2"
                 android:id="@+id/toolbar_right_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="18dp"
                 android:textColor="@color/color_ffffff" />
         </RelativeLayout>
     </RelativeLayout>

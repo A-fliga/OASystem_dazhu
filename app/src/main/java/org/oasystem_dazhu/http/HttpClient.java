@@ -10,6 +10,8 @@ import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.http.cookie.CookiesManager;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.AttendanceBean;
+import org.oasystem_dazhu.mvp.model.bean.AttendanceStatisticsBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
@@ -370,6 +372,7 @@ public final class HttpClient {
         Observable observable = mApi.getMeetingList(addToken(), getMapRequestBody(getBodyMap(getStrings("status"), getStrings(status))));
         toSubscribe(observable, subscriber);
     }
+
     /**
      * 获取会议详情
      */
@@ -381,8 +384,8 @@ public final class HttpClient {
     /**
      * 会议签到
      */
-    public void countersign(Subscriber<BaseEntity> subscriber, String id,String status,String remark) {
-        Observable observable = mApi.countersign(addToken(), getMapRequestBody(getBodyMap(getStrings("id","status","remark"), getStrings(id,status,remark))));
+    public void countersign(Subscriber<BaseEntity> subscriber, String id, String status, String remark) {
+        Observable observable = mApi.countersign(addToken(), getMapRequestBody(getBodyMap(getStrings("id", "status", "remark"), getStrings(id, status, remark))));
         toSubscribe(observable, subscriber);
     }
 
@@ -406,8 +409,8 @@ public final class HttpClient {
     /**
      * 获取申请详情
      */
-    public void getApplyDetailBean(Subscriber<BaseEntity<CarApplyDetailBean>> subscriber,String id) {
-        Observable observable = mApi.getApplyDetailBean(addToken(),getMapRequestBody(getBodyMap(getStrings("id"),getStrings(id))));
+    public void getApplyDetailBean(Subscriber<BaseEntity<CarApplyDetailBean>> subscriber, String id) {
+        Observable observable = mApi.getApplyDetailBean(addToken(), getMapRequestBody(getBodyMap(getStrings("id"), getStrings(id))));
         toSubscribe(observable, subscriber);
     }
 
@@ -422,8 +425,8 @@ public final class HttpClient {
     /**
      * 新增用车申请
      */
-    public void car_apply(Subscriber<BaseEntity> subscriber,CarApplyBean bean) {
-        Observable observable = mApi.car_apply(addToken(),getObjRequestBody(bean));
+    public void car_apply(Subscriber<BaseEntity> subscriber, CarApplyBean bean) {
+        Observable observable = mApi.car_apply(addToken(), getObjRequestBody(bean));
         toSubscribe(observable, subscriber);
     }
 
@@ -431,16 +434,40 @@ public final class HttpClient {
     /**
      * 审批用车通过
      */
-    public void approveAgree(Subscriber<BaseEntity> subscriber,String examine_id,String id) {
-        Observable observable = mApi.approveAgree(addToken(),getMapRequestBody(getBodyMap(getStrings("examine_id","id"),getStrings(examine_id,id))));
+    public void approveAgree(Subscriber<BaseEntity> subscriber, String examine_id, String id) {
+        Observable observable = mApi.approveAgree(addToken(), getMapRequestBody(getBodyMap(getStrings("examine_id", "id"), getStrings(examine_id, id))));
         toSubscribe(observable, subscriber);
     }
 
     /**
      * 审批用车不通过
      */
-    public void approveReject(Subscriber<BaseEntity> subscriber,String examine_id,String text) {
-        Observable observable = mApi.approveReject(addToken(),getMapRequestBody(getBodyMap(getStrings("examine_id","text"),getStrings(examine_id,text))));
+    public void approveReject(Subscriber<BaseEntity> subscriber, String examine_id, String text) {
+        Observable observable = mApi.approveReject(addToken(), getMapRequestBody(getBodyMap(getStrings("examine_id", "text"), getStrings(examine_id, text))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 考勤详情
+     */
+    public void getAttendanceInfo(Subscriber<BaseEntity<AttendanceBean>> subscriber, String date) {
+        Observable observable = mApi.getAttendanceInfo(addToken(), getMapRequestBody(getBodyMap(getStrings("date"), getStrings(date))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 提交打卡
+     */
+    public void addAttendance(Subscriber<BaseEntity> subscriber, String type, String date, String lat, String lng) {
+        Observable observable = mApi.addAttendance(addToken(), getMapRequestBody(getBodyMap(getStrings("type,date,lat,lng"), getStrings(type, date, lat, lng))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取考勤统计
+     */
+    public void getAttendanceStatistics(Subscriber<BaseEntity<AttendanceStatisticsBean>> subscriber, String start_time, String end_time) {
+        Observable observable = mApi.getAttendanceStatistics(addToken(), getMapRequestBody(getBodyMap(getStrings("start_time,end_time"), getStrings(start_time, end_time))));
         toSubscribe(observable, subscriber);
     }
 }

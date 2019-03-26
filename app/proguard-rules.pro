@@ -74,6 +74,7 @@
 
 -keep class **.R$* {*;}
 -keep class android.support.v4.**{*;}
+-keepattributes EnclosingMethod
 
 -keepclasseswithmembernames class * {
     native <methods>;

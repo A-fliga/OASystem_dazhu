@@ -163,16 +163,16 @@ public abstract class ViewDelegate implements IDelegate {
     }
 
 
-
     public ImageView getToolBarLeftImg() {
 //        return get(R.id.toolBar_img_left);
         return null;
     }
-    public ImageView getToolBarRightImg(){
+
+    public ImageView getToolBarRightImg() {
         return get(R.id.toolBar_img_right);
     }
 
-    public void setToolBarRightImg(int resId){
+    public void setToolBarRightImg(int resId) {
         ImageView imageView = getToolBarRightImg();
         imageView.setVisibility(View.VISIBLE);
         imageView.setImageResource(resId);
@@ -193,6 +193,9 @@ public abstract class ViewDelegate implements IDelegate {
     public TextView getToolBarRightTv() {
         return get(R.id.toolbar_right_tv);
     }
+    public TextView getToolBarRightTv2() {
+        return get(R.id.toolbar_right_tv2);
+    }
 
 
     /**
@@ -204,7 +207,13 @@ public abstract class ViewDelegate implements IDelegate {
         get(R.id.toolbar_right_rl).setVisibility(View.VISIBLE);
         getToolBarRightTv().setText(text);
     }
-    public RelativeLayout getToolBarRight(){
+
+    public void setToolBarRightTv2(String text) {
+        get(R.id.toolbar_right_rl).setVisibility(View.VISIBLE);
+        getToolBarRightTv2().setText(text);
+    }
+
+    public RelativeLayout getToolBarRight() {
         return get(R.id.toolbar_right_rl);
     }
 
