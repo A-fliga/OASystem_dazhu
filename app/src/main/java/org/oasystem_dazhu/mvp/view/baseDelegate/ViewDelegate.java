@@ -100,6 +100,8 @@ public abstract class ViewDelegate implements IDelegate {
     }
 
 
+
+
     public EditText getEt(int id){
         return get(id);
     }
