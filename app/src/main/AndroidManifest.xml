@@ -68,6 +68,8 @@
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AttendanceActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AskForLeaveActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AttendanceStatisticsActivity" />
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AddLeaveActivity" />
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AskForLeaveDetailActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.TestActivity" />
 
         <provider

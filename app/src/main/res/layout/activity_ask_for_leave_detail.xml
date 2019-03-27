@@ -22,28 +22,14 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/car_apply_detail_user_name"
+            android:id="@+id/leave_apply_detail_user_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/car_apply_detail_type_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/car_apply_detail_apply_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/car_apply_detail_car_num"
+            android:id="@+id/leave_apply_detail_type_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -57,21 +43,14 @@
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/car_apply_detail_user_mileage"
+            android:id="@+id/leave_apply_detail_user_approver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/car_apply_detail_user_target"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/car_apply_detail_user_approver"
+            android:id="@+id/leave_apply_detail_reason"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -84,26 +63,27 @@
             android:layout_marginTop="50dp" />
 
         <LinearLayout
-            android:layout_marginTop="50dp"
-            android:gravity="center_horizontal"
+            android:visibility="visible"
             android:id="@+id/approve_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:gravity="center_horizontal"
             android:orientation="horizontal">
 
             <ImageView
-                android:clickable="true"
-                android:id="@+id/car_apply_agree_img"
+                android:id="@+id/leave_apply_agree_img"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
+                android:clickable="true"
                 android:src="@mipmap/car_apply_agree" />
 
             <ImageView
-                android:clickable="true"
-                android:layout_marginLeft="50dp"
-                android:id="@+id/car_apply_agree_refuse"
+                android:id="@+id/leave_apply_agree_refuse"
                 android:layout_width="120dp"
                 android:layout_height="40dp"
+                android:layout_marginLeft="50dp"
+                android:clickable="true"
                 android:src="@mipmap/car_apply_refuse" />
 
 

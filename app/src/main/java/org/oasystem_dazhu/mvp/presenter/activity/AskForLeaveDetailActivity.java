@@ -11,24 +11,24 @@ import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.http.MSubscribe;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
-import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
-import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
-import org.oasystem_dazhu.mvp.view.CarApplyDetailDelegate;
+import org.oasystem_dazhu.mvp.model.bean.AskForLeaveDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.AskLeaveBean;
+import org.oasystem_dazhu.mvp.view.AskForLeaveDetailDelegate;
 import org.oasystem_dazhu.utils.DialogUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
 /**
- * Created by www on 2019/3/23.
+ * Created by www on 2019/3/26.
  */
 
-public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDelegate> {
+public class AskForLeaveDetailActivity extends ActivityPresenter<AskForLeaveDetailDelegate> {
     private String applyId = "";
     private String examine_id = "";
     private EditText remarkEt;
 
     @Override
-    public Class<CarApplyDetailDelegate> getDelegateClass() {
-        return CarApplyDetailDelegate.class;
+    public Class<AskForLeaveDetailDelegate> getDelegateClass() {
+        return AskForLeaveDetailDelegate.class;
     }
 
     @Override
@@ -41,31 +41,43 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            applyId = bundle.getString("car_apply_id");
+            applyId = bundle.getString("leave_apply_id");
             Boolean isApplyDetail = bundle.getBoolean("isApplyDetail");
             viewDelegate.showBottom(!isApplyDetail);
             if (!isApplyDetail) {
-                viewDelegate.setOnClickListener(onClickListener, R.id.car_apply_agree_img, R.id.car_apply_agree_refuse);
+                viewDelegate.setOnClickListener(onClickListener, R.id.leave_apply_agree_img, R.id.leave_apply_agree_refuse);
                 examine_id = bundle.getString("examine_id");
             }
         }
         getApplyDetail(applyId);
     }
 
-
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.car_apply_agree_img:
+                case R.id.leave_apply_agree_img:
                     showAgreeDialog();
                     break;
-                case R.id.car_apply_agree_refuse:
+                case R.id.leave_apply_agree_refuse:
                     showRefuseDialog();
                     break;
             }
         }
     };
+
+    private void getApplyDetail(String applyId) {
+        PublicModel.getInstance().getAskLeaveDetailBean(new MSubscribe<BaseEntity<AskForLeaveDetailBean>>() {
+            @Override
+            public void onNext(BaseEntity<AskForLeaveDetailBean> bean) {
+                super.onNext(bean);
+                if (bean.getCode() == 0) {
+                    viewDelegate.initView(bean.getData());
+                    viewDelegate.initFlows(bean.getData());
+                }
+            }
+        }, applyId);
+    }
 
     private void showRefuseDialog() {
         remarkEt = new EditText(this);
@@ -80,8 +92,25 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
                 .setNegativeButton("取消", null)
                 .show();
 
-
     }
+
+    private void toRefuse(String remark) {
+        PublicModel.getInstance().approveReject(new MSubscribe<BaseEntity>() {
+            @Override
+            public void onNext(BaseEntity bean) {
+                super.onNext(bean);
+                if (bean.getCode() == 0) {
+                    EventBus.getDefault().post(new AskLeaveBean());
+                    ToastUtil.s("操作成功");
+                    finish();
+                } else {
+                    ToastUtil.s(bean.getMsg());
+                }
+            }
+
+        }, examine_id, remark);
+    }
+
 
     private void showAgreeDialog() {
         DialogUtil.showDialog(this, "确定同意吗？", "确定", "取消", mOnclickListener);
@@ -97,48 +126,20 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
         }
     };
 
-    private void toRefuse(String remark) {
-        PublicModel.getInstance().approveReject(new MSubscribe<BaseEntity>() {
-            @Override
-            public void onNext(BaseEntity bean) {
-                super.onNext(bean);
-                if (bean.getCode() == 0) {
-                    EventBus.getDefault().post(new CarApplyBean());
-                    ToastUtil.s("操作成功");
-                    finish();
-                } else {
-                    ToastUtil.s(bean.getMsg());
-                }
-            }
-
-        }, examine_id, remark);
-    }
-
     private void toAgree() {
-        PublicModel.getInstance().approveAgree(new MSubscribe<BaseEntity>() {
+        PublicModel.getInstance().leaveAgree(new MSubscribe<BaseEntity>() {
             @Override
             public void onNext(BaseEntity bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    EventBus.getDefault().post(new CarApplyBean());
+                    EventBus.getDefault().post(new AskLeaveBean());
                     ToastUtil.s("操作成功");
                     finish();
                 } else {
                     ToastUtil.s(bean.getMsg());
                 }
             }
-        }, examine_id, applyId);
+        },examine_id,applyId);
     }
 
-
-    private void getApplyDetail(String applyId) {
-        PublicModel.getInstance().getApplyDetailBean(new MSubscribe<BaseEntity<CarApplyDetailBean>>() {
-            @Override
-            public void onNext(BaseEntity<CarApplyDetailBean> bean) {
-                super.onNext(bean);
-                viewDelegate.initView(bean.getData());
-                viewDelegate.initFlows(bean.getData());
-            }
-        }, applyId);
-    }
 }

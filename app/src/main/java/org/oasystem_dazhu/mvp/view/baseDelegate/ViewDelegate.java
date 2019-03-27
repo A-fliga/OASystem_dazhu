@@ -30,11 +30,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.presenter.IPresenter;
@@ -97,6 +97,15 @@ public abstract class ViewDelegate implements IDelegate {
 
     public void startMyActivityForResult(Intent intent, int requestCode) {
         getActivity().startActivityForResult(intent, requestCode);
+    }
+
+
+    public EditText getEt(int id){
+        return get(id);
+    }
+
+    public TextView getTv(int id){
+        return get(id);
     }
 
     public void startMyActivityForResult(Class<?> pClass, String action, int requestCode) {

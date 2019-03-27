@@ -136,7 +136,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
 //                    //判断一下有没有审批过，有的话就不需要显示审批按钮
                     boolean index = true;
                     for (int i = 0; i < data.getCar_use_examine().size(); i++) {
-                        if (Integer.parseInt(data.getCar_use_examine().get(i).getId()) ==
+                        if (Integer.parseInt(data.getCar_use_examine().get(i).getUser_id()) ==
                                 UserManager.getInstance().getUserInfo().getId()) {
                             if (Integer.parseInt(data.getCar_use_examine().get(i).getStatus()) == 1)
                                 index = false;

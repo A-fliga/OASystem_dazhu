@@ -674,7 +674,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     booleanList[i] = false;
                     userBeanList.get(i).setSelected(false);
                 }
-                DialogUtil.showChoiceDialog(this, "请选择人员","确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
+                DialogUtil.showChoiceDialog(this, "请选择人员", "确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
             }
         }
     }
@@ -854,17 +854,21 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 sb.append(userBeanList.get(i).getId()).append(",");
             }
         }
-        PublicModel.getInstance().add_countersign(new MSubscribe<BaseEntity>() {
-            @Override
-            public void onNext(BaseEntity bean) {
-                super.onNext(bean);
-                if (bean.getCode() == 0) {
-                    ToastUtil.l("操作成功");
-                    EventBus.getDefault().post("upLoadSuccess");
-                    finish();
+        if (sb.length() == 0) {
+            ToastUtil.s("未选择加签人员");
+        } else {
+            PublicModel.getInstance().add_countersign(new MSubscribe<BaseEntity>() {
+                @Override
+                public void onNext(BaseEntity bean) {
+                    super.onNext(bean);
+                    if (bean.getCode() == 0) {
+                        ToastUtil.l("操作成功");
+                        EventBus.getDefault().post("upLoadSuccess");
+                        finish();
+                    }
                 }
-            }
-        }, itemId, sb.substring(0, sb.length() - 1));
+            }, itemId, sb.substring(0, sb.length() - 1));
+        }
     }
 
     private void toExamine(int status, String form_source_id, String accessoryId) {

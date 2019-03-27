@@ -12,10 +12,10 @@ import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
 import java.util.List;
 
 /**
- * Created by www on 2019/3/23.
+ * Created by www on 2019/3/26.
  */
 
-public class AddCarApplyDelegate extends ViewDelegate {
+public class AddLeaveDelegate extends ViewDelegate {
     @Override
     public void onDestroy() {
 
@@ -23,12 +23,12 @@ public class AddCarApplyDelegate extends ViewDelegate {
 
     @Override
     public int getRootLayoutId() {
-        return R.layout.activity_add_car_apply;
+        return R.layout.activity_ask_leave;
     }
 
     @Override
     public void initWidget() {
-        getTitleView().setText("添加申请");
+        getTitleView().setText("新增请假");
         setToolBarRightTv("提交");
     }
 
@@ -49,5 +49,4 @@ public class AddCarApplyDelegate extends ViewDelegate {
             }
         });
     }
-
 }

@@ -46,7 +46,7 @@ public class CarApplyDetailDelegate extends ViewDelegate {
         car_apply_detail_apply_time.setText("申请时间：" + bean.getCreated_at());
         TextView car_apply_detail_car_num = get(R.id.car_apply_detail_car_num);
         car_apply_detail_car_num.setText("申请车辆：" + bean.getCar_number());
-        TextView car_apply_detail_during_time = get(R.id.car_apply_detail_during_time);
+        TextView car_apply_detail_during_time = get(R.id.leave_apply_detail_during_time);
         car_apply_detail_during_time.setText("预定时间：" + bean.getDate());
         TextView car_apply_detail_user_mileage = get(R.id.car_apply_detail_user_mileage);
         car_apply_detail_user_mileage.setText("预定里程：" + bean.getMileage());

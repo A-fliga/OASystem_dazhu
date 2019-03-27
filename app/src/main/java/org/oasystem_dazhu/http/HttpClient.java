@@ -10,6 +10,8 @@ import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.http.cookie.CookiesManager;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.AskForLeaveDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.AskLeaveBean;
 import org.oasystem_dazhu.mvp.model.bean.AttendanceBean;
 import org.oasystem_dazhu.mvp.model.bean.AttendanceStatisticsBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
@@ -18,6 +20,7 @@ import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
 import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
+import org.oasystem_dazhu.mvp.model.bean.LeaveApplyBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
 import org.oasystem_dazhu.mvp.model.bean.MeetingDetailBean;
 import org.oasystem_dazhu.mvp.model.bean.MeetingListBean;
@@ -468,6 +471,55 @@ public final class HttpClient {
      */
     public void getAttendanceStatistics(Subscriber<BaseEntity<AttendanceStatisticsBean>> subscriber, String start_time, String end_time) {
         Observable observable = mApi.getAttendanceStatistics(addToken(), getMapRequestBody(getBodyMap(getStrings("start_time,end_time"), getStrings(start_time, end_time))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取请假列表
+     */
+    public void getAskLeaveBean(Subscriber<BaseEntity<AskLeaveBean>> subscriber) {
+        Observable observable = mApi.getAskLeaveBean(addToken());
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取请假详情
+     */
+    public void getAskLeaveDetailBean(Subscriber<BaseEntity<AskForLeaveDetailBean>> subscriber, String id) {
+        Observable observable = mApi.getAskLeaveDetailBean(addToken(), getMapRequestBody(getBodyMap(getStrings("id"), getStrings(id))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 请假审批列表
+     */
+    public void getLeaveApprove(Subscriber<BaseEntity<AskLeaveBean>> subscriber) {
+        Observable observable = mApi.getLeaveApprove(addToken());
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 同意请假
+     */
+    public void leaveAgree(Subscriber<BaseEntity> subscriber, String examine_id, String id) {
+        Observable observable = mApi.leaveAgree(addToken(), getMapRequestBody(getBodyMap(getStrings("examine_id,id"),
+                getStrings(examine_id, id))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 获取请假类型
+     */
+    public void getLeaveTypeList(Subscriber<CarTypeListBean> subscriber) {
+        Observable observable = mApi.getLeaveTypeList(addToken());
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     * 新增请假
+     */
+    public void addLeaveApply(Subscriber<BaseEntity> subscriber, LeaveApplyBean bean) {
+        Observable observable = mApi.addLeaveApply(addToken(),getObjRequestBody(bean));
         toSubscribe(observable, subscriber);
     }
 }

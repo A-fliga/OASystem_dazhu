@@ -3,6 +3,8 @@ package org.oasystem_dazhu.mvp.model;
 
 import org.oasystem_dazhu.http.HttpClient;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
+import org.oasystem_dazhu.mvp.model.bean.AskForLeaveDetailBean;
+import org.oasystem_dazhu.mvp.model.bean.AskLeaveBean;
 import org.oasystem_dazhu.mvp.model.bean.AttendanceBean;
 import org.oasystem_dazhu.mvp.model.bean.AttendanceStatisticsBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyBean;
@@ -11,6 +13,7 @@ import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
 import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
+import org.oasystem_dazhu.mvp.model.bean.LeaveApplyBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
 import org.oasystem_dazhu.mvp.model.bean.MeetingDetailBean;
 import org.oasystem_dazhu.mvp.model.bean.MeetingListBean;
@@ -257,5 +260,47 @@ public class PublicModel implements IModel {
      */
     public void getAttendanceStatistics(Subscriber<BaseEntity<AttendanceStatisticsBean>> subscriber, String start_time, String end_time) {
         HttpClient.getInstance().getAttendanceStatistics(subscriber, start_time, end_time);
+    }
+
+    /**
+     * 获取请假列表
+     */
+    public void getAskLeaveBean(Subscriber<BaseEntity<AskLeaveBean>> subscriber) {
+        HttpClient.getInstance().getAskLeaveBean(subscriber);
+    }
+
+    /**
+     * 获取请假详情
+     */
+    public void getAskLeaveDetailBean(Subscriber<BaseEntity<AskForLeaveDetailBean>> subscriber, String id) {
+        HttpClient.getInstance().getAskLeaveDetailBean(subscriber, id);
+    }
+
+    /**
+     * 获取请假详情
+     */
+    public void getLeaveApprove(Subscriber<BaseEntity<AskLeaveBean>> subscriber) {
+        HttpClient.getInstance().getLeaveApprove(subscriber);
+    }
+
+    /**
+     * 同意请假
+     */
+    public void leaveAgree(Subscriber<BaseEntity> subscriber, String examine_id, String id) {
+        HttpClient.getInstance().leaveAgree(subscriber, examine_id, id);
+    }
+
+    /**
+     * 获取请假类型
+     */
+    public void getLeaveTypeList(Subscriber<CarTypeListBean> subscriber) {
+        HttpClient.getInstance().getLeaveTypeList(subscriber);
+    }
+
+    /**
+     * 新增请假
+     */
+    public void addLeaveApply(Subscriber<BaseEntity> subscriber, LeaveApplyBean bean) {
+        HttpClient.getInstance().addLeaveApply(subscriber,bean);
     }
 }
