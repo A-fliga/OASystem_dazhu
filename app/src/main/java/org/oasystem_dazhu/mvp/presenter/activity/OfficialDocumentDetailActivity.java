@@ -96,7 +96,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private float width = PenWidth.DEFAULT.getWidth(), tagWidth;
     private List<AllUserBean.DataBean> userBeanList;
     public List<String> cacheFileList = new ArrayList<>();
-
+    private MSubscribe<ResponseBody> subscribe;
     @Override
     public Class<OfficialDocumentDetailDelegate> getDelegateClass() {
         return OfficialDocumentDetailDelegate.class;
@@ -123,9 +123,12 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         accessoryList = new ArrayList<>();
         accessoryList.add(dispatchBean.getForm_source_id());
         cacheFileList.add("");
+        LogUtil.d("itemId", "itemId:" + itemId);
+        LogUtil.d("itemId", "formId:" + dispatchBean.getForm_source_id());
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
                 accessoryList.add(Integer.parseInt(dispatchBean.getAccessory_list().get(i).getSource_id()));
+                LogUtil.d("itemId", "AccessoryId:" + dispatchBean.getAccessory_list().get(i).getSource_id());
                 cacheFileList.add("");
             }
         }
@@ -325,20 +328,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         }
     }
 
-    private void downLoadFile(final int id, final String type) {
-        PublicModel.getInstance().getSource(new MSubscribe<ResponseBody>() {
-
-            @Override
-            public void onStart() {
-                ProgressDialogUtil.instance().startLoad("下载中");
-                if (!NetUtil.isConnect()) {
-                    this.unsubscribe();
-                    HttpClient.finishRequest();
-                    ProgressDialogUtil.instance().stopLoad();
-
-                }
-            }
-
+    private MSubscribe<ResponseBody> getSubscribe(final int id, final String type) {
+        MSubscribe<ResponseBody> subscribe = new MSubscribe<ResponseBody>() {
             @Override
             public void onError(Throwable e) {
                 super.onError(e);
@@ -352,7 +343,6 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        ProgressDialogUtil.instance().startLoad("下载中");
                         LogUtil.d(TAG, "下载文件-->onResponse");
                         InputStream is = null;
                         byte[] buf = new byte[2048];
@@ -368,17 +358,13 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                             } else tempFile.createNewFile();
 
                             fos = new FileOutputStream(tempFile);
-//                            long sum = 0;
                             while ((len = is.read(buf)) != -1) {
                                 fos.write(buf, 0, len);
-//                                sum += len;
-//                                int progress = (int) (sum * 1.0f / total * 100);
-//                                LogUtil.d(TAG, "写入缓存文件" + tempFile.getName() + "进度: " + progress);
+                                LogUtil.d("itemId","下载中");
                             }
                             fos.flush();
                             tempFile.renameTo(new File(getPath(id, type)));
                             ProgressDialogUtil.instance().stopLoad();
-                            LogUtil.d(TAG, "文件下载成功,准备展示文件。");
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -397,11 +383,30 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                                     fos.close();
                             } catch (IOException ignored) {
                             }
+
                         }
                     }
                 }).start();
             }
-        }, id + "");
+
+            @Override
+            public void onStart() {
+                ProgressDialogUtil.instance().startLoad("下载中");
+                if (!NetUtil.isConnect()) {
+                    this.unsubscribe();
+                    HttpClient.finishRequest();
+                    ProgressDialogUtil.instance().stopLoad();
+
+                }
+            }
+        };
+        this.subscribe = subscribe;
+        return subscribe;
+    }
+
+
+    private void downLoadFile(final int id, final String type) {
+        PublicModel.getInstance().getSource(getSubscribe(id, type), id + "");
     }
 
 
