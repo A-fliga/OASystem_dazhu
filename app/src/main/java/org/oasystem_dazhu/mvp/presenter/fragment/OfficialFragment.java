@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
@@ -23,6 +24,7 @@ import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
 import org.oasystem_dazhu.mvp.presenter.activity.AttendanceActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.CarManagementActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity;
+import org.oasystem_dazhu.mvp.presenter.activity.MainActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.MeetingsActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.OfficialDocumentDetailActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.OfficialHandleActivity;
@@ -69,7 +71,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         typeAdapter = viewDelegate.initTypeList();
         getNotDoneList(new ScreenBean());
         viewDelegate.setOnClickListener(onClickListener,
-                R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
+                R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh,R.id.home_user_icon);
         setOnItemClickListener();
 //        Glide.with(this).load(UserManager.getInstance().getUserInfo().getCompany().getCompany_logo()).into((ImageView) viewDelegate.get(R.id.home_logo));
     }
@@ -181,6 +183,15 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     if (newBeanList != null)
                         newBeanList.clear();
                     getNotDoneList(new ScreenBean());
+                    break;
+
+                case R.id.home_user_icon:
+                    MainActivity activity = (MainActivity) getActivity();
+                    if (activity != null) {
+                        activity.viewPager.setCurrentItem(1);
+                        Menu menu = activity.navigation.getMenu();
+                        menu.getItem(1).setChecked(true);
+                    }
                     break;
 
             }

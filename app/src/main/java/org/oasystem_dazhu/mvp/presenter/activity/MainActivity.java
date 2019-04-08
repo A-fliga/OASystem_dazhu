@@ -63,12 +63,13 @@ import java.util.TimerTask;
 
 
 public class MainActivity extends ActivityPresenter {
-    private NoScrollViewPager viewPager;
+    public  NoScrollViewPager viewPager;
     private final int WRITE_STORAGE_CODE = 1000;
     private Boolean canFinish = false;//按两次退出APP的标志
     private TimerTask task;
     private Timer timer = new Timer();
     private static UpdateAsync async;
+    public BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,7 +290,7 @@ public class MainActivity extends ActivityPresenter {
         viewPager = viewDelegate.get(R.id.content_pager);
         mFragmentPagerAdapter mFragmentPagerAdapter = new mFragmentPagerAdapter(getSupportFragmentManager(), getFragments());
         viewPager.setAdapter(mFragmentPagerAdapter);
-        BottomNavigationView navigation = viewDelegate.get(R.id.navigation);
+        navigation = viewDelegate.get(R.id.navigation);
         navigation.inflateMenu(R.menu.navigation_btn);
         disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
