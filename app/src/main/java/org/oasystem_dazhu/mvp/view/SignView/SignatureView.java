@@ -164,6 +164,7 @@ public class SignatureView extends FrameLayout {
     }
 
     public void loadFile(File file, Boolean auto) {
+        ProgressDialogUtil.instance().startLoad("加载文件中");
         this.autoSpacing = auto;
         fromFile(file)
                 .swipeHorizontal(true)
