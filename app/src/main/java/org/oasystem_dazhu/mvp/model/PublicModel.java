@@ -114,9 +114,10 @@ public class PublicModel implements IModel {
     /**
      * 审批接口
      */
-    public void examine(Subscriber<BaseEntity> subscriber, String id, String status, String accessory_source_id, String form_source_id) {
-        HttpClient.getInstance().examine(subscriber, id, status, accessory_source_id, form_source_id);
+    public void examine(Subscriber<BaseEntity> subscriber, String id, String status, String accessory_source_id, String form_source_id,String reason) {
+        HttpClient.getInstance().examine(subscriber, id, status, accessory_source_id, form_source_id,reason);
     }
+
 
 
     /**

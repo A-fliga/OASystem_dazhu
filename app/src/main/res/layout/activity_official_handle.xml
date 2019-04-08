@@ -61,23 +61,26 @@
 
     </RelativeLayout>
 
+
     <RelativeLayout
-        android:layout_width="190dp"
-        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="15dp">
 
         <ImageView
             android:id="@+id/official_not_done_tab"
-            android:layout_width="95dp"
+            android:layout_width="144dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/not_read_selected" />
 
 
         <ImageView
+            android:layout_marginLeft="-2dp"
             android:id="@+id/official_done_tab"
-            android:layout_width="95dp"
+            android:layout_width="144dp"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/official_not_done_tab"

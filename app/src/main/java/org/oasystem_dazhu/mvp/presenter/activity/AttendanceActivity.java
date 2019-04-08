@@ -36,6 +36,7 @@ import static org.oasystem_dazhu.R.id.toolbar_right_tv2;
 
 /**
  * Created by www on 2019/3/25.
+ * 考勤管理
  */
 
 public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {

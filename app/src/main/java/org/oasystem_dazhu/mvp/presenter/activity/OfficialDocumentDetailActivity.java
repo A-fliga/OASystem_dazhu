@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -97,6 +98,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private List<AllUserBean.DataBean> userBeanList;
     public List<String> cacheFileList = new ArrayList<>();
     private MSubscribe<ResponseBody> subscribe;
+    private EditText remarkEt;
     @Override
     public Class<OfficialDocumentDetailDelegate> getDelegateClass() {
         return OfficialDocumentDetailDelegate.class;
@@ -840,8 +842,11 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     sb.append(accessoryList.get(i)).append("#");
                 }
             }
-            if (status == 1 || status == 2)
-                toExamine(status, form_source_id, sb.toString());
+            if (status == 1)
+                toExamine(status, form_source_id, sb.toString(), "");
+            if (status == 2) {
+                showReasonDialog(status, form_source_id, sb.toString());
+            }
             if (status == 3) {
                 toClose(form_source_id, sb.toString());
             }
@@ -850,6 +855,24 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             }
         } else
             add_countersign();
+    }
+
+
+    private void showReasonDialog(final int status, final String form_source_id, final String accessoryId) {
+        remarkEt = new EditText(this);
+        new AlertDialog.Builder(this).setTitle("退回原因(必填)")
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setView(remarkEt)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (TextUtils.isEmpty(remarkEt.getText().toString())) {
+                            ToastUtil.s("必须填写原因");
+                        } else
+                            toExamine(status, form_source_id, accessoryId, remarkEt.getText().toString());
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
     }
 
     private void add_countersign() {
@@ -876,7 +899,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         }
     }
 
-    private void toExamine(int status, String form_source_id, String accessoryId) {
+    private void toExamine(int status, String form_source_id, String accessoryId, String reason) {
         PublicModel.getInstance().examine(new MSubscribe<BaseEntity>() {
             @Override
             public void onNext(BaseEntity bean) {
@@ -887,7 +910,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     finish();
                 }
             }
-        }, String.valueOf(itemId), String.valueOf(status), accessoryId, form_source_id);
+        }, String.valueOf(itemId), String.valueOf(status), accessoryId, form_source_id, reason);
     }
 
     private void showSettingView() {
