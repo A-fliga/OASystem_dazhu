@@ -866,7 +866,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         if (TextUtils.isEmpty(remarkEt.getText().toString())) {
-                            ToastUtil.s("必须填写原因");
+                            ToastUtil.l("必须填写原因");
                         } else
                             toExamine(status, form_source_id, accessoryId, remarkEt.getText().toString());
                     }

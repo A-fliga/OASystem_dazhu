@@ -295,7 +295,7 @@ public final class HttpClient {
      * 审批接口
      */
     public void examine(Subscriber<BaseEntity> subscriber, String id, String status, String accessory_source_id, String form_source_id,String reason) {
-        Observable observable = mApi.examine(addToken(), getMapRequestBody(getBodyMap(getStrings("id", "status", "accessory_source_id", "form_source_id,reason")
+        Observable observable = mApi.examine(addToken(), getMapRequestBody(getBodyMap(getStrings("id", "status", "accessory_source_id", "form_source_id","reason")
                 , getStrings(id, status, accessory_source_id, form_source_id,reason))));
         toSubscribe(observable, subscriber);
     }
