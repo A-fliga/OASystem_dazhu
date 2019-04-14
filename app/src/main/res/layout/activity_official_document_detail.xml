@@ -132,7 +132,7 @@
                 android:orientation="horizontal">
 
                 <LinearLayout
-                    android:id="@+id/save_img"
+                    android:id="@+id/save_ll"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -152,11 +152,11 @@
                         android:layout_marginBottom="2dp"
                         android:text="保存"
                         android:textColor="@color/color_ffffff"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/pen_img"
+                    android:id="@+id/pen_ll"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -177,7 +177,7 @@
                         android:layout_marginBottom="2dp"
                         android:text="画笔"
                         android:textColor="@color/color_ffffff"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
 
 
@@ -194,8 +194,7 @@
                         android:layout_width="38dp"
                         android:layout_height="38dp"
                         android:layout_marginTop="2dp"
-                        android:src="@drawable/sign_clear_selector"
-                         />
+                        android:src="@drawable/sign_eraser_selector" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -203,10 +202,11 @@
                         android:layout_marginBottom="2dp"
                         android:text="橡皮擦"
                         android:textColor="@color/color_ffffff"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:id="@+id/clear_img"
+                    android:id="@+id/clear_ll"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -218,8 +218,7 @@
                         android:layout_width="38dp"
                         android:layout_height="38dp"
                         android:layout_marginTop="2dp"
-                        android:src="@drawable/sign_yinzhang_selector"
-                        />
+                        android:src="@drawable/sign_clear_selector" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -227,32 +226,32 @@
                         android:layout_marginBottom="2dp"
                         android:text="清除"
                         android:textColor="@color/color_ffffff"
-                        android:textSize="12sp" />
+                        android:textSize="11sp" />
                 </LinearLayout>
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/biaozhu_img"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:clickable="true"-->
-                    <!--android:gravity="center"-->
-                    <!--android:orientation="vertical">-->
 
-                    <!--<ImageView-->
-                        <!--android:layout_width="38dp"-->
-                        <!--android:layout_height="38dp"-->
-                        <!--android:layout_marginTop="2dp"-->
+                <LinearLayout
+                    android:id="@+id/yinzhang_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                        <!--android:src="@drawable/sign_biaozhu_selector" />-->
+                    <ImageView
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/sign_seal_selector" />
 
-                    <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="2dp"-->
-                        <!--android:text="标注"-->
-                        <!--android:textColor="@color/color_ffffff"-->
-                        <!--android:textSize="12sp" />-->
-                <!--</LinearLayout>-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="印章"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="11sp" />
+                </LinearLayout>
 
             </LinearLayout>
 

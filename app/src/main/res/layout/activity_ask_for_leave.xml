@@ -18,14 +18,15 @@
             android:id="@+id/my_apply"
             android:layout_width="144dp"
             android:layout_height="40dp"
-            android:src="@drawable/meeting_not_start_selector" />
+            android:src="@drawable/my_apply_selector"/>
 
 
         <ImageView
+            android:layout_marginLeft="-2dp"
             android:id="@+id/my_approver"
             android:layout_width="144dp"
             android:layout_height="40dp"
-            android:src="@drawable/meeting_end_selector" />
+            android:src="@drawable/my_approve_selector"/>
 
     </LinearLayout>
 

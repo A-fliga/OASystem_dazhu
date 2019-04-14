@@ -198,21 +198,6 @@ public class MainActivity extends ActivityPresenter {
                 super.onNext(bean);
                 List<HomeTypeBean.DataBean> beanList = new ArrayList<HomeTypeBean.DataBean>();
                 beanList.addAll(bean.getData().getData());
-                for (int i = 0; i < 3; i++) {
-                    HomeTypeBean.DataBean bean1 = new HomeTypeBean.DataBean();
-                    if(i == 0){
-
-                        bean1.setName("会议管理");
-                    }
-                    if(i == 1){
-                        bean1.setName("考勤管理");
-                    }
-                    if(i == 2){
-                        bean1.setName("用车管理");
-                    }
-                    bean1.setDispatch_flow_list_count(0);
-                    beanList.add(bean1);
-                }
                 FirmingTypeManager.getInstance().addBeanList(beanList);
                 initTabView();
                 checkUpdate();

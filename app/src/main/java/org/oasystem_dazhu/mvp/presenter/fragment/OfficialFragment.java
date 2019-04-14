@@ -13,6 +13,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.http.MSubscribe;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
+import org.oasystem_dazhu.mvp.adapter.HomeBusinessManagerAdapter;
 import org.oasystem_dazhu.mvp.adapter.HomeTypeAdapter;
 import org.oasystem_dazhu.mvp.adapter.OfficialDocumentAdapter;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
@@ -21,7 +22,7 @@ import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
-import org.oasystem_dazhu.mvp.presenter.activity.AttendanceActivity;
+import org.oasystem_dazhu.mvp.presenter.activity.AskForLeaveActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.CarManagementActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.MainActivity;
@@ -48,6 +49,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
     private List<DocumentBean.DataBean> newBeanList;
     private Boolean isPositive_create = false, isPositive_update = false;
     private HomeTypeAdapter typeAdapter;
+    private HomeBusinessManagerAdapter managerAdapter;
     private ScreenBean screenBean;
 
     @Override
@@ -69,9 +71,10 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         typeAdapter = viewDelegate.initTypeList();
+        managerAdapter = viewDelegate.initManagerAdaper();
         getNotDoneList(new ScreenBean());
         viewDelegate.setOnClickListener(onClickListener,
-                R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh,R.id.home_user_icon);
+                R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh, R.id.home_user_icon);
         setOnItemClickListener();
 //        Glide.with(this).load(UserManager.getInstance().getUserInfo().getCompany().getCompany_logo()).into((ImageView) viewDelegate.get(R.id.home_logo));
     }
@@ -82,20 +85,28 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
             public void onItemClick(int position) {
                 //这些是固定分类
                 if (position <= FirmingTypeManager.getInstance().getBeanList().size() - 1) {
-                    List<HomeTypeBean.DataBean> beanList = FirmingTypeManager.getInstance().getBeanList();
-                    if (beanList.get(position).getName().equals("会议管理"))
-                        startMyActivity(MeetingsActivity.class, null);
-                    else if (beanList.get(position).getName().equals("用车管理"))
-                        startMyActivity(CarManagementActivity.class, null);
-                    else if(beanList.get(position).getName().equals("考勤管理")){
-                        startMyActivity(AttendanceActivity.class,null);
-                    }
-                    else
-                        start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
+                    start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
                 }
                 //有多的代表有文件监控
                 else {
                     startMyActivity(FileMonitorActivity.class, null);
+                }
+            }
+        });
+
+        managerAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                switch (position){
+                    case 0:
+                        startMyActivity(AskForLeaveActivity.class,null);
+                        break;
+                    case 1:
+                        startMyActivity(MeetingsActivity.class,null);
+                        break;
+                    case 2:
+                        startMyActivity(CarManagementActivity.class,null);
+                        break;
                 }
             }
         });
@@ -184,6 +195,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     if (newBeanList != null)
                         newBeanList.clear();
                     getNotDoneList(new ScreenBean());
+                    getFirmingType();
                     break;
 
                 case R.id.home_user_icon:
@@ -207,20 +219,6 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                 super.onNext(bean);
                 List<HomeTypeBean.DataBean> beanList = new ArrayList<HomeTypeBean.DataBean>();
                 beanList.addAll(bean.getData().getData());
-                for (int i = 0; i < 3; i++) {
-                    HomeTypeBean.DataBean bean1 = new HomeTypeBean.DataBean();
-                    if (i == 0) {
-                        bean1.setName("会议管理");
-                    }
-                    if (i == 1) {
-                        bean1.setName("考勤管理");
-                    }
-                    if (i == 2) {
-                        bean1.setName("用车管理");
-                    }
-                    bean1.setDispatch_flow_list_count(0);
-                    beanList.add(bean1);
-                }
                 FirmingTypeManager.getInstance().addBeanList(beanList);
                 typeAdapter = viewDelegate.initTypeList();
                 setOnItemClickListener();
