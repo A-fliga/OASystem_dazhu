@@ -6,7 +6,8 @@ import android.content.SharedPreferences;
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
 
-
+import static org.oasystem_dazhu.constants.Constants.PEN_COLOR;
+import static org.oasystem_dazhu.constants.Constants.PEN_WIDTH;
 import static org.oasystem_dazhu.constants.Constants.USER_NAME;
 
 
@@ -45,6 +46,42 @@ public class SharedPreferencesUtil {
         editor = sharedPreference.edit();
         editor.putString(USER_NAME, username);
         editor.apply();
+    }
+
+    public static void savePenWidth(Float width){
+        if (sharedPreference == null) {
+            sharedPreference = MyApplication.getContext()
+                    .getSharedPreferences(Constants.OA_SYSTEM, Context.MODE_PRIVATE);
+        }
+        editor = sharedPreference.edit();
+        editor.putFloat(PEN_WIDTH, width);
+        editor.apply();
+    }
+
+    public static void savePenColor(int color){
+        if (sharedPreference == null) {
+            sharedPreference = MyApplication.getContext()
+                    .getSharedPreferences(Constants.OA_SYSTEM, Context.MODE_PRIVATE);
+        }
+        editor = sharedPreference.edit();
+        editor.putInt(PEN_COLOR, color);
+        editor.apply();
+    }
+
+    public static float getWidth(){
+        if (sharedPreference == null) {
+            sharedPreference = MyApplication.getContext()
+                    .getSharedPreferences(Constants.OA_SYSTEM, Context.MODE_PRIVATE);
+        }
+        return sharedPreference.getFloat(PEN_WIDTH, -1f);
+    }
+
+    public static int getColor(){
+        if (sharedPreference == null) {
+            sharedPreference = MyApplication.getContext()
+                    .getSharedPreferences(Constants.OA_SYSTEM, Context.MODE_PRIVATE);
+        }
+        return sharedPreference.getInt(PEN_COLOR, -1);
     }
 
     /**
