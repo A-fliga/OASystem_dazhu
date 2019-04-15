@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -95,6 +96,10 @@ public class SignatureView extends FrameLayout {
     }
 
 
+    public NoAnimationViewPager getViewPager() {
+        return viewPager;
+    }
+
     private SignatureView fromFile(File file) {
         sourceFile = file;
 //        ProgressDialogUtil.instance().startLoad();
@@ -169,7 +174,8 @@ public class SignatureView extends FrameLayout {
         fromFile(file)
                 .swipeHorizontal(true)
                 .pageSnap(true)
-                .autoSpacing(true)
+                //注释掉这个  否则加载完成会偏移一下
+//                .autoSpacing(true)
                 .pageFling(true)
                 .enableDoubleTap(false)
                 .pageFitPolicy(FitPolicy.BOTH)
@@ -186,9 +192,7 @@ public class SignatureView extends FrameLayout {
             //如果不是自动保存的 就清空一下设置
             if (!autoSpacing)
                 resetConfig();
-            else {
-                resetZoomWithAnimation();
-            }
+            resetZoomWithAnimation();
             ProgressDialogUtil.instance().stopLoad();
             Document document = null;
             if (needSignature) {
@@ -202,19 +206,48 @@ public class SignatureView extends FrameLayout {
                 }
                 penViewList = new ArrayList<>();
                 viewPager = findViewById(R.id.signature_viewpager);
-                //pdf加载完成后 先准备对应页数的签字页面，放入viewpager中
-                for (int i = 0; i < nbPages; i++) {
-                    View v = inflater.inflate(R.layout.item_signature, null);
-                    penView = v.findViewById(R.id.item_signature);
-                    penView.initParameter(context, document, SignatureView.this);
-                    penViewList.add(penView);
-                    penView = null;
-                }
+                getSuitableSizeAndInitView(nbPages, document);
                 MPagerAdapter adapter = new MPagerAdapter(SignatureView.this);
                 viewPager.setAdapter(adapter);
             }
         }
     };
+
+    private void getSuitableSizeAndInitView(int nbPages, Document document) {
+        int bitMapHeight;
+        int bitMapWidth;
+        if (document.getPageSize().getHeight() >= document.getPageSize().getWidth()) {
+            bitMapHeight = pdf_view.getHeight();
+            bitMapWidth = (int) ((pdf_view.getHeight() / document.getPageSize().getHeight()) * document.getPageSize().getWidth());
+            if (bitMapWidth > pdf_view.getWidth())
+                bitMapWidth = pdf_view.getWidth();
+            if (bitMapWidth / document.getPageSize().getWidth() < bitMapHeight / document.getPageSize().getHeight()) {
+                bitMapHeight = (int) (bitMapWidth / document.getPageSize().getWidth() * document.getPageSize().getHeight());
+            }
+        } else {
+            bitMapWidth = pdf_view.getWidth();
+            bitMapHeight = (int) ((pdf_view.getWidth() / document.getPageSize().getWidth()) * document.getPageSize().getHeight());
+            if (bitMapHeight > pdf_view.getHeight())
+                bitMapHeight = pdf_view.getHeight();
+            if (bitMapHeight / document.getPageSize().getHeight() < bitMapWidth / document.getPageSize().getWidth()) {
+                bitMapWidth = (int) (bitMapHeight / document.getPageSize().getHeight() * document.getPageSize().getWidth());
+            }
+        }
+        LayoutParams params = (LayoutParams) pdf_view.getLayoutParams();
+        params.width = bitMapWidth;
+        params.height = bitMapHeight;
+        pdf_view.setLayoutParams(params);
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        //pdf加载完成后 先准备对应页数的签字页面，放入viewpager中
+        for (int i = 0; i < nbPages; i++) {
+            View v = inflater.inflate(R.layout.item_signature, null);
+            penView = v.findViewById(R.id.item_signature);
+            penView.initParameter(context, wm, bitMapWidth, bitMapHeight, SignatureView.this);
+            penViewList.add(penView);
+            penView = null;
+        }
+    }
 
     public Boolean getCanSigning() {
         return canSigning;

@@ -11,9 +11,7 @@ import android.graphics.PorterDuffXfermode;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
-import com.github.barteksc.pdfviewer.PDFView;
-import com.lowagie.text.Document;
+import android.view.WindowManager;
 
 import org.greenrobot.eventbus.EventBus;
 import org.oasystem_dazhu.mvp.model.bean.IsEraserMode;
@@ -58,35 +56,19 @@ public class NewDrawPenView extends View {
     }
 
 
-    public void initParameter(Context context, Document document, SignatureView signatureView) {
+    public void initParameter(Context context, WindowManager wm, int bitMapWidth, int bitMapHeight, SignatureView signatureView) {
         mContext = context;
-        PDFView pdfView = signatureView.getPDFView();
-        if (document.getPageSize().getHeight() >= document.getPageSize().getWidth()) {
-            this.bitMapHeight = pdfView.getHeight();
-            this.bitMapWidth = (int) ((pdfView.getHeight() / document.getPageSize().getHeight()) * document.getPageSize().getWidth());
-            if (bitMapWidth > pdfView.getWidth())
-                bitMapWidth = pdfView.getWidth();
-            if (bitMapWidth / document.getPageSize().getWidth() < bitMapHeight / document.getPageSize().getHeight()) {
-                bitMapHeight = (int) (bitMapWidth / document.getPageSize().getWidth() * document.getPageSize().getHeight());
-            }
-        } else {
-            this.bitMapWidth = pdfView.getWidth();
-            this.bitMapHeight = (int) ((pdfView.getWidth() / document.getPageSize().getWidth()) * document.getPageSize().getHeight());
-            if (this.bitMapHeight > pdfView.getHeight())
-                bitMapHeight = pdfView.getHeight();
-            if (bitMapHeight / document.getPageSize().getHeight() < bitMapWidth / document.getPageSize().getWidth()) {
-                bitMapWidth = (int) (bitMapHeight / document.getPageSize().getHeight() * document.getPageSize().getWidth());
-            }
-        }
+        this.bitMapWidth = bitMapWidth;
+        this.bitMapHeight = bitMapHeight;
         this.signatureView = signatureView;
-        mBitmap = Bitmap.createBitmap(pdfView.getWidth(), pdfView.getHeight(), Bitmap.Config.ARGB_8888);
+        mBitmap = Bitmap.createBitmap(wm.getDefaultDisplay().getWidth(), signatureView.getViewPager().getHeight(), Bitmap.Config.ARGB_8888);
         mStokeBrushPen = new SteelPen(context);
         penWidth = PenWidth.DEFAULT.getWidth();
         penColor = Color.BLACK;
         mPath = new Path();
         isEraserMode = false;
         initPaint();
-        initCanvas(pdfView);
+        initCanvas(wm.getDefaultDisplay().getWidth(),signatureView.getViewPager().getHeight());
     }
 
 
@@ -140,13 +122,13 @@ public class NewDrawPenView extends View {
         eraserPaint.setColor(color);
     }
 
-    private void initCanvas(PDFView pdfView) {
+    private void initCanvas(int width,int height) {
         mCanvas = new Canvas(mBitmap);
         if (bitMapWidth != 0 && bitMapHeight != 0) {
             if (bitMapHeight >= bitMapWidth) {
-                mCanvas.clipRect((pdfView.getWidth() - bitMapWidth) / 2, 0, (pdfView.getWidth() - bitMapWidth) / 2 + bitMapWidth, bitMapHeight);
+                mCanvas.clipRect((width - bitMapWidth) / 2, 0, (width - bitMapWidth) / 2 + bitMapWidth, bitMapHeight);
             } else
-                mCanvas.clipRect(0, (pdfView.getHeight() - bitMapHeight) / 2, bitMapWidth, (pdfView.getHeight() - bitMapHeight) / 2 + bitMapHeight);
+                mCanvas.clipRect(0, (height - bitMapHeight) / 2, bitMapWidth, (height - bitMapHeight) / 2 + bitMapHeight);
         } else {
             ToastUtil.l("bitMap不合法");
         }

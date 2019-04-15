@@ -21,6 +21,7 @@
             android:layout_height="match_parent" />
 
         <org.oasystem_dazhu.mvp.view.SignView.SignatureView
+            android:background="@color/color_999999"
             android:id="@+id/mSignatureView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
