@@ -80,7 +80,7 @@ android {
 
         release {
             //万源
-            buildConfigField "String", "HOST", '"http://112.35.6.11:9098/api/"'
+//            buildConfigField "String", "HOST", '"http://112.35.6.11:9098/api/"'
             //经开区
 //            buildConfigField "String", "HOST", '"http://112.33.26.41:9098/api/"'
             //宣汉
@@ -88,7 +88,7 @@ android {
             //大竹
 //            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //测试
-//            buildConfigField "String", "HOST", '"http://oa.zycnb.net/api/"'
+            buildConfigField "String", "HOST", '"http://oa.zycnb.net/api/"'
             signingConfig android.signingConfigs.release
             minifyEnabled true
             zipAlignEnabled true

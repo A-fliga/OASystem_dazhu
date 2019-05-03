@@ -50,7 +50,47 @@ public class UserInfo {
     private List<OfficeSealTpyeBean> office_seal_tpye;
     private List<OfficeSealBean> office_seal;
     private SysAppBean sys_app;
+    private SysAuthBean authBean;
 
+
+    public static class SysAuthBean{
+        private String app_auth;
+        private String id;
+        private String created_at;
+        private String updated_at;
+
+        public String getApp_auth() {
+            return app_auth;
+        }
+
+        public void setApp_auth(String app_auth) {
+            this.app_auth = app_auth;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getCreated_at() {
+            return created_at;
+        }
+
+        public void setCreated_at(String created_at) {
+            this.created_at = created_at;
+        }
+
+        public String getUpdated_at() {
+            return updated_at;
+        }
+
+        public void setUpdated_at(String updated_at) {
+            this.updated_at = updated_at;
+        }
+    }
 
     public static class SysAppBean {
 

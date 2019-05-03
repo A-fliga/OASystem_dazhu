@@ -12,7 +12,6 @@ public class DocumentBean implements Serializable {
 
     /**
      * current_page : 1
-     * data : [{"id":55,"user_id":"8","dispatch_id":23,"level":1,"company_id":1,"created_at":"2019-01-06 16:34:16","updated_at":"2019-01-06 16:34:16","status":0,"form_source_id":0,"accessory_source_id":0,"is_examine":1,"user":{"id":8,"name":"测试账号1","phone":1212,"headimg":"http://www.fly.com/admin/img/head_img.jpeg","department_id":4,"position_id":2,"position":{"id":2,"name":"职务2","level":1,"company_id":1,"created_at":"2018-12-21 13:53:55","updated_at":"2018-12-21 13:53:55"},"department":{"id":4,"name":"部门置顶","parent_id":1,"sort":1,"level":2,"company_id":1,"created_at":"2018-12-20 19:29:54","updated_at":"2018-12-20 19:36:13"}},"dispatch":{"id":23,"user_id":1,"company_id":1,"form":"asda","form_source_id":22,"organ":"2123","name":"123123123","serial":"123123123","main_body":"asdssad","main_body_source_id":"asdsad","accessory":"test.doc","accessory_source_id":"140","flow_type":2,"status":0,"created_at":"2019-01-06 16:34:16","updated_at":"2019-01-06 16:34:16","accessory_list":[{"name":"test.doc","source_id":"140"}],"approver":"测试账号1","user":{"id":1,"name":"公司测试c","phone":15308057727,"headimg":"http://www.fly.com/uploads/images/2018-12-24/199ed138bd0dfcf55681876ccad63873.jpeg","department_id":0,"position_id":0},"company":{"id":1,"name":"公司测试c","account":"admin","phone":15308057727,"mail":"asda","status":1,"headimg":"http://www.fly.com/uploads/images/2018-12-24/199ed138bd0dfcf55681876ccad63873.jpeg","password":"$2y$10$waVOwy1nmMD.OnMERxnXJOnH9EjrTmxxNnEwYLdPDCIFiKOibelB.","remark":"asdd","is_admin":1,"company_id":1,"department_id":0,"position_id":0,"company_name":"单位1","remember_token":"kTe0bPKiO6VMqnudyTrpQoM6HKisJNooqCGfHcjpNGDmHoseQQzGCMYKgvpf","created_at":"asdsada","updated_at":"2018-12-24 22:14:46"},"form_source":{"id":22,"name":"发文.docx","user_id":1,"company_id":1,"path":"1/1/发文.docx","created_at":"2018-12-25 01:11:16","updated_at":"2018-12-25 01:11:16"},"flows":[{"id":55,"user_id":"8","dispatch_id":23,"level":1,"company_id":1,"created_at":"2019-01-06 16:34:16","updated_at":"2019-01-06 16:34:16","status":0,"form_source_id":0,"accessory_source_id":0,"is_examine":1,"user":{"id":8,"name":"测试账号1","phone":1212,"headimg":"http://www.fly.com/admin/img/head_img.jpeg","department_id":4,"position_id":2}},{"id":54,"user_id":"7","dispatch_id":23,"level":2,"company_id":1,"created_at":"2019-01-06 16:34:16","updated_at":"2019-01-06 16:34:16","status":0,"form_source_id":0,"accessory_source_id":0,"is_examine":0}]}}]
      * first_page_url : http://oa.zycnb.net/api/dispatch/wait?page=1
      * from : 1
      * last_page : 1
@@ -155,7 +154,7 @@ public class DocumentBean implements Serializable {
         private int id;
         private String user_id;
         private int dispatch_id;
-        private int level;
+        private String level;
         private int company_id;
         private String created_at;
         private String updated_at;
@@ -214,7 +213,7 @@ public class DocumentBean implements Serializable {
             private int id;
             private int user_id;
             private int dispatch_id;
-            private int level;
+            private String level;
             private int company_id;
             private String created_at;
             private String updated_at;
@@ -257,11 +256,11 @@ public class DocumentBean implements Serializable {
                 this.dispatch_id = dispatch_id;
             }
 
-            public int getLevel() {
+            public String getLevel() {
                 return level;
             }
 
-            public void setLevel(int level) {
+            public void setLevel(String level) {
                 this.level = level;
             }
 
@@ -500,11 +499,11 @@ public class DocumentBean implements Serializable {
             this.dispatch_id = dispatch_id;
         }
 
-        public int getLevel() {
+        public String getLevel() {
             return level;
         }
 
-        public void setLevel(int level) {
+        public void setLevel(String level) {
             this.level = level;
         }
 
@@ -677,7 +676,7 @@ public class DocumentBean implements Serializable {
 
                 private int id;
                 private String name;
-                private int level;
+                private String level;
                 private int company_id;
                 private String created_at;
                 private String updated_at;
@@ -698,11 +697,11 @@ public class DocumentBean implements Serializable {
                     this.name = name;
                 }
 
-                public int getLevel() {
+                public String getLevel() {
                     return level;
                 }
 
-                public void setLevel(int level) {
+                public void setLevel(String level) {
                     this.level = level;
                 }
 
@@ -747,7 +746,7 @@ public class DocumentBean implements Serializable {
                 private String name;
                 private int parent_id;
                 private int sort;
-                private int level;
+                private String level;
                 private int company_id;
                 private String created_at;
                 private String updated_at;
@@ -784,11 +783,11 @@ public class DocumentBean implements Serializable {
                     this.sort = sort;
                 }
 
-                public int getLevel() {
+                public String getLevel() {
                     return level;
                 }
 
-                public void setLevel(int level) {
+                public void setLevel(String level) {
                     this.level = level;
                 }
 
@@ -1714,7 +1713,7 @@ public class DocumentBean implements Serializable {
 //                private int id;
 //                private String user_id;
 //                private int dispatch_id;
-//                private int level;
+//                private String level;
 //                private int company_id;
 //                private String created_at;
 //                private String updated_at;
@@ -1752,7 +1751,7 @@ public class DocumentBean implements Serializable {
 //                    return level;
 //                }
 //
-//                public void setLevel(int level) {
+//                public void setLevel(String level) {
 //                    this.level = level;
 //                }
 //

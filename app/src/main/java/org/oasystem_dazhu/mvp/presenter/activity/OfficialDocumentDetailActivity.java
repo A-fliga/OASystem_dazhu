@@ -1124,6 +1124,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         if (cacheFileList != null) {
             cacheFileList.clear();
         }
+        if (subscribe != null) {
+            subscribe.unsubscribe();
+        }
     }
 
 
