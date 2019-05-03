@@ -44,8 +44,6 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
                 sign_left_ll.getChildAt(i).setVisibility(View.GONE);
             }
         }
-
-//        sign_bottom_ll.getChildAt(1).setVisibility(View.GONE);
     }
     public void initBottomRecyclerView(DocumentBean.DataBean bean,Boolean done){
         List<SignFlowsBean> beanList = new ArrayList<>();

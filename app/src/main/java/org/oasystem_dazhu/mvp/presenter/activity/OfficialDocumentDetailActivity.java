@@ -35,6 +35,7 @@ import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.http.HttpClient;
 import org.oasystem_dazhu.http.MSubscribe;
+import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.adapter.SignOfficialAdapter;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
@@ -45,6 +46,7 @@ import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.IsEraserMode;
 import org.oasystem_dazhu.mvp.model.bean.IsSigningBean;
 import org.oasystem_dazhu.mvp.model.bean.UpFileBean;
+import org.oasystem_dazhu.mvp.model.bean.UserInfo;
 import org.oasystem_dazhu.mvp.view.OfficialDocumentDetailDelegate;
 import org.oasystem_dazhu.mvp.view.SignView.PenColor;
 import org.oasystem_dazhu.mvp.view.SignView.PenWidth;
@@ -468,7 +470,10 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         } else {
             viewDelegate.setToolBarRightImg(R.mipmap.sign);
             viewDelegate.getToolBarRightImg().setOnClickListener(onClickListener);
-            viewDelegate.hideLeftBtn(dataBean.getAuth());
+            UserInfo.SysAuthBean authBean = UserManager.getInstance().getUserInfo().getAuthBean();
+            if(authBean != null){
+                viewDelegate.hideLeftBtn(authBean.getApp_auth());
+            }
             OFFICE_PATH = Constants.SIGN_OFFICIAL;
         }
         viewDelegate.getToolbar().setNavigationOnClickListener(new View.OnClickListener() {

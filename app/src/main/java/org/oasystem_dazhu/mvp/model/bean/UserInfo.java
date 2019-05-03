@@ -50,8 +50,15 @@ public class UserInfo {
     private List<OfficeSealTpyeBean> office_seal_tpye;
     private List<OfficeSealBean> office_seal;
     private SysAppBean sys_app;
-    private SysAuthBean authBean;
+    private SysAuthBean sys_app_auth;
 
+    public SysAuthBean getAuthBean() {
+        return sys_app_auth;
+    }
+
+    public void setAuthBean(SysAuthBean authBean) {
+        this.sys_app_auth = authBean;
+    }
 
     public static class SysAuthBean{
         private String app_auth;
