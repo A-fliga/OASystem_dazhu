@@ -33,6 +33,7 @@ import org.oasystem_dazhu.manager.FirmingTypeManager;
 import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
+import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.UserInfo;
 import org.oasystem_dazhu.mvp.presenter.fragment.OfficialFragment;
@@ -266,6 +267,19 @@ public class MainActivity extends ActivityPresenter {
                 if (bean.getCode() == 0) {
                     UserManager.getInstance().setUserInfo(bean.getData());
                     getFirmingType();
+                    getAllUserInfo();
+                }
+            }
+        });
+    }
+
+    private void getAllUserInfo(){
+        PublicModel.getInstance().getAllUser(new MSubscribe<BaseEntity<AllUserBean>>() {
+            @Override
+            public void onNext(BaseEntity<AllUserBean> bean) {
+                super.onNext(bean);
+                if(bean.getCode() == 0){
+                    UserManager.getInstance().setAllUserInfo(bean.getData());
                 }
             }
         });

@@ -228,30 +228,28 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
 
 
     private void getUserData() {
-        PublicModel.getInstance().getAllUser(new MSubscribe<BaseEntity<AllUserBean>>() {
-            @Override
-            public void onNext(BaseEntity<AllUserBean> bean) {
-                super.onNext(bean);
-                //这里要剔除掉自己的那一个数据
-                for (int i = 0; i < bean.getData().getData().size(); i++) {
-                    if (bean.getData().getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
-                        userBeanList.add(bean.getData().getData().get(i));
-                    }
+        AllUserBean bean = UserManager.getInstance().getAllUserInfo();
+        if (bean != null) {
+            //这里要剔除掉自己的那一个数据
+            for (int i = 0; i < bean.getData().size(); i++) {
+                if (bean.getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
+                    userBeanList.add(bean.getData().get(i));
                 }
-                for (int i = 0; i < userBeanList.size(); i++) {
-                    userNameList.add(userBeanList.get(i).getName());
-                    userIdList.add(userBeanList.get(i).getId() + "");
-                }
-                viewDelegate.initSpinner(R.id.add_car_apply_user, userNameList, new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int position) {
-                        commitBean.set(0, userIdList.get(position));
-                    }
-                });
-                userReady = true;
             }
-        });
+            for (int i = 0; i < userBeanList.size(); i++) {
+                userNameList.add(userBeanList.get(i).getName());
+                userIdList.add(userBeanList.get(i).getId() + "");
+            }
+            viewDelegate.initSpinner(R.id.add_car_apply_user, userNameList, new OnItemClickListener() {
+                @Override
+                public void onItemClick(int position) {
+                    commitBean.set(0, userIdList.get(position));
+                }
+            });
+            userReady = true;
+        }
     }
+
 
     private void initCommitBean() {
         commitBean = new ArrayList<>();

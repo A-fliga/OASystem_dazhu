@@ -86,7 +86,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private Boolean isShowing = true, isSigning = false, done = false, eraser = false, isPen = true;
     private LinearLayout sign_right_ll;
     private FrameLayout sign_full_fl;
-    private LinearLayout save_ll, pen_ll, clear_ll, eraser_ll,yinzhang_ll;
+    private LinearLayout save_ll, pen_ll, clear_ll, eraser_ll, yinzhang_ll;
     private List<LinearLayout> linearList = new ArrayList<>();
     private List<String> contentTv;
     private TbsReaderView sign_fileView;
@@ -162,15 +162,10 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void getAllUserBean() {
         userBeanList = new ArrayList<>();
-        PublicModel.getInstance().getAllUser(new MSubscribe<BaseEntity<AllUserBean>>() {
-            @Override
-            public void onNext(BaseEntity<AllUserBean> bean) {
-                super.onNext(bean);
-                if (bean.getCode() == 0) {
-                    userBeanList.addAll(bean.getData().getData());
-                }
-            }
-        });
+        AllUserBean bean = UserManager.getInstance().getAllUserInfo();
+        if (bean != null) {
+            userBeanList.addAll(bean.getData());
+        }
     }
 
     public void checkLocationPermission() {
@@ -471,7 +466,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             viewDelegate.setToolBarRightImg(R.mipmap.sign);
             viewDelegate.getToolBarRightImg().setOnClickListener(onClickListener);
             UserInfo.SysAuthBean authBean = UserManager.getInstance().getUserInfo().getAuthBean();
-            if(authBean != null){
+            if (authBean != null) {
                 viewDelegate.hideLeftBtn(authBean.getApp_auth());
             }
             OFFICE_PATH = Constants.SIGN_OFFICIAL;
@@ -494,7 +489,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void initNotDoneView() {
-        viewDelegate.setOnClickListener(onClickListener, R.id.sign_add_advise, R.id.sign_add_person, R.id.sign_agree, R.id.sign_refuse, R.id.sign_close);
+        viewDelegate.setOnClickListener(onClickListener, R.id.sign_add_advise, R.id.sign_add_person, R.id.sign_agree, R.id.sign_refuse, R.id.sign_close,R.id.sign_daiqian);
         contentTv = new ArrayList<>();
         contentTv.add("审批单");
         if (dispatchBean.getAccessory_list() != null) {
@@ -648,6 +643,10 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 //关闭整个流程
                 case R.id.sign_close:
                     DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "您确定要关闭整个流程吗？", "确定", "取消", getOnClick(3));
+                    break;
+                //选择代签
+                case R.id.sign_daiqian:
+
                     break;
 
             }

@@ -1,6 +1,7 @@
 package org.oasystem_dazhu.manager;
 
 import org.oasystem_dazhu.application.MyApplication;
+import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
 import org.oasystem_dazhu.mvp.model.bean.UserInfo;
 import org.oasystem_dazhu.simplecache.ACache;
@@ -14,6 +15,7 @@ import static org.oasystem_dazhu.constants.Constants.LOGIN_INFO;
 public class UserManager {
     private static volatile UserManager instance;
     private UserInfo userInfo;
+    private AllUserBean allUserBean;
     private UserManager() {
     }
 
@@ -36,6 +38,14 @@ public class UserManager {
 
     public void setUserInfo(UserInfo userInfo){
         this.userInfo = userInfo;
+    }
+
+    public void setAllUserInfo(AllUserBean allUserInfo){
+        this.allUserBean = allUserInfo;
+    }
+
+    public AllUserBean getAllUserInfo(){
+        return allUserBean;
     }
 
     public UserInfo getUserInfo(){

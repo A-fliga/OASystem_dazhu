@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.adapter.SignatureBottomAdapter;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.SignFlowsBean;
@@ -21,6 +22,7 @@ import java.util.List;
 public class OfficialDocumentDetailDelegate extends ViewDelegate {
     private LinearLayout sign_left_ll;
     private RecyclerView sign_bottom;
+
     @Override
     public void onDestroy() {
 
@@ -39,13 +41,17 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
     }
 
     public void hideLeftBtn(String auth) {
-        for (int i = 0; i < sign_left_ll.getChildCount(); i++) {
+        for (int i = 0; i < sign_left_ll.getChildCount()-1; i++) {
             if (!auth.contains(i + 1 + "")) {
                 sign_left_ll.getChildAt(i).setVisibility(View.GONE);
             }
         }
+        if (Integer.parseInt(UserManager.getInstance().getUserInfo().getIs_daiqian()) == 0) {
+            sign_left_ll.getChildAt(sign_left_ll.getChildCount() - 1).setVisibility(View.GONE);
+        }
     }
-    public void initBottomRecyclerView(DocumentBean.DataBean bean,Boolean done){
+
+    public void initBottomRecyclerView(DocumentBean.DataBean bean, Boolean done) {
         List<SignFlowsBean> beanList = new ArrayList<>();
         SignFlowsBean flowsBean = new SignFlowsBean();
         flowsBean.setName(bean.getDispatch().getUser().getName());
@@ -87,11 +93,11 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
 //            fBean.setUserId(dataFlowsBean.getUser_id());
 //            beanList.add(fBean);
 //        }
-        SignatureBottomAdapter adapter = new SignatureBottomAdapter(this.getActivity(),beanList,done);
-        setRecyclerView(sign_bottom,adapter);
+        SignatureBottomAdapter adapter = new SignatureBottomAdapter(this.getActivity(), beanList, done);
+        setRecyclerView(sign_bottom, adapter);
     }
 
-    private void setRecyclerView(RecyclerView recyclerView,SignatureBottomAdapter adapter){
+    private void setRecyclerView(RecyclerView recyclerView, SignatureBottomAdapter adapter) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);

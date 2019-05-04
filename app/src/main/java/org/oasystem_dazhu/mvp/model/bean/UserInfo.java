@@ -51,6 +51,16 @@ public class UserInfo {
     private List<OfficeSealBean> office_seal;
     private SysAppBean sys_app;
     private SysAuthBean sys_app_auth;
+    private String is_daiqian;
+
+    public String getIs_daiqian() {
+        return is_daiqian;
+    }
+
+    public void setIs_daiqian(String is_daiqian) {
+        this.is_daiqian = is_daiqian;
+    }
+
 
     public SysAuthBean getAuthBean() {
         return sys_app_auth;
