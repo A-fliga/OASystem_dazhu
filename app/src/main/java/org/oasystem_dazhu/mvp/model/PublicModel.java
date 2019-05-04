@@ -304,4 +304,11 @@ public class PublicModel implements IModel {
     public void addLeaveApply(Subscriber<BaseEntity> subscriber, LeaveApplyBean bean) {
         HttpClient.getInstance().addLeaveApply(subscriber,bean);
     }
+
+    /**
+     * 申请代签
+     */
+    public void addDaiqian(Subscriber<BaseEntity> subscriber,String id,String user_id) {
+        HttpClient.getInstance().addDaiqian(subscriber,id,user_id);
+    }
 }

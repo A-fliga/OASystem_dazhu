@@ -22,7 +22,7 @@ import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
-import org.oasystem_dazhu.mvp.presenter.activity.AskForLeaveActivity;
+import org.oasystem_dazhu.mvp.presenter.activity.AttendanceActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.CarManagementActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.MainActivity;
@@ -99,7 +99,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
             public void onItemClick(int position) {
                 switch (position){
                     case 0:
-                        startMyActivity(AskForLeaveActivity.class,null);
+                        startMyActivity(AttendanceActivity.class,null);
                         break;
                     case 1:
                         startMyActivity(MeetingsActivity.class,null);

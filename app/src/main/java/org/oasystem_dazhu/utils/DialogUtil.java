@@ -42,6 +42,17 @@ public class DialogUtil {
                 setNegativeButton(cancel, listener).setMultiChoiceItems(data,booleanList,multiChoiceClickListener).show();
     }
 
+    /**
+     * 单选对话框
+     */
+    public static void showSingleChoiceDialog(Context context, String title,String sure,
+                                        String cancel,String[] data,
+                                        DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(title).setCancelable(false).setPositiveButton(sure, listener).
+                setNegativeButton(cancel, listener).setSingleChoiceItems(data,-1,listener).show();
+    }
+
     public static ProgressDialog showProgressDialog(Context context) {
         ProgressDialog pd = new ProgressDialog(context);
         pd.setMessage("正在更新，请勿关闭！");
