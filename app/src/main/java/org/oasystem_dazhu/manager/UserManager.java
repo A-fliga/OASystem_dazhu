@@ -6,6 +6,9 @@ import org.oasystem_dazhu.mvp.model.bean.LoginBean;
 import org.oasystem_dazhu.mvp.model.bean.UserInfo;
 import org.oasystem_dazhu.simplecache.ACache;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.oasystem_dazhu.constants.Constants.LOGIN_INFO;
 
 /**
@@ -44,8 +47,14 @@ public class UserManager {
         this.allUserBean = allUserInfo;
     }
 
-    public AllUserBean getAllUserInfo(){
-        return allUserBean;
+    public List<AllUserBean.DataBean> getAllUserInfo(){
+        List<AllUserBean.DataBean> beanList = new ArrayList<>();
+        for (int i = 0; i < allUserBean.getData().size(); i++) {
+            if (allUserBean.getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
+                beanList.add(allUserBean.getData().get(i));
+            }
+        }
+        return beanList;
     }
 
     public UserInfo getUserInfo(){

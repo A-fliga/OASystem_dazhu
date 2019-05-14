@@ -223,14 +223,8 @@ public class AddLeaveActivity extends ActivityPresenter<AddLeaveDelegate> {
 
 
     private void getUserData() {
-        AllUserBean bean = UserManager.getInstance().getAllUserInfo();
-        if (bean != null) {
-            //这里要剔除掉自己的那一个数据
-            for (int i = 0; i < bean.getData().size(); i++) {
-                if (bean.getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
-                    userBeanList.add(bean.getData().get(i));
-                }
-            }
+        userBeanList = UserManager.getInstance().getAllUserInfo();
+        if (userBeanList != null) {
             userReady = true;
         }
     }

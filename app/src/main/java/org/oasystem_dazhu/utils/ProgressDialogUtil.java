@@ -18,6 +18,7 @@ import android.widget.TextView;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.presenter.activity.ActivityPresenter;
 
+import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -30,10 +31,10 @@ public class ProgressDialogUtil {
     private static final int STOP_DIALOG = 2;//销毁对话框
     private static final int START_EMPTY_DIALOG = 3;//开始无文本对话框
     private static volatile ProgressDialogUtil utils;
-    private static AlertDialog dialog = null;
-    private static TextView title = null;
-    private static Context context = null;
-    private Boolean canceledOnTouchOutside = false, cancelable = true;
+    private AlertDialog dialog = null;
+    private TextView title = null;
+    private WeakReference<Context> context = null;
+    private boolean canceledOnTouchOutside = false, cancelable = true;
 
     private Handler handler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
@@ -43,20 +44,14 @@ public class ProgressDialogUtil {
                     message = (String) msg.obj;
                     if (dialog != null) {
                         updateMsg(message);
-//                        startLoad(message);
-//                        return;
                     } else
                         init(message);
-//                    canceledOnTouchOutside(true);
                     break;
                 case START_EMPTY_DIALOG:
                     if (dialog != null) {
                         updateMsg("");
-//                        startLoad();
-//                        return;
                     } else
                         init(message);
-//                    canceledOnTouchOutside(true);
                 case UPDATE_DIALOG:// 更新加载框
                     message = (String) msg.obj;
                     if (title.getVisibility() == View.VISIBLE) {
@@ -105,15 +100,18 @@ public class ProgressDialogUtil {
      * @返回值:void
      */
     private void init(String msg) {
-        if (isBackground(context)) {// 如果程序在后台，则不加载
-            return;
+        if (context.get() != null) {
+            if (isBackground(context.get())) {
+                // 如果程序在后台，则不加载
+                return;
+            }
         }
-        if (null != context) {
-            LayoutInflater flat = LayoutInflater.from(context);
+        if (context.get() != null) {
+            LayoutInflater flat = LayoutInflater.from(context.get());
             View v = flat.inflate(R.layout.prograss_dialog, null);
             // v.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             // 创建对话
-            dialog = new AlertDialog.Builder(context, R.style.MyProgressDialogStyle).create();
+            dialog = new AlertDialog.Builder(context.get(), R.style.MyProgressDialogStyle).create();
             // 设置返回键点击消失对话框
             dialog.setCancelable(cancelable);
             // 设置点击返回框外边不消失
@@ -147,8 +145,6 @@ public class ProgressDialogUtil {
     }
 
 
-
-
     /**
      * @param
      * @方法说明:启动对话框
@@ -157,11 +153,11 @@ public class ProgressDialogUtil {
      */
     //无文本消息的对话框
     public void startLoad() {
-        context = ActivityPresenter.getTopActivity();// 获取当前的activity的上下文
-        if (context == null) {
+        context = new WeakReference<Context>(ActivityPresenter.getTopActivity());/// 获取当前的activity的上下文
+        if (context.get() == null) {
             return;
         }
-        if (isBackground(context)) {// 如果程序在后台，则不加载
+        if (isBackground(context.get())) {// 如果程序在后台，则不加载
             return;
         }
         final Message message = new Message();
@@ -171,11 +167,11 @@ public class ProgressDialogUtil {
 
     //有文本消息的对话框
     public void startLoad(String msg) {
-        context = ActivityPresenter.getTopActivity();// 获取当前的activity的上下文
-        if (context == null) {
+        context = new WeakReference<Context>(ActivityPresenter.getTopActivity());// 获取当前的activity的上下文
+        if (context.get() == null) {
             return;
         }
-        if (isBackground(context)) {// 如果程序在后台，则不加载
+        if (isBackground(context.get())) {// 如果程序在后台，则不加载
             return;
         }
         final Message message = new Message();
@@ -191,7 +187,7 @@ public class ProgressDialogUtil {
      * @方法名称:UpdateMsg
      * @返回值:void
      */
-    public void updateMsg(String msg) {
+    private void updateMsg(String msg) {
         Message message = new Message();
         message.what = UPDATE_DIALOG;
         message.obj = msg;

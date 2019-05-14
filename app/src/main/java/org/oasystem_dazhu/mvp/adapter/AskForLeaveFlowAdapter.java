@@ -20,7 +20,7 @@ public class AskForLeaveFlowAdapter extends RecyclerView.Adapter<AskForLeaveFlow
     private AskForLeaveDetailBean.UserBean userBean;
     private List<AskForLeaveDetailBean.AttendanceExamineBean> beanList;
     private AskForLeaveDetailBean bean;
-    private Boolean firstAgree = false;
+    private boolean firstAgree = false;
 
     public AskForLeaveFlowAdapter(AskForLeaveDetailBean bean) {
         this.bean = bean;

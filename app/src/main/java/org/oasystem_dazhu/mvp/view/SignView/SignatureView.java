@@ -1,6 +1,7 @@
 package org.oasystem_dazhu.mvp.view.SignView;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -9,9 +10,9 @@ import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 
 import com.github.barteksc.pdfviewer.PDFView;
@@ -27,6 +28,7 @@ import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.model.bean.TransformBean;
 import org.oasystem_dazhu.mvp.view.customView.NoAnimationViewPager;
 import org.oasystem_dazhu.utils.ProgressDialogUtil;
+import org.oasystem_dazhu.utils.SharedPreferencesUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
 import java.io.File;
@@ -41,24 +43,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 
 public class SignatureView extends FrameLayout {
+    public static final String TAG = "SignatureView";
     private NoAnimationViewPager viewPager;
     private PDFView pdf_view;
+    private Matrix matrix = new Matrix();
+    private Matrix pageChangeMatrix = new Matrix();
     private PDFView.Configurator configurator;
-    private List<NewDrawPenView> penViewList;
+    private List<MPenLayout> penViewList;
     private LayoutInflater inflater;
     private Save_Pdf_Async savePdfAsync;
-    private Boolean needSignature = false;
-    private AtomicBoolean canSave = new AtomicBoolean(true);
+    private boolean needSignature = false;
+    public boolean canSigning = false;
+    private boolean autoSpacing = false;
     private Context context;
+    private AtomicBoolean canSave = new AtomicBoolean(true);
     private String sourcePath, newPath;
-    private Boolean canSigning = false;
-    private int defaultPage = 0;
-    private NewDrawPenView penView;
+    private MPenLayout penView;
     private File sourceFile;
-    //    private float scale, tagScale, currentXOffset, tagXOffset, currentYOffset, tagYOffset;
-//    private int currentPage = 0, tagPage = 0;
-    private Boolean autoSpacing = false;
     private TransformBean bean;
+    private int defaultPage = 0;
+    private int tagPage = 0;
+
 
 
     public SignatureView(@NonNull Context context) {
@@ -96,16 +101,11 @@ public class SignatureView extends FrameLayout {
     }
 
 
-    public NoAnimationViewPager getViewPager() {
-        return viewPager;
-    }
-
     private SignatureView fromFile(File file) {
         sourceFile = file;
-//        ProgressDialogUtil.instance().startLoad();
+        ProgressDialogUtil.instance().startLoad();
         sourcePath = sourceFile.getAbsolutePath();
         canSave.set(true);
-//        LogUtil.d("pianyi", "提交的路径" + sourceFile);
         configurator = pdf_view.fromFile(sourceFile)
                 .onLoad(completeListener)
                 .onError(errorListener)
@@ -124,43 +124,34 @@ public class SignatureView extends FrameLayout {
     private OnPageScrollListener pageScrollListener = new OnPageScrollListener() {
         @Override
         public void onPageScrolled(int page, float positionOffset) {
-////            if(page == 0)
-////            viewPager.scrollTo((int) (-pdf_view.getCurrentXOffset() / pdf_view.getZoom()), 0);
-//            LogUtil.d("pianyi", "  偏移" + (-pdf_view.getCurrentXOffset()) + "  " + pdf_view.getCurrentYOffset() + " " + pdf_view.getZoom());
-//            if (pdf_view.getZoom() > 1f && canSave.get()) {
-//                canSave.set(false);
-////                LogUtil.d("pianyi", "签字文件的路径" + sourcePath);
-//                addSignature2Pdf(sourcePath, true, new DataFinishListener() {
-//                    @Override
-//                    public void onFinished(String path) {
-////                        LogUtil.d("pianyi", "签完字后的路径" + path);
-//                        defaultPage = getCurrentPage();
-//                        canSave.set(true);
-//                        loadFile(new File(path), true);
-//                    }
-//
-//                    @Override
-//                    public void nothingChange() {
-//                        LogUtil.d("pianyi", "nothingChange");
-//                        canSave.set(true);
-//                    }
-//
-//                    @Override
-//                    public void onFailed() {
-//                        canSave.set(true);
-//                    }
-//                });
-//            }
+            if (pdf_view.getZoom() > 1f && canSave.get()) {
+                canSave.set(false);
+//                LogUtil.d("pianyi", "签字文件的路径" + sourcePath);
+                addSignature2Pdf(sourcePath, true, new DataFinishListener() {
+                    @Override
+                    public void onFinished(String path) {
+//                        LogUtil.d("pianyi", "签完字后的路径" + path);
+                        defaultPage = getCurrentPage();
+                        canSave.set(true);
+                        loadFile(new File(path), true);
+                    }
+
+                    @Override
+                    public void nothingChange() {
+                        canSave.set(true);
+                    }
+
+                    @Override
+                    public void onFailed() {
+                        canSave.set(true);
+                    }
+                });
+            }
         }
     };
 
     public void resetConfig() {
         defaultPage = 0;
-//        scale = 0;
-//        tagXOffset = 0;
-//        tagYOffset = 0;
-//        currentXOffset = 0f;
-//        currentYOffset = 0f;
     }
 
 
@@ -169,6 +160,9 @@ public class SignatureView extends FrameLayout {
     }
 
     public void loadFile(File file, Boolean auto) {
+        if(pdf_view != null){
+            pdf_view.recycle();
+        }
         ProgressDialogUtil.instance().startLoad("加载文件中");
         this.autoSpacing = auto;
         fromFile(file)
@@ -186,12 +180,18 @@ public class SignatureView extends FrameLayout {
                 .load();
     }
 
+    public NoAnimationViewPager getViewPager() {
+        return viewPager;
+    }
+
+
     private OnLoadCompleteListener completeListener = new OnLoadCompleteListener() {
         @Override
         public void loadComplete(int nbPages) {
             //如果不是自动保存的 就清空一下设置
-            if (!autoSpacing)
+            if (!autoSpacing) {
                 resetConfig();
+            }
             resetZoomWithAnimation();
             ProgressDialogUtil.instance().stopLoad();
             Document document = null;
@@ -237,35 +237,45 @@ public class SignatureView extends FrameLayout {
         params.width = bitMapWidth;
         params.height = bitMapHeight;
         pdf_view.setLayoutParams(params);
-        WindowManager wm = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
         //pdf加载完成后 先准备对应页数的签字页面，放入viewpager中
         for (int i = 0; i < nbPages; i++) {
-            View v = inflater.inflate(R.layout.item_signature, null);
-            penView = v.findViewById(R.id.item_signature);
-            penView.initParameter(context, wm, bitMapWidth, bitMapHeight, SignatureView.this);
+            penView = new MPenLayout(context, bitMapWidth, bitMapHeight);
+            penView.setSignatureView(this);
             penViewList.add(penView);
             penView = null;
         }
+        initPenAfterAutoSpacing();
+    }
+
+    private void initPenAfterAutoSpacing(){
+        if(autoSpacing){
+            setPenColor(SharedPreferencesUtil.getColor());
+            setPenWidth(SharedPreferencesUtil.getWidth());
+        }
+    }
+
+    public void setCanSigning(Boolean isSigning) {
+        canSigning = isSigning;
     }
 
     public Boolean getCanSigning() {
         return canSigning;
     }
 
-    public void setCanSigning(Boolean canSigning) {
-        this.canSigning = canSigning;
-    }
-
     public SignatureView setDefaultPage(int page) {
         configurator.defaultPage(page);
         return this;
     }
+//
+//    public void setZoomCenterPoint(float centerX, float centerY) {
+//        matrix.setScale(pdf_view.getZoom(), pdf_view.getZoom(),centerX,centerY);
+//        penLayout.setTransform(matrix);
+//    }
 
 
     private static class MPagerAdapter extends PagerAdapter {
         private WeakReference<SignatureView> weakSignView;
-        private List<NewDrawPenView> penViewList;
+        private List<MPenLayout> penViewList;
 
         public MPagerAdapter(SignatureView signView) {
             super();
@@ -290,44 +300,48 @@ public class SignatureView extends FrameLayout {
         @NonNull
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
-            NewDrawPenView penView = penViewList.get(position);
-            ViewGroup viewGroup = (ViewGroup) penView.getParent();
-            if (viewGroup != null) {
-                viewGroup.removeView(penView);
-            }
+            MPenLayout penView = penViewList.get(position);
+//            ViewGroup viewGroup = (ViewGroup) penView.getParent();
+//            if (viewGroup != null) {
+//                viewGroup.removeView(penView);
+//            }
             container.addView(penView);
             return penView;
         }
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView(penViewList.get(position));
+            container.removeView((MPenLayout)object);
         }
     }
 
     public void setPenWidth(float width) {
         for (int i = 0; i < penViewList.size(); i++) {
-            penViewList.get(i).setPenWidth(width);
+            penViewList.get(i).setStrokeWidth(width);
+            penViewList.get(i).setEraserMode(false);
         }
     }
 
     public void setPenColor(int penColor) {
         for (int i = 0; i < penViewList.size(); i++) {
-            penViewList.get(i).setPenColor(penColor);
+            penViewList.get(i).setStrokeColor(penColor);
+            penViewList.get(i).setEraserMode(false);
         }
-
     }
 
     public void initEraserMode(int color, float width) {
         for (int i = 0; i < penViewList.size(); i++) {
-            penViewList.get(i).initEraserMode(color, width);
+            penViewList.get(i).setEraserMode(true);
+            penViewList.get(i).setStrokeWidth(width);
+            penViewList.get(i).setStrokeColor(color);
         }
     }
 
     public void clearCanvas(File file) {
+        setCanSigning(false);
         for (int i = 0; i < penViewList.size(); i++) {
             synchronized (SignatureView.class) {
-                penViewList.get(i).resetCanvas();
+                penViewList.get(i).clear();
             }
         }
         if (file != null)
@@ -337,12 +351,12 @@ public class SignatureView extends FrameLayout {
     public void addSignature2Pdf(String path, Boolean auto, DataFinishListener listener) {
         //得到有签字痕迹的页面
         if (needSignature) {
-            NewDrawPenView penView;
-            List<NewDrawPenView> newDrawPenViewList = new ArrayList<>();
+            MPenLayout penView;
+            List<MPenLayout> newDrawPenViewList = new ArrayList<>();
             List<Integer> signPageList = new ArrayList<>();
             for (int i = 0; i < penViewList.size(); i++) {
                 penView = penViewList.get(i);
-                if (penView.getHasDraw()) {
+                if (penView.isDataModified()) {
                     signPageList.add(i);
                     newDrawPenViewList.add(penView);
                 }
@@ -374,7 +388,7 @@ public class SignatureView extends FrameLayout {
     }
 
 
-    private void toSaveSignature(String path, TransformBean bean, DataFinishListener listener, List<NewDrawPenView> newDrawPenViewList, List<Integer> signPageList) {
+    private void toSaveSignature(String path, TransformBean bean, DataFinishListener listener, List<MPenLayout> newDrawPenViewList, List<Integer> signPageList) {
         SavePdf savePdf = new SavePdf();
         savePdf.setPdfView(getPDFView());
         savePdf.setPenViewList(newDrawPenViewList);
@@ -398,8 +412,8 @@ public class SignatureView extends FrameLayout {
     }
 
     /*
-  * 用于存储的异步,并上传更新
-  * */
+    * 用于存储的异步,并上传更新
+    * */
     class Save_Pdf_Async extends AsyncTask {
         SavePdf savePdf;
         private DataFinishListener listener;
@@ -432,6 +446,7 @@ public class SignatureView extends FrameLayout {
             }
 
         }
+
     }
 
     public String getNewPath() {
@@ -482,6 +497,9 @@ public class SignatureView extends FrameLayout {
         return this;
     }
 
+    public void setOnTouchEvent(MotionEvent event){
+        pdf_view.onTouchEvent(event);
+    }
     public SignatureView setOnPageChangeListener() {
         configurator.onPageChange(new OnPageChangeListener() {
             @Override
@@ -491,6 +509,12 @@ public class SignatureView extends FrameLayout {
                 if (pdf_view.isZooming()) {
                     pdf_view.resetZoomWithAnimation();
                 }
+                if (page >= 0) {
+                    pageChangeMatrix.setScale(1f, 1f, pdf_view.getWidth() / 2, pdf_view.getHeight() / 2);
+                    penViewList.get(tagPage).setTransform(pageChangeMatrix);
+                    tagPage = page;
+                }
+
             }
         });
         return this;
@@ -502,19 +526,20 @@ public class SignatureView extends FrameLayout {
 
     public void stopFling() {
         pdf_view.stopFling();
+        pdf_view.recycle();
+        if(penViewList != null) {
+            for (int i = 0; i < penViewList.size(); i++) {
+                penViewList.get(i).setSignatureView(null);
+                penViewList.get(i).clear();
+            }
+            penViewList.clear();
+        }
         resetConfig();
         if (savePdfAsync != null) {
             savePdfAsync.cancel(true);
         }
     }
 
-    private void stopShow() {
-        pdf_view.stopFling();
-        resetConfig();
-        if (savePdfAsync != null) {
-            savePdfAsync.cancel(true);
-        }
-    }
 
 
     public void resetZoomWithAnimation() {
@@ -533,29 +558,16 @@ public class SignatureView extends FrameLayout {
         return pdf_view.getCurrentPage();
     }
 
-    @NonNull
-    public int getPageCount() {
-        return pdf_view.getPageCount();
-    }
 
-
-    public TransformBean getTransformBean() {
-        return bean;
-    }
 
     public void setTransformBean(TransformBean bean) {
         this.bean = bean;
     }
 
+
     public void startSignature() {
         if (viewPager != null)
             viewPager.setVisibility(VISIBLE);
-//        isSigning = true;
     }
 
-    public void closeSignature() {
-        if (viewPager != null)
-            viewPager.setVisibility(GONE);
-//        isSigning = false;
-    }
 }

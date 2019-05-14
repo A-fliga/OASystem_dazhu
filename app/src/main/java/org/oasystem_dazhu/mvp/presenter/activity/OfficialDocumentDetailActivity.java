@@ -104,6 +104,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     public List<String> cacheFileList = new ArrayList<>();
     private MSubscribe<ResponseBody> subscribe;
     private EditText remarkEt;
+    //加签用的
+    private StringBuffer selectedUserId, selectedUserName;
 
     @Override
     public Class<OfficialDocumentDetailDelegate> getDelegateClass() {
@@ -130,6 +132,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         //记录Id
         itemId = dataBean.getId();
         accessoryList = new ArrayList<>();
+        selectedUserId = new StringBuffer();
+        selectedUserName = new StringBuffer();
         accessoryList.add(dispatchBean.getForm_source_id());
         cacheFileList.add("");
         LogUtil.d("itemId", "itemId:" + itemId);
@@ -163,11 +167,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void getAllUserBean() {
-        userBeanList = new ArrayList<>();
-        AllUserBean bean = UserManager.getInstance().getAllUserInfo();
-        if (bean != null) {
-            userBeanList.addAll(bean.getData());
-        }
+        userBeanList = UserManager.getInstance().getAllUserInfo();
     }
 
     public void checkLocationPermission() {
@@ -657,13 +657,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
 
     private void showUserDialog() {
-        AllUserBean bean = UserManager.getInstance().getAllUserInfo();
-        daiqianUserBeanList = new ArrayList<>();
-        for (int i = 0; i < bean.getData().size(); i++) {
-            if (bean.getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
-                daiqianUserBeanList.add(bean.getData().get(i));
-            }
-        }
+        daiqianUserBeanList = UserManager.getInstance().getAllUserInfo();
         String[] peopleList = new String[daiqianUserBeanList.size()];
         for (int i = 0; i < daiqianUserBeanList.size(); i++) {
             peopleList[i] = daiqianUserBeanList.get(i).getName();
@@ -725,7 +719,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         isSigning = true;
         isSigning();
         mSignatureView.setCanSigning(true);
-        mSignatureView.resetZoomWithAnimation();
+//        mSignatureView.resetZoomWithAnimation();
     }
 
     private void isSigning() {
@@ -764,7 +758,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     booleanList[i] = false;
                     userBeanList.get(i).setSelected(false);
                 }
-                DialogUtil.showChoiceDialog(this, "请选择人员", "确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
+                selectedUserId.setLength(0);
+                selectedUserName.setLength(0);
+                DialogUtil.showChoiceDialog(this, "请选择加签人员(请注意顺序)", "确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
             }
         }
     }
@@ -773,6 +769,25 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         @Override
         public void onClick(DialogInterface dialogInterface, int i, boolean b) {
             userBeanList.get(i).setSelected(b);
+            if (b) {
+                selectedUserId.append(userBeanList.get(i).getId()).append(",");
+                selectedUserName.append(userBeanList.get(i).getName()).append(",");
+            } else {
+                String content = selectedUserId.toString();
+                if (content.contains(userBeanList.get(i).getId() + ",")) {
+                    content = content.replace(userBeanList.get(i).getId() + ",", "");
+                    selectedUserId.setLength(0);
+                    selectedUserId.append(content);
+                }
+                String contentName = selectedUserName.toString();
+                if (contentName.contains(userBeanList.get(i).getName() + ",")) {
+                    contentName = contentName.replace(userBeanList.get(i).getName() + ",", "");
+                    selectedUserName.setLength(0);
+                    selectedUserName.append(contentName);
+                }
+
+            }
+
         }
     };
 
@@ -903,26 +918,17 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void nextOperation(int status) {
         if (status != 5) {
-            String form_source_id;
-            StringBuffer sb = new StringBuffer();
-            form_source_id = String.valueOf(accessoryList.get(0));
-            for (int i = 1; i < accessoryList.size(); i++) {
-                if (i == accessoryList.size() - 1) {
-                    sb.append(accessoryList.get(i));
-                } else {
-                    sb.append(accessoryList.get(i)).append("#");
-                }
+            if (status == 1) {
+                toExamine(status, getFormSourceId(), getAccessorySourceId(), "");
             }
-            if (status == 1)
-                toExamine(status, form_source_id, sb.toString(), "");
             if (status == 2) {
-                showReasonDialog(status, form_source_id, sb.toString());
+                showReasonDialog(status, getFormSourceId(), getAccessorySourceId());
             }
             if (status == 3) {
-                toClose(form_source_id, sb.toString());
+                toClose(getFormSourceId(), getAccessorySourceId());
             }
             if (status == 4) {
-                toAdvise(form_source_id, sb.toString());
+                toAdvise(getFormSourceId(), getAccessorySourceId());
             }
         } else
             add_countersign();
@@ -947,13 +953,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void add_countersign() {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < userBeanList.size(); i++) {
-            if (userBeanList.get(i).getSelected()) {
-                sb.append(userBeanList.get(i).getId()).append(",");
-            }
-        }
-        if (sb.length() == 0) {
+        if (selectedUserId.length() == 0) {
             ToastUtil.s("未选择加签人员");
         } else {
             PublicModel.getInstance().add_countersign(new MSubscribe<BaseEntity>() {
@@ -966,9 +966,26 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         finish();
                     }
                 }
-            }, itemId, sb.substring(0, sb.length() - 1));
+            }, itemId, selectedUserId.substring(0, selectedUserId.length() - 1), getFormSourceId(), getAccessorySourceId());
         }
     }
+
+    private String getFormSourceId() {
+        return String.valueOf(accessoryList.get(0));
+    }
+
+    private String getAccessorySourceId() {
+        StringBuffer sb = new StringBuffer();
+        for (int i = 1; i < accessoryList.size(); i++) {
+            if (i == accessoryList.size() - 1) {
+                sb.append(accessoryList.get(i));
+            } else {
+                sb.append(accessoryList.get(i)).append("#");
+            }
+        }
+        return sb.toString();
+    }
+
 
     private void toExamine(int status, String form_source_id, String accessoryId, String reason) {
         PublicModel.getInstance().examine(new MSubscribe<BaseEntity>() {

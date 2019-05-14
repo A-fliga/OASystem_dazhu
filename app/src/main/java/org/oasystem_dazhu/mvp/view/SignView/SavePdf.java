@@ -2,7 +2,6 @@ package org.oasystem_dazhu.mvp.view.SignView;
 
 import android.graphics.Bitmap;
 
-
 import com.github.barteksc.pdfviewer.PDFView;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
@@ -20,18 +19,20 @@ import java.util.List;
 
 import static org.oasystem_dazhu.constants.Constants.SIGN_RESULT;
 
+
 /**
  * Created by www on 2019/1/17.
  */
 
 public class SavePdf {
-    private List<NewDrawPenView> penViewList;
+    private List<MPenLayout> penViewList;
     private List<Integer> signatureList;
     private String pdfPath;
     private String newPath;
     private PDFView pdfView;
     private float currentXOffset;
     private float currentYOffset;
+    private Bitmap bitmap = null;
     private float zoom;
 
 
@@ -84,7 +85,7 @@ public class SavePdf {
         this.pdfView = pdfView;
     }
 
-    public void setPenViewList(List<NewDrawPenView> penViewList) {
+    public void setPenViewList(List<MPenLayout> penViewList) {
         this.penViewList = penViewList;
     }
 
@@ -122,7 +123,7 @@ public class SavePdf {
             for (int i = 0; i < signatureList.size(); i++) {
                 com.lowagie.text.Rectangle rectangle = reader.getPageSize(signatureList.get(i) + 1);
                 PdfContentByte over = stamp.getOverContent(signatureList.get(i) + 1);//////用于设置在第几页打印签名
-                Bitmap bitmap = penViewList.get(i).getBitmap();
+                bitmap = penViewList.get(i).export();
                 byte[] bytes = Bitmap2Bytes(bitmap);
                 Image img = Image.getInstance(bytes);//将要放到PDF的图片传过来，要设置为byte[]类型
                 img.setAlignment(1);
@@ -148,7 +149,9 @@ public class SavePdf {
 //                    LogUtil.d("pianyi", "我是第" + signatureList.get(i) + "页，我来复位了");
                     img.scaleAbsolute(rectangle.getWidth(), rectangle.getHeight());
                     img.setAbsolutePosition(0, 0);
+
                 }
+                bitmap.recycle();
                 over.addImage(img);
             }
             stamp.close();

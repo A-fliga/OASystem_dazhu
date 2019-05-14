@@ -153,8 +153,9 @@ public class PublicModel implements IModel {
     /**
      * 加签
      */
-    public void add_countersign(Subscriber<BaseEntity> subscriber, int id, String user_id) {
-        HttpClient.getInstance().add_countersign(subscriber, id, user_id);
+    public void add_countersign(Subscriber<BaseEntity> subscriber, int id, String user_id,
+                                String form_source_id,String accessory_source_id) {
+        HttpClient.getInstance().add_countersign(subscriber, id, user_id,form_source_id,accessory_source_id);
     }
 
     /**

@@ -342,9 +342,11 @@ public final class HttpClient {
     /**
      * 加签
      */
-    public void add_countersign(Subscriber<BaseEntity> subscriber, int id, String user_id) {
-        Observable observable = mApi.add_countersign(addToken(), getMapRequestBody(getBodyMap(getStrings("id", "user_id"),
-                getStrings(String.valueOf(id), user_id))));
+    public void add_countersign(Subscriber<BaseEntity> subscriber, int id,
+                                String user_id,String form_source_id,String accessory_source_id) {
+        Observable observable = mApi.add_countersign(addToken(),
+                getMapRequestBody(getBodyMap(getStrings("id", "user_id","form_source_id","accessory_source_id"),
+                        getStrings(String.valueOf(id), user_id,form_source_id,accessory_source_id))));
         toSubscribe(observable, subscriber);
     }
 

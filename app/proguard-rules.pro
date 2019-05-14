@@ -74,6 +74,7 @@
 
 -keep class **.R$* {*;}
 -keep class android.support.v4.**{*;}
+-keep class com.ebensz.** { *; }
 -keepattributes EnclosingMethod
 
 -keepclasseswithmembernames class * {
@@ -483,20 +484,20 @@
 -keep class * implements android.os.Parcelable {
   public static final android.os.Parcelable$Creator *;
 }
-
-#------------------  下方是共性的排除项目         ----------------
-# 方法名中含有“JNI”字符的，认定是Java Native Interface方法，自动排除
-# 方法名中含有“JRI”字符的，认定是Java Reflection Interface方法，自动排除
-
--keepclasseswithmembers class * {
-    ... *JNI*(...);
-}
-
--keepclasseswithmembernames class * {
-	... *JRI*(...);
-}
-
--keep class **JNI* {*;}
+#
+##------------------  下方是共性的排除项目         ----------------
+## 方法名中含有“JNI”字符的，认定是Java Native Interface方法，自动排除
+## 方法名中含有“JRI”字符的，认定是Java Reflection Interface方法，自动排除
+#
+#-keepclasseswithmembers class * {
+#    ... *JNI*(...);
+#}
+#
+#-keepclasseswithmembernames class * {
+#	... *JRI*(...);
+#}
+#
+#-keep class **JNI* {*;}
 
 
 

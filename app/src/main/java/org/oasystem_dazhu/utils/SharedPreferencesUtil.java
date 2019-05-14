@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
+import org.oasystem_dazhu.mvp.view.SignView.PenColor;
+import org.oasystem_dazhu.mvp.view.SignView.PenWidth;
 
 import static org.oasystem_dazhu.constants.Constants.PEN_COLOR;
 import static org.oasystem_dazhu.constants.Constants.PEN_WIDTH;
@@ -48,6 +50,7 @@ public class SharedPreferencesUtil {
         editor.apply();
     }
 
+
     public static void savePenWidth(Float width){
         if (sharedPreference == null) {
             sharedPreference = MyApplication.getContext()
@@ -73,7 +76,7 @@ public class SharedPreferencesUtil {
             sharedPreference = MyApplication.getContext()
                     .getSharedPreferences(Constants.OA_SYSTEM, Context.MODE_PRIVATE);
         }
-        return sharedPreference.getFloat(PEN_WIDTH, -1f);
+        return sharedPreference.getFloat(PEN_WIDTH, PenWidth.DEFAULT.getWidth());
     }
 
     public static int getColor(){
@@ -81,8 +84,9 @@ public class SharedPreferencesUtil {
             sharedPreference = MyApplication.getContext()
                     .getSharedPreferences(Constants.OA_SYSTEM, Context.MODE_PRIVATE);
         }
-        return sharedPreference.getInt(PEN_COLOR, -1);
+        return sharedPreference.getInt(PEN_COLOR, PenColor.BLACK.getColor());
     }
+
 
     /**
      * 取出用户上次登录的用户名

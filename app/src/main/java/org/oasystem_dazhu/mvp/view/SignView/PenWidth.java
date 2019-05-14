@@ -5,9 +5,9 @@ package org.oasystem_dazhu.mvp.view.SignView;
  */
 
 public enum PenWidth {
-    DEFAULT(10f, 0), TWELVE(20f, 2), ELEVEN(15f, 1), THIRTEEN(25f, 3),
+    DEFAULT(7f, 0), TWELVE(11f, 2), ELEVEN(9f, 1), THIRTEEN(13f, 3),
 
-    FOURTEEN(30f, 4), FIFTEEN(35f, 5);
+    FOURTEEN(15f, 4), FIFTEEN(17f, 5);
     private float width;
     private int key;
 

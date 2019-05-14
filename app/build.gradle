@@ -23,13 +23,13 @@ android {
         applicationId "org.oasystem_dazhu"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //X5兼容64位手机
         ndk {
-            abiFilters "armeabi", "armeabi-v7a", "x86", "mips"
+            abiFilters "armeabi","armeabi-v7a"
         }
     }
     sourceSets {
@@ -80,13 +80,13 @@ android {
 
         release {
             //万源
-//            buildConfigField "String", "HOST", '"http://112.35.6.11:9098/api/"'
+            buildConfigField "String", "HOST", '"http://112.35.6.11:9098/api/"'
             //经开区
 //            buildConfigField "String", "HOST", '"http://112.33.26.41:9098/api/"'
             //宣汉
 //            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
             //大竹
-            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
+//            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //测试
 //            buildConfigField "String", "HOST", '"http://oa.zycnb.net/api/"'
             signingConfig android.signingConfigs.release
@@ -99,6 +99,13 @@ android {
         main {
             jniLibs.srcDirs = ['src/main/jniLibs']
         }
+    }
+}
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs 'libs'
     }
 }
 
@@ -133,4 +140,11 @@ dependencies {
     //    compile 'com.bm.photoview:library:1.4.1'
     testCompile 'junit:junit:4.12'
     compile files('libs/BaiduLBS_Android.jar')
+    compile files('libs/BaiduLBS_Android.jar')
+    compile(name: 'inkapi-release', ext: 'aar')
+    compile(name: 'inkframework-release', ext: 'aar')
+    compile(name: 'inkutils-release', ext: 'aar')
+    compile(name: 'and42-release', ext: 'aar')
+    compile(name: 'utils-release', ext: 'aar')
+    compile(name: 'recognizer-release', ext: 'aar')
 }
