@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     android:layout_width="46dp"
-    android:background="@mipmap/sign_right_back"
-    android:clickable="true"
     android:id="@+id/sign_right_fl"
-    android:layout_height="46dp">
+    android:layout_width="46dp"
+    android:layout_height="46dp"
+    android:background="@mipmap/sign_right_back"
+    android:clickable="true">
 
     <TextView
         android:id="@+id/sign_list_tv"
-        android:textSize="12sp"
-        android:layout_gravity="center"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
+        android:layout_gravity="center"
+        android:maxLines="2"
+        android:textSize="12sp" />
 </FrameLayout>

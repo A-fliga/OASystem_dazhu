@@ -10,6 +10,7 @@ import org.oasystem_dazhu.mvp.model.bean.AttendanceStatisticsBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyDetailBean;
 import org.oasystem_dazhu.mvp.model.bean.CarApplyListBean;
 import org.oasystem_dazhu.mvp.model.bean.CarTypeListBean;
+import org.oasystem_dazhu.mvp.model.bean.DealWithOptionBean;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
@@ -318,5 +319,12 @@ public interface Api {
     @Headers({"Content-Type: application/json"})
     @POST("dispatch/add_daiqian")
     Observable<BaseEntity> addDaiqian(@Header("Authorization") String token ,@Body RequestBody body);
+
+    /**
+     * 办理意见
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("dispatch/blyijian")
+    Observable<BaseEntity<DealWithOptionBean>> getFormList(@Header("Authorization") String token , @Body RequestBody body);
 
 }

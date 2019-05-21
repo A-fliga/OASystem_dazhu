@@ -178,7 +178,6 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(OfficialDocumentDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, WRITE_STORAGE_CODE);
         } else {
-//            requestWriteSettings();
             id = dispatchBean.getForm_source_id();
             String[] str = dispatchBean.getForm_source().getName().split("\\.");
             type = str[str.length - 1];
@@ -499,40 +498,50 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 contentTv.add("附件" + (i + 1));
             }
         }
+        contentTv.add("办理意见");
         SignOfficialAdapter adapter = new SignOfficialAdapter(contentTv, this);
         viewDelegate.setRecycler(recyclerView, adapter, true);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (tagPosition != position) {
-                    //切换界面要恢复一下设置
-                    if (mSignatureView != null) {
-                        mSignatureView.resetConfig();
-                        mSignatureView.setNewPath(cacheFileList.get(position));
-                    }
-                    tagPosition = position;
-                    //回收掉原来的tbsView，否则不能显示
-                    if (sign_fileView != null) {
-                        FrameLayout frameLayout = viewDelegate.get(R.id.tbs_contentView);
-                        frameLayout.removeAllViews();
-                        sign_fileView.onStop();
-                        sign_fileView = null;
-                        createSignView();
-                    }
-                    if (position == 0) {
-                        id = dispatchBean.getForm_source_id();
-                        String[] str = dispatchBean.getForm_source().getName().split("\\.");
-                        type = str[str.length - 1];
-                        showFile(dispatchBean.getForm_source_id(), str[str.length - 1]);
+                if (position < contentTv.size() - 1) {
+                    if (tagPosition != position) {
+                        //切换界面要恢复一下设置
+                        if (mSignatureView != null) {
+                            mSignatureView.resetConfig();
+                            mSignatureView.setNewPath(cacheFileList.get(position));
+                        }
 
-                    } else {
-                        id = Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id());
-                        String[] str = dispatchBean.getAccessory_list().get(position - 1).getName().split("\\.");
-                        type = str[str.length - 1];
-                        showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
-                    }
+                        //回收掉原来的tbsView，否则不能显示
+                        if (sign_fileView != null) {
+                            FrameLayout frameLayout = viewDelegate.get(R.id.tbs_contentView);
+                            frameLayout.removeAllViews();
+                            sign_fileView.onStop();
+                            sign_fileView = null;
+                            createSignView();
+                        }
+                        if (position == 0) {
+                            id = dispatchBean.getForm_source_id();
+                            String[] str = dispatchBean.getForm_source().getName().split("\\.");
+                            type = str[str.length - 1];
+                            showFile(dispatchBean.getForm_source_id(), str[str.length - 1]);
 
+                        } else {
+                            id = Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id());
+                            String[] str = dispatchBean.getAccessory_list().get(position - 1).getName().split("\\.");
+                            type = str[str.length - 1];
+                            showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
+                        }
+                        tagPosition = position;
+                    }
                 }
+                //办理意见
+                else {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("itemId", itemId);
+                    startMyActivity(DealWithOptionFormActivity.class, bundle);
+                }
+
             }
         });
     }

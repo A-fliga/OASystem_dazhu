@@ -69,30 +69,6 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
             fBean.setOpTime(dataFlowsBean.getUpdated_at());
             beanList.add(fBean);
         }
-//        for (int i = 0; i < bean.getFlows().size(); i++) {
-//            DocumentBean.DataBean.DataFlowsBean dataFlowsBean = bean.getFlows().get(i);
-//            SignFlowsBean fBean = new SignFlowsBean();
-//            fBean.setName(dataFlowsBean.getUser().getName());
-//            fBean.setOpName(dataFlowsBean.getName());
-//            fBean.setUserId(dataFlowsBean.getUser_id());
-//            beanList.add(fBean);
-//        }
-//        for (int i = 0; i < bean.getFlows().size(); i++) {
-//            DocumentBean.DataBean.DataFlowsBean dataFlowsBean = bean.getFlows().get(i);
-//            SignFlowsBean fBean = new SignFlowsBean();
-//            fBean.setName(dataFlowsBean.getUser().getName());
-//            fBean.setOpName(dataFlowsBean.getName());
-//            fBean.setUserId(dataFlowsBean.getUser_id());
-//            beanList.add(fBean);
-//        }
-//        for (int i = 0; i < bean.getFlows().size(); i++) {
-//            DocumentBean.DataBean.DataFlowsBean dataFlowsBean = bean.getFlows().get(i);
-//            SignFlowsBean fBean = new SignFlowsBean();
-//            fBean.setName(dataFlowsBean.getUser().getName());
-//            fBean.setOpName(dataFlowsBean.getName());
-//            fBean.setUserId(dataFlowsBean.getUser_id());
-//            beanList.add(fBean);
-//        }
         SignatureBottomAdapter adapter = new SignatureBottomAdapter(this.getActivity(), beanList, done);
         setRecyclerView(sign_bottom, adapter);
     }

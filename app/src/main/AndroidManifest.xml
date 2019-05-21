@@ -70,6 +70,7 @@
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AttendanceStatisticsActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AddLeaveActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AskForLeaveDetailActivity" />
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.DealWithOptionFormActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
