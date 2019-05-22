@@ -320,4 +320,21 @@ public class PublicModel implements IModel {
     public void getFormList(Subscriber<BaseEntity<DealWithOptionBean>> subscriber, String id ) {
         HttpClient.getInstance().getFormList(subscriber,id);
     }
+
+
+    /**
+     * 增加意见
+     */
+    public void addOptionData(Subscriber<BaseEntity> subscriber,String id,String content) {
+        HttpClient.getInstance().addOptionData(subscriber,id,content);
+    }
+
+    /**
+     * 删除意见
+     */
+    public void DeleteOptionData(Subscriber<BaseEntity> subscriber,String id) {
+        HttpClient.getInstance().DeleteOptionData(subscriber,id);
+    }
+
+
 }

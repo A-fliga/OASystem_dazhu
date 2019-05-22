@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.bean.DealWithOptionBean;
 
 import java.util.List;
@@ -19,9 +20,9 @@ import java.util.List;
  */
 
 public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAdapter.DealWithOptionViewHolder>{
-
     private Context context;
     private List<DealWithOptionBean.DispatchSuggestBean> beanList;
+    private OnItemClick itemClick;
 
     public DealWithOptionAdapter(Context context, List<DealWithOptionBean.DispatchSuggestBean> beanList) {
 
@@ -42,7 +43,32 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
         holder.item_deal_option_flow.setText("办理步骤："+bean.getFlow().getName());
         holder.item_deal_option_time.setText(bean.getCreated_at());
         holder.item_option_content.setText(bean.getContent());
+        if(Integer.parseInt(bean.getUser().getId()) == UserManager.getInstance().getUserInfo().getId()){
+            holder.item_deal_option_ll.setVisibility(View.VISIBLE);
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.color_f5f5f5));
+        }
+        else {
+            holder.item_deal_option_ll.setVisibility(View.GONE);
+            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.color_ffffff));
+        }
+        if(holder.item_deal_option_ll.getVisibility() == View.VISIBLE){
+            holder.item_option_change.setOnClickListener(getOnClickListener(position));
+            holder.item_option_delete.setOnClickListener(getOnClickListener(position));
+        }
     }
+
+    private View.OnClickListener getOnClickListener(final int position){
+       View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(itemClick!= null){
+                    itemClick.onItemOnclick(position,view.getId());
+                }
+            }
+        };
+        return onClickListener;
+    }
+
 
     @Override
     public int getItemCount() {
@@ -63,5 +89,13 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
             item_option_content = itemView.findViewById(R.id.item_option_content);
             item_deal_option_ll = itemView.findViewById(R.id.item_deal_option_ll);
         }
+    }
+
+    public void setOnItemClickListener(OnItemClick itemClickListener){
+        itemClick = itemClickListener;
+    }
+
+    public interface OnItemClick{
+        void onItemOnclick(int position,int viewId);
     }
 }

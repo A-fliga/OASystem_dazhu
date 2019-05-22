@@ -541,4 +541,20 @@ public final class HttpClient {
         Observable observable = mApi.getFormList(addToken(),getMapRequestBody(getBodyMap(getStrings("id"),getStrings(id))));
         toSubscribe(observable, subscriber);
     }
+
+    /**
+     *增加意见
+     */
+    public void addOptionData(Subscriber<BaseEntity> subscriber, String id,String content) {
+        Observable observable = mApi.addOptionData(addToken(),getMapRequestBody(getBodyMap(getStrings("id,content"),getStrings(id,content))));
+        toSubscribe(observable, subscriber);
+    }
+
+    /**
+     *删除意见
+     */
+    public void DeleteOptionData(Subscriber<BaseEntity> subscriber, String id) {
+        Observable observable = mApi.DeleteOptionData(addToken(),getMapRequestBody(getBodyMap(getStrings("id"),getStrings(id))));
+        toSubscribe(observable, subscriber);
+    }
 }

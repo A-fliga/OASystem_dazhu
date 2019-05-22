@@ -327,4 +327,18 @@ public interface Api {
     @POST("dispatch/blyijian")
     Observable<BaseEntity<DealWithOptionBean>> getFormList(@Header("Authorization") String token , @Body RequestBody body);
 
+    /**
+     * 增加意见
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("dispatch/addblyijian")
+    Observable<BaseEntity> addOptionData(@Header("Authorization") String token , @Body RequestBody body);
+
+    /**
+     * 删除意见
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("dispatch/delblyijian")
+    Observable<BaseEntity> DeleteOptionData(@Header("Authorization") String token , @Body RequestBody body);
+
 }
