@@ -1,7 +1,6 @@
 package org.oasystem_dazhu.mvp.view.SignView;
 
 import android.content.Context;
-import android.graphics.Matrix;
 import android.os.AsyncTask;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
@@ -10,7 +9,6 @@ import android.support.v4.view.PagerAdapter;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -46,8 +44,6 @@ public class SignatureView extends FrameLayout {
     public static final String TAG = "SignatureView";
     private NoAnimationViewPager viewPager;
     private PDFView pdf_view;
-    private Matrix matrix = new Matrix();
-    private Matrix pageChangeMatrix = new Matrix();
     private PDFView.Configurator configurator;
     private List<MPenLayout> penViewList;
     private LayoutInflater inflater;
@@ -62,7 +58,6 @@ public class SignatureView extends FrameLayout {
     private File sourceFile;
     private TransformBean bean;
     private int defaultPage = 0;
-    private int tagPage = 0;
 
 
 
@@ -266,11 +261,6 @@ public class SignatureView extends FrameLayout {
         configurator.defaultPage(page);
         return this;
     }
-//
-//    public void setZoomCenterPoint(float centerX, float centerY) {
-//        matrix.setScale(pdf_view.getZoom(), pdf_view.getZoom(),centerX,centerY);
-//        penLayout.setTransform(matrix);
-//    }
 
 
     private static class MPagerAdapter extends PagerAdapter {
@@ -301,10 +291,6 @@ public class SignatureView extends FrameLayout {
         @Override
         public Object instantiateItem(@NonNull ViewGroup container, int position) {
             MPenLayout penView = penViewList.get(position);
-//            ViewGroup viewGroup = (ViewGroup) penView.getParent();
-//            if (viewGroup != null) {
-//                viewGroup.removeView(penView);
-//            }
             container.addView(penView);
             return penView;
         }
@@ -497,9 +483,6 @@ public class SignatureView extends FrameLayout {
         return this;
     }
 
-    public void setOnTouchEvent(MotionEvent event){
-        pdf_view.onTouchEvent(event);
-    }
     public SignatureView setOnPageChangeListener() {
         configurator.onPageChange(new OnPageChangeListener() {
             @Override
@@ -508,11 +491,6 @@ public class SignatureView extends FrameLayout {
                     viewPager.setCurrentItem(page);
                 if (pdf_view.isZooming()) {
                     pdf_view.resetZoomWithAnimation();
-                }
-                if (page >= 0) {
-                    pageChangeMatrix.setScale(1f, 1f, pdf_view.getWidth() / 2, pdf_view.getHeight() / 2);
-                    penViewList.get(tagPage).setTransform(pageChangeMatrix);
-                    tagPage = page;
                 }
 
             }
