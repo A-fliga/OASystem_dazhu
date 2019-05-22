@@ -56,7 +56,7 @@
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.OfficialDocumentDetailActivity" />
         <activity
             android:name="org.oasystem_dazhu.mvp.presenter.activity.ScreenActivity"
-            android:windowSoftInputMode="adjustPan|adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.OfficialHandleActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.FileMonitorActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.ChangePassWordActivity" />
