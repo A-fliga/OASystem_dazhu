@@ -19,6 +19,7 @@ public class UserManager {
     private static volatile UserManager instance;
     private UserInfo userInfo;
     private AllUserBean allUserBean;
+
     private UserManager() {
     }
 
@@ -39,25 +40,25 @@ public class UserManager {
         return bean != null;
     }
 
-    public void setUserInfo(UserInfo userInfo){
+    public void setUserInfo(UserInfo userInfo) {
         this.userInfo = userInfo;
     }
 
-    public void setAllUserInfo(AllUserBean allUserInfo){
+    public void setAllUserInfo(AllUserBean allUserInfo) {
         this.allUserBean = allUserInfo;
     }
 
-    public List<AllUserBean.DataBean> getAllUserInfo(){
+    public List<AllUserBean.DataBean> getAllUserInfo() {
         List<AllUserBean.DataBean> beanList = new ArrayList<>();
         for (int i = 0; i < allUserBean.getData().size(); i++) {
-            if (allUserBean.getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
-                beanList.add(allUserBean.getData().get(i));
-            }
+//            if (allUserBean.getData().get(i).getId() != UserManager.getInstance().getUserInfo().getId()) {
+            beanList.add(allUserBean.getData().get(i));
+//            }
         }
         return beanList;
     }
 
-    public UserInfo getUserInfo(){
+    public UserInfo getUserInfo() {
         return userInfo;
     }
 }
