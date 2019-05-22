@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
+import org.oasystem_dazhu.utils.AppUtil;
+import org.oasystem_dazhu.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,20 +48,26 @@ public class SignOfficialAdapter extends RecyclerView.Adapter<SignOfficialAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (itemClickListener != null) {
-                    itemClickListener.onItemClick(position);
-                }
-                if (position < contentTv.size() - 1) {
-                    holder.sign_right_fl.setBackgroundResource(R.mipmap.sign_right_selected);
-                    holder.sign_list_tv.setTextColor(context.getResources().getColor(R.color.color_ffffff));
-                    for (int i = 0; i < frameLayoutList.size(); i++) {
-                        if (i != position) {
-                            frameLayoutList.get(i).setBackgroundResource(R.mipmap.sign_right_back);
-                            textViewList.get(i).setTextColor(context.getResources().getColor(R.color.color_000000));
+                if(!AppUtil.isFastDoubleClick(1000)) {
+                    if (itemClickListener != null) {
+                        itemClickListener.onItemClick(position);
+                    }
+                    if (position < contentTv.size() - 1) {
+                        holder.sign_right_fl.setBackgroundResource(R.mipmap.sign_right_selected);
+                        holder.sign_list_tv.setTextColor(context.getResources().getColor(R.color.color_ffffff));
+                        for (int i = 0; i < frameLayoutList.size(); i++) {
+                            if (i != position) {
+                                frameLayoutList.get(i).setBackgroundResource(R.mipmap.sign_right_back);
+                                textViewList.get(i).setTextColor(context.getResources().getColor(R.color.color_000000));
+                            }
                         }
                     }
                 }
+                else {
+                    ToastUtil.s("请勿点击太快");
+                }
             }
+
         });
         holder.sign_list_tv.setText(contentTv.get(position));
     }
