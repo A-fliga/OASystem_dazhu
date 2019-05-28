@@ -58,6 +58,8 @@ public class SignatureView extends FrameLayout {
     private File sourceFile;
     private TransformBean bean;
     private int defaultPage = 0;
+    private Boolean autoSave = false;
+    private String tagPath = "";
 
 
 
@@ -126,6 +128,7 @@ public class SignatureView extends FrameLayout {
                     @Override
                     public void onFinished(String path) {
 //                        LogUtil.d("pianyi", "签完字后的路径" + path);
+                        tagPath = path;
                         defaultPage = getCurrentPage();
                         canSave.set(true);
                         loadFile(new File(path), true);
@@ -348,9 +351,21 @@ public class SignatureView extends FrameLayout {
                 }
             }
             if (signPageList.size() == 0) {
-                if (!auto)
-                    ToastUtil.l("没有新签字的页面");
-                else {
+                //先判断这次的保存模式，如果是点击保存按钮的，就要判断上一次的模式
+                if (!auto) {
+                    //如果上一次没有自动保存过，就弹框提示
+                    if (!autoSave) {
+                        ToastUtil.l("没有新签字的页面");
+                    }
+                    //如果上一次有自动保存过，那么点击后直接把保存后的路径返回
+                    else {
+                        autoSave = false;
+                        if (listener != null && !TextUtils.isEmpty(tagPath)) {
+                            listener.onFinished(tagPath);
+                            tagPath = "";
+                        }
+                    }
+                } else {
                     if (listener != null) {
                         listener.nothingChange();
                     }
@@ -367,6 +382,7 @@ public class SignatureView extends FrameLayout {
                     bean = this.bean;
                 }
                 toSaveSignature(path, bean, listener, newDrawPenViewList, signPageList);
+                autoSave = auto;
             }
         } else {
             ToastUtil.l("没有选择签字功能");

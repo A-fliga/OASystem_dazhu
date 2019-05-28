@@ -106,6 +106,7 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
                     newBeanList = SortUtl.sort(newBeanList, isPositive_create ? POSITIVE : REVERSE, true);
                     adapter.setBeanList(newBeanList);
                     adapter.notifyDataSetChanged();
+                    break;
                 case R.id.to_sort_update:
                     isPositive_update = !isPositive_update;
                     isPositive_create = false;

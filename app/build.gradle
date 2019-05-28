@@ -23,8 +23,8 @@ android {
         applicationId "org.oasystem_dazhu"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.2"
+        versionCode 5
+        versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //X5兼容64位手机
@@ -73,8 +73,13 @@ android {
         debug {
             //万源
 //            buildConfigField "String", "HOST", '"http://112.35.6.11:9098/api/"'
+            //经开区
+            buildConfigField "String", "HOST", '"http://112.33.26.41:9098/api/"'
+            //宣汉
+//            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
             //大竹
-            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
+//            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
+            //测试
 //            buildConfigField "String", "HOST", '"http://oa.zycnb.net/api/"'
         }
 
