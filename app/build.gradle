@@ -74,13 +74,13 @@ android {
             //万源
 //            buildConfigField "String", "HOST", '"http://112.35.6.11:9098/api/"'
             //经开区
-            buildConfigField "String", "HOST", '"http://112.33.26.41:9098/api/"'
+//            buildConfigField "String", "HOST", '"http://112.33.26.41:9098/api/"'
             //宣汉
 //            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
             //大竹
 //            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //测试
-//            buildConfigField "String", "HOST", '"http://oa.zycnb.net/api/"'
+            buildConfigField "String", "HOST", '"http://oa.zycnb.net/api/"'
         }
 
         release {

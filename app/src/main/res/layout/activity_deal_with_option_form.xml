@@ -53,7 +53,11 @@
             android:layout_weight="1"
             android:gravity="center" />
 
-
+        <View
+            android:id="@+id/bottom_line"
+            android:background="@color/color_a4a4a4"
+            android:layout_height="match_parent"
+            android:layout_width="1dp"/>
         <TextView
             android:text="提出意见"
             android:id="@+id/add_option_btn"

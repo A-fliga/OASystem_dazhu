@@ -538,7 +538,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 //办理意见
                 else {
                     Bundle bundle = new Bundle();
-                    bundle.putInt("itemId", itemId);
+                    bundle.putInt("itemId", dispatchBean.getId());
+                    bundle.putBoolean("done",done);
                     startMyActivity(DealWithOptionFormActivity.class, bundle);
                 }
 

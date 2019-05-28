@@ -27,6 +27,7 @@ import java.util.List;
 public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOptionFormDelegate> {
     private List<DealWithOptionBean.DispatchSuggestBean> beanList;
     private int itemId;
+    private boolean done = false;
     private DealWithOptionAdapter adapter;
 
     @Override
@@ -46,9 +47,12 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             itemId = bundle.getInt("itemId");
+            done = bundle.getBoolean("done");
+            if(done){
+                viewDelegate.initOptionView();
+            }
             initRecyclerView();
         }
-
         viewDelegate.setOnClickListener(onClickListener, R.id.add_option_btn);
 
     }
@@ -58,9 +62,14 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.add_option_btn:
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("itemId", itemId);
-                    startMyActivity(AddOptionFormActivity.class, bundle);
+                    if(!done) {
+                        Bundle bundle = new Bundle();
+                        bundle.putInt("itemId", itemId);
+                        startMyActivity(AddOptionFormActivity.class, bundle);
+                    }
+                    else {
+                        ToastUtil.s("当前不可提出意见");
+                    }
                     break;
 
             }
@@ -82,7 +91,7 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
                 }
                 beanList.addAll(bean.getData().getDispatch_suggest());
                 viewDelegate.initLeftTv(beanList.size());
-                adapter = viewDelegate.initList(beanList);
+                adapter = viewDelegate.initList(beanList,done);
                 adapter.setOnItemClickListener(new DealWithOptionAdapter.OnItemClick() {
                     @Override
                     public void onItemOnclick(int position, int viewId) {

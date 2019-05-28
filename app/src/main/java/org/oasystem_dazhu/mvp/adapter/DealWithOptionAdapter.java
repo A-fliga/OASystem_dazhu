@@ -19,13 +19,14 @@ import java.util.List;
  * Created by www on 2019/5/22.
  */
 
-public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAdapter.DealWithOptionViewHolder>{
+public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAdapter.DealWithOptionViewHolder> {
     private Context context;
     private List<DealWithOptionBean.DispatchSuggestBean> beanList;
     private OnItemClick itemClick;
+    private boolean done;
 
-    public DealWithOptionAdapter(Context context, List<DealWithOptionBean.DispatchSuggestBean> beanList) {
-
+    public DealWithOptionAdapter(Context context, List<DealWithOptionBean.DispatchSuggestBean> beanList, boolean done) {
+        this.done = done;
         this.context = context;
         this.beanList = beanList;
     }
@@ -33,36 +34,35 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
     @NonNull
     @Override
     public DealWithOptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DealWithOptionViewHolder(LayoutInflater.from(context).inflate(R.layout.item_deal_with_option,null));
+        return new DealWithOptionViewHolder(LayoutInflater.from(context).inflate(R.layout.item_deal_with_option, null));
     }
 
     @Override
     public void onBindViewHolder(@NonNull DealWithOptionViewHolder holder, int position) {
         DealWithOptionBean.DispatchSuggestBean bean = beanList.get(position);
-        holder.item_deal_option_name.setText("办理人："+bean.getUser().getName());
-        holder.item_deal_option_flow.setText("办理步骤："+bean.getFlow().getName());
+        holder.item_deal_option_name.setText("办理人：" + bean.getUser().getName());
+        holder.item_deal_option_flow.setText("办理步骤：" + bean.getFlow().getName());
         holder.item_deal_option_time.setText(bean.getCreated_at());
         holder.item_option_content.setText(bean.getContent());
-        if(Integer.parseInt(bean.getUser().getId()) == UserManager.getInstance().getUserInfo().getId()){
+        if (Integer.parseInt(bean.getUser().getId()) == UserManager.getInstance().getUserInfo().getId() && !done) {
             holder.item_deal_option_ll.setVisibility(View.VISIBLE);
             holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.color_f5f5f5));
-        }
-        else {
+        } else {
             holder.item_deal_option_ll.setVisibility(View.GONE);
             holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.color_ffffff));
         }
-        if(holder.item_deal_option_ll.getVisibility() == View.VISIBLE){
+        if (holder.item_deal_option_ll.getVisibility() == View.VISIBLE) {
             holder.item_option_change.setOnClickListener(getOnClickListener(position));
             holder.item_option_delete.setOnClickListener(getOnClickListener(position));
         }
     }
 
-    private View.OnClickListener getOnClickListener(final int position){
-       View.OnClickListener onClickListener = new View.OnClickListener() {
+    private View.OnClickListener getOnClickListener(final int position) {
+        View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(itemClick!= null){
-                    itemClick.onItemOnclick(position,view.getId());
+                if (itemClick != null) {
+                    itemClick.onItemOnclick(position, view.getId());
                 }
             }
         };
@@ -75,10 +75,11 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
         return beanList.size();
     }
 
-    class DealWithOptionViewHolder extends RecyclerView.ViewHolder{
-        public TextView item_deal_option_name,item_deal_option_flow,item_option_change,
-                item_option_delete,item_deal_option_time,item_option_content;
+    class DealWithOptionViewHolder extends RecyclerView.ViewHolder {
+        public TextView item_deal_option_name, item_deal_option_flow, item_option_change,
+                item_option_delete, item_deal_option_time, item_option_content;
         private LinearLayout item_deal_option_ll;
+
         public DealWithOptionViewHolder(View itemView) {
             super(itemView);
             item_deal_option_name = itemView.findViewById(R.id.item_deal_option_name);
@@ -91,11 +92,11 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
         }
     }
 
-    public void setOnItemClickListener(OnItemClick itemClickListener){
+    public void setOnItemClickListener(OnItemClick itemClickListener) {
         itemClick = itemClickListener;
     }
 
-    public interface OnItemClick{
-        void onItemOnclick(int position,int viewId);
+    public interface OnItemClick {
+        void onItemOnclick(int position, int viewId);
     }
 }

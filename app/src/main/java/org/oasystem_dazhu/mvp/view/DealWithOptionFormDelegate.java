@@ -1,6 +1,7 @@
 package org.oasystem_dazhu.mvp.view;
 
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
@@ -33,8 +34,8 @@ public class DealWithOptionFormDelegate extends ViewDelegate {
         deal_with_option_recycler = get(R.id.deal_with_option_recycler);
     }
 
-    public DealWithOptionAdapter initList(List<DealWithOptionBean.DispatchSuggestBean> beanList){
-        adapter = new DealWithOptionAdapter(this.getActivity(),beanList);
+    public DealWithOptionAdapter initList(List<DealWithOptionBean.DispatchSuggestBean> beanList,boolean done){
+        adapter = new DealWithOptionAdapter(this.getActivity(),beanList,done);
         setRecycler(deal_with_option_recycler,adapter,true);
         return adapter;
     }
@@ -44,4 +45,11 @@ public class DealWithOptionFormDelegate extends ViewDelegate {
         tv.setText("已经有"+count+"位提出意见");
     }
 
+    public void initOptionView(){
+        View line = get(R.id.bottom_line);
+        line.setVisibility(View.VISIBLE);
+        TextView add_option_btn = get(R.id.add_option_btn);
+        add_option_btn.setBackgroundColor(getActivity().getResources().getColor(R.color.color_f5f5f5));
+        add_option_btn.setEnabled(false);
+    }
 }
