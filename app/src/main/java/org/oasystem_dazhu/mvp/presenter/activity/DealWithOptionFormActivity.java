@@ -26,7 +26,7 @@ import java.util.List;
 
 public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOptionFormDelegate> {
     private List<DealWithOptionBean.DispatchSuggestBean> beanList;
-    private int itemId;
+    private int listId,itemId;
     private boolean done = false;
     private DealWithOptionAdapter adapter;
 
@@ -46,6 +46,7 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
         EventBus.getDefault().register(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            listId = bundle.getInt("listId");
             itemId = bundle.getInt("itemId");
             done = bundle.getBoolean("done");
             if(done){
@@ -103,7 +104,7 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
                 }
 
             }
-        }, String.valueOf(itemId));
+        }, String.valueOf(listId));
 
     }
 

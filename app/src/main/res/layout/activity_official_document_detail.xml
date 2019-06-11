@@ -8,11 +8,10 @@
         android:id="@+id/sign_toolbar"
         layout="@layout/toolbar" />
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/sign_toolbar"
         android:layout_alignParentStart="true">
 
         <FrameLayout
@@ -272,8 +271,6 @@
 
         </FrameLayout>
     </FrameLayout>
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sign_bottom"
         android:layout_width="match_parent"

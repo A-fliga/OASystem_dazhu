@@ -506,6 +506,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             public void onItemClick(int position) {
                 if (position < contentTv.size() - 1) {
                     if (tagPosition != position) {
+                        tagPosition = position;
                         //切换界面要恢复一下设置
                         if (mSignatureView != null) {
                             mSignatureView.resetConfig();
@@ -532,13 +533,14 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                             type = str[str.length - 1];
                             showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
                         }
-                        tagPosition = position;
+
                     }
                 }
                 //办理意见
                 else {
                     Bundle bundle = new Bundle();
-                    bundle.putInt("itemId", dispatchBean.getId());
+                    bundle.putInt("listId", dispatchBean.getId());
+                    bundle.putInt("itemId",itemId);
                     bundle.putBoolean("done",done);
                     startMyActivity(DealWithOptionFormActivity.class, bundle);
                 }
