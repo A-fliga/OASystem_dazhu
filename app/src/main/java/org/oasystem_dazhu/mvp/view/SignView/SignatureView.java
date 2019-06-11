@@ -60,8 +60,7 @@ public class SignatureView extends FrameLayout {
     private int defaultPage = 0;
     private Boolean autoSave = false;
     private String tagPath = "";
-
-
+    private boolean isFirstViewChange = true;
 
     public SignatureView(@NonNull Context context) {
         super(context);
@@ -158,28 +157,26 @@ public class SignatureView extends FrameLayout {
     }
 
     public void loadFile(File file, Boolean auto) {
-        if(pdf_view != null){
+        if (pdf_view != null) {
             pdf_view.recycle();
+        }
+        if (penViewList != null) {
+            penViewList.clear();
         }
         ProgressDialogUtil.instance().startLoad("加载文件中");
         this.autoSpacing = auto;
+
         fromFile(file)
                 .swipeHorizontal(true)
                 .pageSnap(true)
-                //注释掉这个  否则加载完成会偏移一下
-//                .autoSpacing(true)
                 .pageFling(true)
                 .enableDoubleTap(false)
-                .pageFitPolicy(FitPolicy.BOTH)
+                .pageFitPolicy(isFirstViewChange ? FitPolicy.BOTH : FitPolicy.WIDTH)
                 .setOnPageChangeListener()
                 .needSignature(true)
                 .setDefaultPage(defaultPage)
                 .setSwipeEnabled(false)
                 .load();
-    }
-
-    public NoAnimationViewPager getViewPager() {
-        return viewPager;
     }
 
 
@@ -208,25 +205,28 @@ public class SignatureView extends FrameLayout {
                 MPagerAdapter adapter = new MPagerAdapter(SignatureView.this);
                 viewPager.setAdapter(adapter);
             }
+            isFirstViewChange = false;
         }
     };
 
-    private void getSuitableSizeAndInitView(int nbPages, Document document) {
+    private void getSuitableSizeAndInitView(final int nbPages, final Document document) {
         int bitMapHeight;
         int bitMapWidth;
         if (document.getPageSize().getHeight() >= document.getPageSize().getWidth()) {
-            bitMapHeight = pdf_view.getHeight();
-            bitMapWidth = (int) ((pdf_view.getHeight() / document.getPageSize().getHeight()) * document.getPageSize().getWidth());
-            if (bitMapWidth > pdf_view.getWidth())
-                bitMapWidth = pdf_view.getWidth();
+            bitMapHeight = viewPager.getHeight();
+            bitMapWidth = (int) ((viewPager.getHeight() / document.getPageSize().getHeight()) * document.getPageSize().getWidth());
+            if (bitMapWidth > viewPager.getWidth()) {
+                bitMapWidth = viewPager.getWidth();
+            }
             if (bitMapWidth / document.getPageSize().getWidth() < bitMapHeight / document.getPageSize().getHeight()) {
                 bitMapHeight = (int) (bitMapWidth / document.getPageSize().getWidth() * document.getPageSize().getHeight());
             }
         } else {
-            bitMapWidth = pdf_view.getWidth();
+            bitMapWidth = viewPager.getWidth();
             bitMapHeight = (int) ((pdf_view.getWidth() / document.getPageSize().getWidth()) * document.getPageSize().getHeight());
-            if (bitMapHeight > pdf_view.getHeight())
-                bitMapHeight = pdf_view.getHeight();
+            if (bitMapHeight > viewPager.getHeight()) {
+                bitMapHeight = viewPager.getHeight();
+            }
             if (bitMapHeight / document.getPageSize().getHeight() < bitMapWidth / document.getPageSize().getWidth()) {
                 bitMapWidth = (int) (bitMapHeight / document.getPageSize().getHeight() * document.getPageSize().getWidth());
             }
@@ -245,8 +245,8 @@ public class SignatureView extends FrameLayout {
         initPenAfterAutoSpacing();
     }
 
-    private void initPenAfterAutoSpacing(){
-        if(autoSpacing){
+    private void initPenAfterAutoSpacing() {
+        if (autoSpacing) {
             setPenColor(SharedPreferencesUtil.getColor());
             setPenWidth(SharedPreferencesUtil.getWidth());
         }
@@ -300,7 +300,7 @@ public class SignatureView extends FrameLayout {
 
         @Override
         public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-            container.removeView((MPenLayout)object);
+            container.removeView((MPenLayout) object);
         }
     }
 
@@ -384,6 +384,7 @@ public class SignatureView extends FrameLayout {
                 toSaveSignature(path, bean, listener, newDrawPenViewList, signPageList);
                 autoSave = auto;
             }
+
         } else {
             ToastUtil.l("没有选择签字功能");
         }
@@ -521,7 +522,7 @@ public class SignatureView extends FrameLayout {
     public void stopFling() {
         pdf_view.stopFling();
         pdf_view.recycle();
-        if(penViewList != null) {
+        if (penViewList != null) {
             for (int i = 0; i < penViewList.size(); i++) {
                 penViewList.get(i).setSignatureView(null);
                 penViewList.get(i).clear();
@@ -533,7 +534,6 @@ public class SignatureView extends FrameLayout {
             savePdfAsync.cancel(true);
         }
     }
-
 
 
     public void resetZoomWithAnimation() {
@@ -551,7 +551,6 @@ public class SignatureView extends FrameLayout {
     public int getCurrentPage() {
         return pdf_view.getCurrentPage();
     }
-
 
 
     public void setTransformBean(TransformBean bean) {
