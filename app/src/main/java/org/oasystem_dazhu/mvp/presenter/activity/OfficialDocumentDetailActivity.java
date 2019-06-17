@@ -30,6 +30,7 @@ import com.tencent.smtt.sdk.TbsReaderView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.oasystem_dazhu.BuildConfig;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
@@ -493,9 +494,22 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         viewDelegate.setOnClickListener(onClickListener, R.id.sign_add_advise, R.id.sign_add_person, R.id.sign_agree, R.id.sign_refuse, R.id.sign_close, R.id.sign_daiqian);
         contentTv = new ArrayList<>();
         contentTv.add("审批单");
+        String text;
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
-                contentTv.add("附件" + (i + 1));
+                text = dispatchBean.getAccessory_list().get(i).getName();
+                if (BuildConfig.HOST.equals("http://112.35.0.188:9098/api/")) {
+                    if (text.length() <= 3) {
+                        contentTv.add(text);
+                    } else if (text.length() >= 4 && text.length() <= 6) {
+                        contentTv.add(text.substring(0, 3) + "\n" + text.substring(3, text.length()));
+                    } else {
+                        contentTv.add(text.substring(0, 3) + "\n" + text.substring(3, 6));
+                    }
+                } else {
+                    contentTv.add("附件" + (i + 1));
+                }
+
             }
         }
         contentTv.add("办理\n意见");
@@ -540,8 +554,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 else {
                     Bundle bundle = new Bundle();
                     bundle.putInt("listId", dispatchBean.getId());
-                    bundle.putInt("itemId",itemId);
-                    bundle.putBoolean("done",done);
+                    bundle.putInt("itemId", itemId);
+                    bundle.putBoolean("done", done);
                     startMyActivity(DealWithOptionFormActivity.class, bundle);
                 }
 

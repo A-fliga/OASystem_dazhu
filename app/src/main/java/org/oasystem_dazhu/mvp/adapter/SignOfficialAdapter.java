@@ -8,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import org.oasystem_dazhu.BuildConfig;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.utils.AppUtil;
+import org.oasystem_dazhu.utils.DensityUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
 import java.util.ArrayList;
@@ -26,10 +28,11 @@ public class SignOfficialAdapter extends RecyclerView.Adapter<SignOfficialAdapte
     private OnItemClickListener itemClickListener;
     private List<FrameLayout> frameLayoutList = new ArrayList<>();
     private List<TextView> textViewList = new ArrayList<>();
-
+    private boolean needLarge = false;
     public SignOfficialAdapter(List<String> contentTv, Context context) {
         this.contentTv = contentTv;
         this.context = context;
+        needLarge = BuildConfig.HOST.equals("http://112.35.0.188:9098/api/");
     }
 
     @Override
@@ -88,7 +91,12 @@ public class SignOfficialAdapter extends RecyclerView.Adapter<SignOfficialAdapte
         public SignOfficialViewHolder(View itemView) {
             super(itemView);
             sign_list_tv = itemView.findViewById(R.id.sign_list_tv);
-            sign_right_fl = itemView.findViewById(R.id.sign_right_fl);
+            sign_right_fl = (FrameLayout) itemView.findViewById(R.id.sign_right_fl);
+            if(needLarge){
+                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) sign_right_fl.getLayoutParams();
+                params.width = DensityUtil.dip2px(context,55);
+                params.height = DensityUtil.dip2px(context,55);
+            }
         }
     }
 }
