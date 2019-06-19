@@ -497,7 +497,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         String text;
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
-                text = dispatchBean.getAccessory_list().get(i).getName();
+                text = dispatchBean.getAccessory_list().get(i).getName().split("_")[1];
                 if (BuildConfig.HOST.equals("http://112.35.0.188:9098/api/")) {
                     if (text.length() <= 3) {
                         contentTv.add(text);

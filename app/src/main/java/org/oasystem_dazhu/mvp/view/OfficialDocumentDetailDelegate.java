@@ -67,6 +67,7 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
             fBean.setOpName(dataFlowsBean.getName());
             fBean.setUserId(dataFlowsBean.getUser_id());
             fBean.setOpTime(dataFlowsBean.getUpdated_at());
+            fBean.setStatus(dataFlowsBean.getStatus());
             beanList.add(fBean);
         }
         SignatureBottomAdapter adapter = new SignatureBottomAdapter(this.getActivity(), beanList, done);

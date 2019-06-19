@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
-import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.bean.SignFlowsBean;
 
 import java.util.List;
@@ -21,19 +20,14 @@ import java.util.List;
 public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottomAdapter.SignatureBottomViewHolder> {
     private Context context;
     private List<SignFlowsBean> beanList;
-    private Boolean done;
-    private int userId;
     private int index = 0;
-    private Boolean isFirstAccept = true;
 
     public SignatureBottomAdapter(Context context, List<SignFlowsBean> beanList, Boolean done) {
         this.context = context;
         this.beanList = beanList;
-        this.done = done;
-        userId = UserManager.getInstance().getUserInfo().getId();
         if (beanList.size() > 1) {
             for (int i = 1; i < beanList.size(); i++) {
-                if (beanList.get(i).getUserId() == userId) {
+                if (beanList.get(i).getStatus() == 1) {
                     index = i;
                 }
             }
@@ -57,31 +51,15 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
         } else {
             holder.sign_flows.setText(bean.getOpName());
             holder.sign_name.setText(bean.getName());
-            if (!done) {
-                if (userId == bean.getUserId()) {
-                    holder.sign_status_img.setImageResource(R.mipmap.is_signing);
-                    holder.sign_flows.setText("等待审批");
-                } else {
-                    if (position < index) {
-                        holder.sign_status_img.setImageResource(R.mipmap.already_sign);
-                        holder.sign_line_img.setImageResource(R.mipmap.sign_line);
-                    }
-                }
+            if (position == index + 1) {
+                holder.sign_status_img.setImageResource(R.mipmap.is_signing);
+                holder.sign_flows.setText("等待审批");
             } else {
                 if (position <= index) {
                     holder.sign_status_img.setImageResource(R.mipmap.already_sign);
                     holder.sign_line_img.setImageResource(R.mipmap.sign_line);
-                } else {
-                    if (bean.getStatus() == 0) {
-                        if (isFirstAccept) {
-                            holder.sign_status_img.setImageResource(R.mipmap.is_signing);
-                            holder.sign_flows.setText("等待审批");
-                            isFirstAccept = false;
-                        }
-                    }
                 }
             }
-
         }
 
         if (position == beanList.size() - 1) {
@@ -97,7 +75,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
     }
 
     class SignatureBottomViewHolder extends RecyclerView.ViewHolder {
-        private TextView sign_name, sign_flows,sign_update_time;
+        private TextView sign_name, sign_flows, sign_update_time;
         private ImageView sign_status_img, sign_line_img;
 
         public SignatureBottomViewHolder(View itemView) {
