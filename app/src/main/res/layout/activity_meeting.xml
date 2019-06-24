@@ -9,32 +9,75 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/not_start_meeting"
-            android:layout_width="144dp"
-            android:layout_height="40dp"
-            android:src="@drawable/meeting_not_start_selector" />
+        <RelativeLayout
+            android:layout_width="93dp"
+            android:layout_height="26dp">
 
-        <ImageView
-            android:id="@+id/going_meeting"
-            android:layout_width="144dp"
-            android:layout_height="40dp"
-            android:src="@drawable/meeting_going_selector" />
+            <ImageView
+                android:id="@+id/not_start_meeting"
+                android:layout_width="93dp"
+                android:layout_height="26dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/tab_selector_left" />
 
-        <ImageView
-            android:id="@+id/end_meeting"
-            android:layout_width="144dp"
-            android:layout_height="40dp"
-            android:src="@drawable/meeting_end_selector" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="未开始"
+                android:textSize="10sp" />
 
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginStart="-1dp"
+            android:layout_width="93dp"
+            android:layout_height="26dp">
+
+            <ImageView
+                android:id="@+id/going_meeting"
+                android:layout_width="93dp"
+                android:layout_height="26dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="-1dp"
+                android:src="@drawable/tab_selector_middle" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="进行中"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:layout_marginStart="-1dp"
+            android:layout_width="93dp"
+            android:layout_height="26dp">
+
+            <ImageView
+                android:id="@+id/end_meeting"
+                android:layout_width="93dp"
+                android:layout_height="26dp"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="-1dp"
+                android:src="@drawable/tab_selector_right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="已结束"
+                android:textSize="10sp" />
+        </RelativeLayout>
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
-        android:layout_marginTop="10dp"
         android:id="@+id/meeting_recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

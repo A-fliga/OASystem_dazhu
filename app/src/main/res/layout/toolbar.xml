@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?><!--公共的toolbar-->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="50dp">
+    android:layout_height="44dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="44dp"
         android:background="@color/color_ea4b2e"
         android:fitsSystemWindows="true"
         android:minHeight="?attr/actionBarSize"
@@ -15,7 +15,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="44dp">
 
         <TextView
             android:id="@+id/toolbar_left_tv"
@@ -35,17 +35,17 @@
             android:layout_centerInParent="true"
             android:gravity="center"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_20" />
+            android:textSize="16sp" />
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/toolBar_img_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="2dp"
-            android:clickable="true"
-            android:padding="5dp" />
+            android:layout_marginEnd="55dp"
+            android:clickable="true" />
 
         <RelativeLayout
             android:id="@+id/toolbar_right_rl"

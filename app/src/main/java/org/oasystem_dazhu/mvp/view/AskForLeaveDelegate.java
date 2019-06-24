@@ -31,7 +31,7 @@ public class AskForLeaveDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("请假管理");
-        getToolBarRightImg().setImageResource(R.mipmap.add_ask_for_leave);
+        setToolBarRightTv("新增");
         recyclerView = get(R.id.car_apply_list);
     }
 

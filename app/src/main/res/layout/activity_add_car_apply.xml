@@ -17,16 +17,16 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="用车人："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <Spinner
             android:id="@+id/add_car_apply_user"
-            android:layout_width="300dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_width="250dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp" />
     </LinearLayout>
 
     <View
@@ -46,16 +46,16 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="用车类型："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <Spinner
             android:id="@+id/add_car_apply_type"
-            android:layout_width="300dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="20dp" />
+            android:layout_width="250dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp" />
     </LinearLayout>
 
     <View
@@ -75,18 +75,19 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="车牌号："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <EditText
-            android:gravity="center"
             android:id="@+id/car_apply_num"
-            android:layout_width="320dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/et" />
+            android:layout_width="230dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/et"
+            android:gravity="center"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View
@@ -106,19 +107,20 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="预定时间："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/car_apply_start_time"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_width="105dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp"
             android:background="@drawable/et"
-            android:clickable="true" />
+            android:clickable="true"
+            android:gravity="center"
+            android:textSize="11sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -128,13 +130,14 @@
 
 
         <TextView
-            android:gravity="center"
             android:id="@+id/car_apply_end_time"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_width="105dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/et"
-            android:clickable="true" />
+            android:clickable="true"
+            android:gravity="center"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View
@@ -154,19 +157,20 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="预定里程："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <EditText
+            android:id="@+id/car_apply_mileage"
+            android:layout_width="230dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/et"
             android:gravity="center"
             android:inputType="number"
-            android:id="@+id/car_apply_mileage"
-            android:layout_width="320dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/et" />
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View
@@ -186,18 +190,19 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="目的地："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <EditText
-            android:gravity="center"
             android:id="@+id/car_apply_target"
-            android:layout_width="320dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/et" />
+            android:layout_width="230dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp"
+            android:background="@drawable/et"
+            android:gravity="center"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View
@@ -217,19 +222,20 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:layout_width="130dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="审批人："
-            android:textSize="20sp" />
+            android:textSize="11sp" />
 
         <TextView
-            android:gravity="center"
             android:id="@+id/car_apply_approver"
-            android:layout_width="320dp"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_width="230dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="9dp"
             android:background="@drawable/et"
-            android:clickable="true" />
+            android:clickable="true"
+            android:gravity="center"
+            android:textSize="11sp" />
     </LinearLayout>
 
     <View

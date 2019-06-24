@@ -2,6 +2,7 @@ package org.oasystem_dazhu.mvp.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
+import org.oasystem_dazhu.mvp.view.customView.XCRoundProgressBar;
 
 import java.util.List;
 
@@ -61,11 +63,32 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
         setText(holder.official_step, "流程步骤：" + bean.getName(), urgent);
         setText(holder.official_time, "发起时间：" + bean.getDispatch().getCreated_at(), urgent);
         setText(holder.official_last_time, "最后操作：" + bean.getDispatch().getUpdated_at(), urgent);
-        Glide.with(context).load(FirmingTypeManager.getInstance().getTypeImg(bean.getDispatch().getForm_type())).placeholder(R.mipmap.ic_launcher_round)
+        holder.item_percent_circle.setDisplayText(true);
+        if(TextUtils.isEmpty(bean.getSchedule())){
+            holder.item_percent_circle.setProgress(0);
+        }
+        else {
+            holder.item_percent_circle.setProgress(Integer.parseInt(bean.getSchedule().replace("%","")));
+        }
+        Glide.with(context).load(FirmingTypeManager.getInstance().getTypeImg(bean.getDispatch().getForm_type())).
+                placeholder(getDefaultResourceId(bean.getDispatch().getForm_type()))
                 .into(holder.official_left_img);
-
     }
 
+
+    private int getDefaultResourceId(int type){
+        if(type == 1){
+            return R.mipmap.shangjilaiwen;
+        }
+        if(type == 2){
+            return R.mipmap.pingjilaiwen;
+        }
+
+        if(type == 3){
+            return R.mipmap.xiajilaiwen;
+        }
+        return R.mipmap.wenjianjiankong;
+    }
     private void setText(TextView v, String content, int urgent) {
         if (urgent == 1) {
             v.setTextColor(context.getResources().getColor(R.color.color_f0000));
@@ -86,7 +109,7 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
     class OfficialDocumentViewHolder extends RecyclerView.ViewHolder {
         public ImageView official_left_img;
         public TextView official_title, official_office_id, official_company_name, official_step, official_serial, official_user_name, official_time, official_last_time;
-
+        public XCRoundProgressBar item_percent_circle;
         public OfficialDocumentViewHolder(View itemView) {
             super(itemView);
             official_left_img = itemView.findViewById(R.id.official_left_img);
@@ -94,6 +117,7 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
             official_time = itemView.findViewById(R.id.official_time);
             official_title = itemView.findViewById(R.id.official_title);
             official_last_time = itemView.findViewById(R.id.official_last_time);
+            item_percent_circle = itemView.findViewById(R.id.item_percent_circle);
         }
     }
 }

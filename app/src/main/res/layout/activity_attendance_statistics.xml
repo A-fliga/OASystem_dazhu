@@ -16,13 +16,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="5dp"
             android:textColor="#666666" />
 
         <org.oasystem_dazhu.mvp.view.calendar.MyMonthCalendar
             android:id="@+id/monthCalendar"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:layout_below="@+id/weekBar"
             app:bgCalendarColor="#f5f5f5"
             app:isShowHoliday="false"

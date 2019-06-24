@@ -18,6 +18,7 @@ import org.oasystem_dazhu.mvp.view.MeetingDetailDelegate;
 import org.oasystem_dazhu.utils.DialogUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
+
 /**
  * Created by www on 2019/3/20.
  */
@@ -54,7 +55,7 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
     }
 
     private void setOnclick() {
-        viewDelegate.setOnClickListener(onClickListener, R.id.toolBar_img_right);
+        viewDelegate.setOnClickListener(onClickListener, R.id.toolbar_right_rl);
     }
 
 
@@ -62,7 +63,7 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
-                case R.id.toolBar_img_right:
+                case R.id.toolbar_right_rl:
                     showDialog();
                     break;
 

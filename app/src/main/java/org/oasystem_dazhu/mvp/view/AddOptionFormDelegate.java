@@ -21,6 +21,6 @@ public class AddOptionFormDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("处理意见单");
-        setToolBarRightTv2("提交");
+        setToolBarRightTv("提交");
     }
 }

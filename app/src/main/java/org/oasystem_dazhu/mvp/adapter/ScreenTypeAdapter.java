@@ -69,7 +69,7 @@ public class ScreenTypeAdapter extends RecyclerView.Adapter<ScreenTypeAdapter.Sc
                 } else {
                     TextView tv = tv_view.get(position);
                     tv.setBackgroundResource(R.drawable.et);
-                    tv.setTextColor(context.getResources().getColor(R.color.color_010101));
+                    tv.setTextColor(context.getResources().getColor(R.color.color_727171));
                 }
                 if (itemClickListener != null)
                     itemClickListener.onItemClick(position);
@@ -81,7 +81,7 @@ public class ScreenTypeAdapter extends RecyclerView.Adapter<ScreenTypeAdapter.Sc
         for (int i = 0; i < tv_view.size(); i++) {
             TextView tv = tv_view.get(i);
             tv.setBackgroundResource(R.drawable.et);
-            tv.setTextColor(context.getResources().getColor(R.color.color_010101));
+            tv.setTextColor(context.getResources().getColor(R.color.color_727171));
         }
         if (selectedList != null) {
             for (int i = 0; i < selectedList.size(); i++) {

@@ -2,6 +2,8 @@ package org.oasystem_dazhu.mvp.presenter.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -53,6 +55,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
         idList.add(R.id.my_apply);
         idList.add(R.id.my_approver);
         selectedId = R.id.my_apply;
+        setCheckStates(selectedId);
         viewDelegate.get(R.id.my_apply).setSelected(true);
         viewDelegate.setOnClickListener(onClickListener, R.id.my_apply, R.id.my_approver);
     }
@@ -93,11 +96,20 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
     }
 
     private void setCheckStates(int id) {
+        RelativeLayout parent;
         for (int i = 0; i < idList.size(); i++) {
             if (idList.get(i) == id) {
                 viewDelegate.get(id).setSelected(true);
-            } else
+                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
+
+            } else {
                 viewDelegate.get(idList.get(i)).setSelected(false);
+                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
+            }
         }
     }
 
@@ -153,7 +165,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
     }
 
     private void setOnclick() {
-        viewDelegate.getToolBarRightImg().setOnClickListener(new View.OnClickListener() {
+        viewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startMyActivity(AddCarApplyActivity.class, null);

@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
-    android:layout_marginTop="5dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
     android:orientation="vertical">
 
     <ImageView
+        android:layout_marginTop="3dp"
         android:id="@+id/ask_for_leave_icon"
-        android:layout_width="68dp"
-        android:layout_height="68dp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
+        android:layout_width="31dp"
+        android:layout_height="31dp"
+        android:layout_marginStart="13dp"
         android:src="@mipmap/ask_for_leave_icon" />
 
     <LinearLayout
+        android:id="@+id/ask_for_leave_ll"
+        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="12dp"
         android:layout_toLeftOf="@+id/ask_for_leave_status"
         android:layout_toRightOf="@+id/ask_for_leave_icon"
         android:orientation="vertical">
@@ -25,83 +26,76 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <TextView
-                    android:id="@+id/ask_for_leave_user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/ask_for_leave_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/ask_for_leave_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:id="@+id/ask_for_leave_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/ask_for_leave_reason"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="14sp" />
+                android:textSize="15sp" />
 
         </LinearLayout>
 
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ask_for_leave_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/ask_for_leave_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textSize="9sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/ask_for_leave_user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="9sp" />
+
+            <TextView
+                android:id="@+id/ask_for_leave_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:textSize="9sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
 
     <TextView
+        android:layout_marginTop="27dp"
         android:id="@+id/ask_for_leave_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:textSize="18sp" />
+        android:layout_marginEnd="18dp"
+        android:layout_marginStart="25dp"
+        android:textColor="#e9546b"
+        android:textSize="10sp" />
 
     <View
+        android:layout_below="@+id/ask_for_leave_ll"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="5dp"
-        android:layout_toRightOf="@+id/ask_for_leave_icon"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="10dp"
         android:background="@color/color_f5f5f5" />
 </RelativeLayout>

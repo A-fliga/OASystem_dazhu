@@ -28,6 +28,7 @@ public class OfficialDelegate extends ViewDelegate {
     private TextView home_user_name, home_user_unit;
     private RecyclerView typeRecyclerView,businessManagerRecycler;
 
+
     @Override
     public void onDestroy() {
 
@@ -53,7 +54,6 @@ public class OfficialDelegate extends ViewDelegate {
             home_user_name.setText(userInfo.getName());
             home_user_unit.setText(userInfo.getCompany_name());
         }
-
     }
 
 
@@ -61,24 +61,20 @@ public class OfficialDelegate extends ViewDelegate {
         List<String> imgIdList = new ArrayList<>();
         List<String> typeContentList = new ArrayList<>();
         List<HomeTypeBean.DataBean> beanList = FirmingTypeManager.getInstance().getBeanList();
-        if(beanList != null) {
-            for (int i = 0; i < beanList.size(); i++) {
-                typeContentList.add(beanList.get(i).getName());
-                imgIdList.add(beanList.get(i).getImg());
-            }
-            if (UserManager.getInstance().getUserInfo().getIs_monitoring() == 1) {
-                typeContentList.add("文件监控");
-            }
-
-            HomeTypeAdapter adapter = new HomeTypeAdapter(imgIdList, typeContentList, beanList, this.getActivity());
-            setRecycler(typeRecyclerView, adapter, 6, true);
-//        setRecyclerView(typeRecyclerView, adapter);
-            return adapter;
+        for (int i = 0; i < beanList.size(); i++) {
+            typeContentList.add(beanList.get(i).getName());
+            imgIdList.add(beanList.get(i).getImg());
         }
-        else return null;
+        if (UserManager.getInstance().getUserInfo().getIs_monitoring() == 1) {
+            typeContentList.add("文件监控");
+        }
+
+        HomeTypeAdapter adapter = new HomeTypeAdapter(imgIdList, typeContentList, beanList, this.getActivity());
+        setRecyclerView(typeRecyclerView, adapter);
+        return adapter;
     }
 
-    public HomeBusinessManagerAdapter initManagerAdaper() {
+    public HomeBusinessManagerAdapter initManagerAdapter() {
         List<HomeBusinessManagerBean> beanList = new ArrayList<>();
         HomeBusinessManagerBean bean = null;
         for (int i = 0; i < 3; i++) {
@@ -100,24 +96,11 @@ public class OfficialDelegate extends ViewDelegate {
             beanList.add(bean);
         }
         HomeBusinessManagerAdapter adapter = new HomeBusinessManagerAdapter(beanList,this.getActivity());
-        setRecycler(businessManagerRecycler, adapter, 6, true);
+        setRecyclerView(businessManagerRecycler, adapter);
         return adapter;
     }
 
-//    public void setNotification(int count) {
-//        //实例化通知构建器对象
-//        Notification.Builder builder = new Notification.Builder(this.getActivity());
-//        //设置通知的图标
-//        builder.setSmallIcon(R.mipmap.mlogo);
-//        //设置通知的标题
-//        builder.setContentTitle("政务OA系统");
-//        //设置通知的内容
-//        builder.setContentText("您有" + count + "条未处理文件");
-//        Notification notification = builder.build();
-//        BadgeUtil.sendBadgeNotification(notification, 1, MyApplication.getAppContext(), count, count);
-//    }
-
-    private void setRecyclerView(RecyclerView recyclerView, HomeTypeAdapter adapter) {
+    private void setRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);

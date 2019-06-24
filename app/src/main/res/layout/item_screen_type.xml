@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="30px"
-    android:layout_marginLeft="18px"
+    android:layout_marginTop="8dp"
+    android:layout_marginStart="11dp"
     android:orientation="vertical">
 
     <TextView
         android:textColor="@color/color_010101"
         android:background="@drawable/et"
         android:id="@+id/item_screen_type"
-        android:layout_width="220px"
-        android:layout_height="62px"
+        android:layout_width="67dp"
+        android:layout_height="24dp"
         android:gravity="center"
-        android:textSize="40px" />
+        android:textSize="10sp" />
 </LinearLayout>

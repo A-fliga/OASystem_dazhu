@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="65dp"
+    android:layout_height="55dp"
     android:gravity="center_vertical"
     android:orientation="vertical">
 
@@ -14,21 +14,21 @@
             android:id="@+id/sign_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="13sp" />
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/sign_flows"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/sign_update_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp" />
+        android:textSize="10sp" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -38,16 +38,16 @@
 
         <ImageView
             android:id="@+id/sign_status_img"
-            android:layout_width="13dp"
-            android:layout_height="13dp"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
             android:layout_centerVertical="true"
             android:src="@mipmap/not_sign" />
 
         <ImageView
+            android:scaleType="fitXY"
             android:id="@+id/sign_line_img"
             android:layout_width="130dp"
             android:layout_height="2dp"
-            android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/sign_status_img"
             android:src="@mipmap/sign_gray_line" />

@@ -6,7 +6,6 @@
 
     <include layout="@layout/toolbar" />
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -14,27 +13,50 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/my_apply"
-            android:layout_width="144dp"
-            android:layout_height="40dp"
-            android:src="@drawable/my_apply_selector" />
+        <RelativeLayout
+            android:layout_width="93dp"
+            android:layout_height="26dp">
+
+            <ImageView
+                android:id="@+id/my_apply"
+                android:layout_width="93dp"
+                android:layout_height="26dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/tab_selector_left" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="我的申请"
+                android:textSize="10sp" />
+        </RelativeLayout>
 
 
-        <ImageView
-            android:layout_marginLeft="-2dp"
-            android:id="@+id/my_approver"
-            android:layout_width="144dp"
-            android:layout_height="40dp"
-            android:src="@drawable/my_approve_selector" />
+        <RelativeLayout
+            android:layout_width="93dp"
+            android:layout_height="26dp">
+
+            <ImageView
+                android:id="@+id/my_approver"
+                android:layout_width="93dp"
+                android:layout_height="26dp"
+                android:layout_marginStart="-1dp"
+                android:src="@drawable/tab_selector_right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="我的审批"
+                android:textSize="10sp" />
+        </RelativeLayout>
+
 
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/car_apply_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginEnd="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp" />
+        android:layout_height="match_parent" />
 </LinearLayout>

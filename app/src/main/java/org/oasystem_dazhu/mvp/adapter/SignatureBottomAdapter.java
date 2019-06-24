@@ -75,7 +75,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
     }
 
     class SignatureBottomViewHolder extends RecyclerView.ViewHolder {
-        private TextView sign_name, sign_flows, sign_update_time;
+        private TextView sign_name, sign_flows,sign_update_time;
         private ImageView sign_status_img, sign_line_img;
 
         public SignatureBottomViewHolder(View itemView) {

@@ -167,6 +167,15 @@ public class DocumentBean implements Serializable {
         private String auth;
         private List<DataFlowsBean> flows;
         private String name;
+        private String schedule;
+
+        public String getSchedule() {
+            return schedule;
+        }
+
+        public void setSchedule(String schedule) {
+            this.schedule = schedule;
+        }
 
         public String getName() {
             return name;

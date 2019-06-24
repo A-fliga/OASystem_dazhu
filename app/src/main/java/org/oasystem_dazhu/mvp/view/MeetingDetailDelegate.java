@@ -6,6 +6,7 @@ import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.mvp.model.bean.MeetingDetailBean;
 import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
 
+
 /**
  * Created by www on 2019/3/20.
  */
@@ -37,8 +38,8 @@ public class MeetingDetailDelegate extends ViewDelegate {
 
     public void initTopView(int status){
 //        if(status != 3){
-            setToolBarRightImg(R.mipmap.meeting_sign_in);
 //        }
+        setToolBarRightTv("回执");
     }
 
     public void initView(MeetingDetailBean bean){

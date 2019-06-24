@@ -30,7 +30,7 @@ public class CarManagementDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("用车管理");
-        getToolBarRightImg().setImageResource(R.mipmap.add_car_apply);
+        setToolBarRightTv("申请");
         recyclerView = get(R.id.car_apply_list);
     }
 

@@ -23,16 +23,14 @@
 
     <!--输入框-->
     <style name="MyEditText" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/color_a4a4a4</item>
-        <item name="colorControlActivated">@color/color_a4a4a4</item>
-        <item name="android:textSize">16sp</item>
+        <item name="colorControlNormal">@color/color_727171</item>
+        <item name="colorControlActivated">@color/color_727171</item>
         <item name="android:textCursorDrawable">@null</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">@null</item>
-        <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:paddingBottom">5dp</item>
-        <item name="android:paddingTop">5dp</item>
+        <item name="android:layout_width">217dp</item>
+        <item name="android:layout_height">33dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:textSize">9sp</item>
+        <item name="android:background">@drawable/edit_bg_selector</item>
     </style>
     <!--输入框-->
     <style name="MyEditText1" parent="Theme.AppCompat.Light">

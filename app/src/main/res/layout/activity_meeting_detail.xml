@@ -14,49 +14,49 @@
         android:orientation="vertical">
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="10dp"
             android:id="@+id/meeting_detail_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:id="@+id/meeting_detail_compere"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:id="@+id/meeting_detail_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:id="@+id/meeting_detail_start_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:id="@+id/meeting_detail_end_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:id="@+id/meeting_detail_remember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:layout_marginTop="5dp"
             android:id="@+id/meeting_detail_content"
             android:layout_width="wrap_content"

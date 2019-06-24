@@ -23,15 +23,12 @@ import java.util.List;
 public class HomeBusinessManagerAdapter extends RecyclerView.Adapter<HomeBusinessManagerAdapter.HomeBusinessManagerHolder> {
     private OnItemClickListener listener;
     private List<HomeBusinessManagerBean> beanList;
-    private Context context;
     private int width;
 
     public HomeBusinessManagerAdapter(List<HomeBusinessManagerBean> beanList, Context context) {
         this.beanList = beanList;
-        this.context = context;
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
-
         width = wm.getDefaultDisplay().getWidth();
     }
 

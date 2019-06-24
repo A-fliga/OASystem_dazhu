@@ -22,7 +22,6 @@ import java.util.List;
 public class OfficialDocumentDetailDelegate extends ViewDelegate {
     private LinearLayout sign_left_ll;
     private RecyclerView sign_bottom;
-
     @Override
     public void onDestroy() {
 
@@ -35,9 +34,10 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
 
     @Override
     public void initWidget() {
-        getTitleView().setText("会签");
-        sign_left_ll = get(R.id.sign_left_ll);
+        sign_left_ll = get(R.id.sign_top_ll);
         sign_bottom = get(R.id.sign_bottom);
+        setToolBarRightImg(R.mipmap.save_sign);
+        getToolBarRightImg().setVisibility(View.GONE);
     }
 
     public void hideLeftBtn(String auth) {
@@ -50,8 +50,7 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
             sign_left_ll.getChildAt(sign_left_ll.getChildCount() - 1).setVisibility(View.GONE);
         }
     }
-
-    public void initBottomRecyclerView(DocumentBean.DataBean bean, Boolean done) {
+    public void initBottomRecyclerView(DocumentBean.DataBean bean,Boolean done){
         List<SignFlowsBean> beanList = new ArrayList<>();
         SignFlowsBean flowsBean = new SignFlowsBean();
         flowsBean.setName(bean.getDispatch().getUser().getName());
@@ -70,11 +69,11 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
             fBean.setStatus(dataFlowsBean.getStatus());
             beanList.add(fBean);
         }
-        SignatureBottomAdapter adapter = new SignatureBottomAdapter(this.getActivity(), beanList, done);
-        setRecyclerView(sign_bottom, adapter);
+        SignatureBottomAdapter adapter = new SignatureBottomAdapter(this.getActivity(),beanList,done);
+        setRecyclerView(sign_bottom,adapter);
     }
 
-    private void setRecyclerView(RecyclerView recyclerView, SignatureBottomAdapter adapter) {
+    private void setRecyclerView(RecyclerView recyclerView,SignatureBottomAdapter adapter){
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(linearLayoutManager);

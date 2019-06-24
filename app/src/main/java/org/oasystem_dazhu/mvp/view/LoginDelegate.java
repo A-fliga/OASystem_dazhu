@@ -30,6 +30,5 @@ public class LoginDelegate extends ViewDelegate {
             EditText editText = get(R.id.login_username);
             editText.setText(userName);
         }
-        getTitleView().setText("登录");
     }
 }

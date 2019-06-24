@@ -41,19 +41,32 @@ public class LoginActivity extends ActivityPresenter {
         super.onCreate(savedInstanceState);
         unEt = viewDelegate.get(R.id.login_username);
         pwdEt = viewDelegate.get(R.id.login_password);
-        viewDelegate.setOnClickListener(onClickListener, R.id.login_btn);
+        viewDelegate.setOnClickListener(onClickListener, R.id.login_btn, R.id.can_not_login, R.id.forget_pwd);
     }
 
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if (unEt.getText().toString().replaceAll(" ", "").isEmpty() || pwdEt.getText().toString().replaceAll(" ", "").isEmpty()) {
-                ToastUtil.s("输入不能为空");
-            } else {
-                if (!AppUtil.isFastDoubleClick(1000)) {
-                    toLogin();
-                }
+
+            switch (view.getId()) {
+                case R.id.login_btn:
+                    if (unEt.getText().toString().replaceAll(" ", "").isEmpty() || pwdEt.getText().toString().replaceAll(" ", "").isEmpty()) {
+                        ToastUtil.s("输入不能为空");
+                    } else {
+                        if (!AppUtil.isFastDoubleClick(1000)) {
+                            toLogin();
+                        }
+                    }
+                    break;
+
+                case R.id.can_not_login:
+                    ToastUtil.s("暂不支持外部修改，请联系管理员");
+                    break;
+
+                case R.id.forget_pwd:
+                    ToastUtil.s("暂不支持外部修改，请联系管理员");
+                    break;
             }
         }
     };

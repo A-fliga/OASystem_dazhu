@@ -40,6 +40,7 @@ import java.util.List;
 import static org.oasystem_dazhu.utils.SortUtl.POSITIVE;
 import static org.oasystem_dazhu.utils.SortUtl.REVERSE;
 
+
 /**
  * Created by www on 2018/12/29.
  */
@@ -71,7 +72,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         typeAdapter = viewDelegate.initTypeList();
-        managerAdapter = viewDelegate.initManagerAdaper();
+        managerAdapter = viewDelegate.initManagerAdapter();
         getNotDoneList(new ScreenBean());
         viewDelegate.setOnClickListener(onClickListener,
                 R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh, R.id.home_user_icon);
@@ -97,15 +98,15 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         managerAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                switch (position){
+                switch (position) {
                     case 0:
-                        startMyActivity(AttendanceActivity.class,null);
+                        startMyActivity(AttendanceActivity.class, null);
                         break;
                     case 1:
-                        startMyActivity(MeetingsActivity.class,null);
+                        startMyActivity(MeetingsActivity.class, null);
                         break;
                     case 2:
-                        startMyActivity(CarManagementActivity.class,null);
+                        startMyActivity(CarManagementActivity.class, null);
                         break;
                 }
             }
@@ -150,6 +151,34 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         }, screenBean);
     }
 
+    private void getFirmingType() {
+        PublicModel.getInstance().getType(new MSubscribe<BaseEntity<HomeTypeBean>>() {
+            @Override
+            public void onNext(BaseEntity<HomeTypeBean> bean) {
+                super.onNext(bean);
+                List<HomeTypeBean.DataBean> beanList = new ArrayList<HomeTypeBean.DataBean>();
+                beanList.addAll(bean.getData().getData());
+//                for (int i = 0; i < 3; i++) {
+//                    HomeTypeBean.DataBean bean1 = new HomeTypeBean.DataBean();
+//                    if (i == 0) {
+//                        bean1.setName("会议管理");
+//                    }
+//                    if (i == 1) {
+//                        bean1.setName("考勤管理");
+//                    }
+//                    if (i == 2) {
+//                        bean1.setName("用车管理");
+//                    }
+//                    bean1.setDispatch_flow_list_count(0);
+//                    beanList.add(bean1);
+//                }
+                FirmingTypeManager.getInstance().addBeanList(beanList);
+                typeAdapter = viewDelegate.initTypeList();
+                setOnItemClickListener();
+            }
+        });
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void refreshList(String content) {
         if (content.equals("upLoadSuccess")) {
@@ -192,8 +221,9 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                 case R.id.refresh:
                     isPositive_update = false;
                     isPositive_create = false;
-                    if (newBeanList != null)
+                    if (newBeanList != null) {
                         newBeanList.clear();
+                    }
                     getNotDoneList(new ScreenBean());
                     getFirmingType();
                     break;
@@ -207,24 +237,10 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     }
                     break;
 
+
             }
         }
     };
-
-
-    private void getFirmingType() {
-        PublicModel.getInstance().getType(new MSubscribe<BaseEntity<HomeTypeBean>>() {
-            @Override
-            public void onNext(BaseEntity<HomeTypeBean> bean) {
-                super.onNext(bean);
-                List<HomeTypeBean.DataBean> beanList = new ArrayList<HomeTypeBean.DataBean>();
-                beanList.addAll(bean.getData().getData());
-                FirmingTypeManager.getInstance().addBeanList(beanList);
-                typeAdapter = viewDelegate.initTypeList();
-                setOnItemClickListener();
-            }
-        });
-    }
 
     private void start2Activity(int typeId) {
         Bundle bundle = new Bundle();

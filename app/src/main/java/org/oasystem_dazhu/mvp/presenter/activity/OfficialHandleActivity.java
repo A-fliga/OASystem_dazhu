@@ -7,7 +7,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.oasystem_dazhu.R;
@@ -18,6 +19,7 @@ import org.oasystem_dazhu.mvp.view.OfficialHandleDelegate;
 import org.oasystem_dazhu.mvp.view.customView.NoScrollViewPager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by www on 2019/1/19.
@@ -30,6 +32,8 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
     private OfficialListFragment notDoneFragment, doneFragment;
     private Boolean isPositive_create = false, isPositive_update = false;
     private ScreenBean screenBean;
+    private List<Integer> idList;
+    private int selectedId;
 
     @Override
     public Class<OfficialHandleDelegate> getDelegateClass() {
@@ -46,29 +50,43 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
         super.onCreate(savedInstanceState);
         typeId = getIntent().getExtras().getInt("typeId");
         viewDelegate.initViews(FirmingTypeManager.getInstance().getTypeName(typeId));
+        init();
         initViewPager();
         viewDelegate.setOnClickListener(onClickListener, R.id.official_not_done_tab, R.id.official_done_tab, R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
     }
 
+    private void init() {
+        idList = new ArrayList<>();
+        idList.add(R.id.official_not_done_tab);
+        idList.add(R.id.official_done_tab);
+        selectedId = R.id.official_not_done_tab;
+        setCheckStates(selectedId);
+        viewDelegate.get(R.id.official_not_done_tab).setSelected(true);
+    }
+
+
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+
             switch (view.getId()) {
                 case R.id.official_not_done_tab:
                     if (done) {
                         done = false;
-                        changeTopStyle(false);
-                        if (viewPager != null)
+                        if (viewPager != null) {
                             viewPager.setCurrentItem(0);
+                        }
                     }
+                    setCheckStates(view.getId());
                     break;
                 case R.id.official_done_tab:
                     if (!done) {
                         done = true;
-                        changeTopStyle(true);
-                        if (viewPager != null)
+                        if (viewPager != null) {
                             viewPager.setCurrentItem(1);
+                        }
                     }
+                    setCheckStates(view.getId());
                     break;
                 case R.id.to_screen:
                     Intent intent = new Intent(OfficialHandleActivity.this, ScreenActivity.class);
@@ -83,14 +101,14 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
                 case R.id.to_sort_create:
                     isPositive_create = !isPositive_create;
                     isPositive_update = false;
-                    doneFragment.notifyDataSetChanged(true, isPositive_create,true);
-                    notDoneFragment.notifyDataSetChanged(false, isPositive_create,true);
+                    doneFragment.notifyDataSetChanged(true, isPositive_create, true);
+                    notDoneFragment.notifyDataSetChanged(false, isPositive_create, true);
                     break;
                 case R.id.to_sort_update:
                     isPositive_update = !isPositive_update;
                     isPositive_create = false;
-                    doneFragment.notifyDataSetChanged(true, isPositive_update,false);
-                    notDoneFragment.notifyDataSetChanged(false, isPositive_update,false);
+                    doneFragment.notifyDataSetChanged(true, isPositive_update, false);
+                    notDoneFragment.notifyDataSetChanged(false, isPositive_update, false);
                     break;
 
                 case R.id.refresh:
@@ -102,17 +120,28 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
         }
     };
 
-    private void changeTopStyle(Boolean done) {
-        ImageView tv1 = viewDelegate.get(R.id.official_not_done_tab);
-        tv1.setImageResource(done ? R.mipmap.not_read_normal : R.mipmap.not_read_selected);
-        ImageView tv2 = viewDelegate.get(R.id.official_done_tab);
-        tv2.setImageResource(done ? R.mipmap.read_selected : R.mipmap.read_normal);
-    }
-
     private void initViewPager() {
         viewPager = viewDelegate.getViewPager();
         mFragmentPagerAdapter mFragmentPagerAdapter = new mFragmentPagerAdapter(getSupportFragmentManager(), getFragments());
         viewPager.setAdapter(mFragmentPagerAdapter);
+    }
+
+    private void setCheckStates(int id) {
+        RelativeLayout parent;
+        for (int i = 0; i < idList.size(); i++) {
+            if (idList.get(i) == id) {
+                viewDelegate.get(id).setSelected(true);
+                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
+
+            } else {
+                viewDelegate.get(idList.get(i)).setSelected(false);
+                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
+            }
+        }
     }
 
     private ArrayList<OfficialListFragment> getFragments() {

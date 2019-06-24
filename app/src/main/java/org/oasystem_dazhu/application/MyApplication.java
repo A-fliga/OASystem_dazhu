@@ -5,6 +5,8 @@ import android.content.Context;
 
 import com.tencent.smtt.sdk.QbSdk;
 
+import me.jessyan.autosize.AutoSizeConfig;
+
 import static org.oasystem_dazhu.constants.Constants.CORE_INIT;
 
 
@@ -21,6 +23,7 @@ public class MyApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         application = this;
+        AutoSizeConfig.getInstance().setBaseOnWidth(false);
         //增加这句话
         QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {
             @Override

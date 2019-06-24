@@ -2,6 +2,8 @@ package org.oasystem_dazhu.mvp.presenter.activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.http.MSubscribe;
@@ -51,6 +53,7 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
         beanList = new ArrayList<>();
         viewDelegate.get(R.id.not_start_meeting).setSelected(true);
         selectedId = R.id.not_start_meeting;
+        setCheckStates(selectedId);
         viewDelegate.setOnClickListener(onClickListener, R.id.not_start_meeting, R.id.going_meeting, R.id.end_meeting);
     }
 
@@ -113,11 +116,20 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
     }
 
     private void setCheckStates(int id) {
+        RelativeLayout parent;
         for (int i = 0; i < idList.size(); i++) {
             if (idList.get(i) == id) {
                 viewDelegate.get(id).setSelected(true);
-            } else
+                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
+
+            } else {
                 viewDelegate.get(idList.get(i)).setSelected(false);
+                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
+            }
         }
     }
 }
