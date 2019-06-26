@@ -26,6 +26,13 @@
             android:layout_height="match_parent"
             android:background="@color/color_999999" />
 
+        <ImageView
+            android:id="@+id/sign_img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter" />
+
         <LinearLayout
             android:id="@+id/sign_right_ll"
             android:layout_width="wrap_content"
@@ -45,10 +52,10 @@
         </LinearLayout>
 
         <LinearLayout
-            android:background="@color/color_f5f5f5"
             android:id="@+id/sign_top_ll"
             android:layout_width="match_parent"
             android:layout_height="43dp"
+            android:background="@color/color_f5f5f5"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -230,6 +237,7 @@
 
         </FrameLayout>
     </FrameLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sign_bottom"
         android:layout_width="match_parent"

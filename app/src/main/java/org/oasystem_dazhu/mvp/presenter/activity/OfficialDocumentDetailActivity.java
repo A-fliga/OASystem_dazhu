@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 
+import com.bumptech.glide.Glide;
 import com.tencent.smtt.sdk.TbsReaderView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -226,22 +227,36 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             fileDir.mkdirs();
         }
         if (isFileExist(id, type)) {
-            if (!done && type.equals("pdf")) {
-                //用自己的view加载
-                viewDelegate.get(R.id.mSignatureView).setVisibility(View.VISIBLE);
-                viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
-                if (!cacheFileList.get(tagPosition).isEmpty())
-                    disPlayBySignView(new File(cacheFileList.get(tagPosition)));
-                else
-                    disPlayBySignView(new File(getPath(id, type)));
-            } else {
+            if (isPhoto(type)) {
+                ImageView img = viewDelegate.get(R.id.sign_img);
+                img.setVisibility(View.VISIBLE);
+                Glide.with(this).load(getPath(id, type)).into(img);
                 viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
-                viewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
-                displayFile(new File(getPath(id, type)));
+                viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
+            } else {
+                viewDelegate.get(R.id.sign_img).setVisibility(View.GONE);
+                if (!done && type.equals("pdf")) {
+                    //用自己的view加载
+                    viewDelegate.get(R.id.mSignatureView).setVisibility(View.VISIBLE);
+                    viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
+                    if (!cacheFileList.get(tagPosition).isEmpty())
+                        disPlayBySignView(new File(cacheFileList.get(tagPosition)));
+                    else
+                        disPlayBySignView(new File(getPath(id, type)));
+                } else {
+                    viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
+                    viewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
+                    displayFile(new File(getPath(id, type)));
+                }
             }
         } else {
             downLoadFile(id, type);
         }
+    }
+
+    private boolean isPhoto(String type) {
+        return type.toLowerCase().equals("jpg") || type.toLowerCase().equals("jpeg")
+                || type.toLowerCase().equals("png") || type.toLowerCase().equals("gif");
     }
 
     private void disPlayBySignView(File file) {
