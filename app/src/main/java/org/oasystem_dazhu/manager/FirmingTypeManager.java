@@ -43,6 +43,9 @@ public class FirmingTypeManager {
             typeIdList.add(beanList.get(i).getId());
         }
         int index = typeIdList.indexOf(typeId);
+        if (index < 0) {
+            index = 0;
+        }
         return beanList.get(index).getImg();
     }
 

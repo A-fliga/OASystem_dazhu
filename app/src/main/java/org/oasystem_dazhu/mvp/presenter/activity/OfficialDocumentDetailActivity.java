@@ -138,10 +138,12 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         accessoryList = new ArrayList<>();
         selectedUserId = new StringBuffer();
         selectedUserName = new StringBuffer();
-        accessoryList.add(dispatchBean.getForm_source_id());
-        cacheFileList.add("");
-        LogUtil.d("itemId", "itemId:" + itemId);
-        LogUtil.d("itemId", "formId:" + dispatchBean.getForm_source_id());
+        if (hasFormData()) {
+            accessoryList.add(dispatchBean.getForm_source_id());
+            cacheFileList.add("");
+            LogUtil.d("itemId", "itemId:" + itemId);
+            LogUtil.d("itemId", "formId:" + dispatchBean.getForm_source_id());
+        }
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
                 accessoryList.add(Integer.parseInt(dispatchBean.getAccessory_list().get(i).getSource_id()));
@@ -149,12 +151,6 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 cacheFileList.add("");
             }
         }
-
-//        StringBuffer sb = new StringBuffer();
-//        for (int i = 0; i < accessoryList.size(); i++) {
-//            sb.append(accessoryList.get(i)+" ");
-//        }
-//        LogUtil.d("paixu", "接收到的" + sb.toString());
         initView(done);
         viewDelegate.setOnClickListener(onClickListener, R.id.toolBar_img_right, R.id.pen_ll, R.id.eraser_ll, R.id.clear_ll);
         initNotDoneView();
@@ -170,6 +166,10 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         color = SharedPreferencesUtil.getColor() == -1 ? Color.BLACK : SharedPreferencesUtil.getColor();
     }
 
+    private boolean hasFormData() {
+        return dispatchBean.getForm_source_id() != 0;
+    }
+
     private void getAllUserBean() {
         userBeanList = UserManager.getInstance().getAllUserInfo();
     }
@@ -182,12 +182,22 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(OfficialDocumentDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, WRITE_STORAGE_CODE);
         } else {
+            startShow();
+        }
+    }
+
+    private void startShow() {
+        if (hasFormData()) {
             id = dispatchBean.getForm_source_id();
             String[] str = dispatchBean.getForm_source().getName().split("\\.");
             type = str[str.length - 1];
-            tagPosition = 0;
-            showFile(id, type);
+        } else {
+            id = Integer.parseInt(dispatchBean.getAccessory_list().get(0).getSource_id());
+            String[] str = dispatchBean.getAccessory_list().get(0).getName().split("\\.");
+            type = str[str.length - 1];
         }
+        tagPosition = 0;
+        showFile(id, type);
     }
 
 
@@ -334,11 +344,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 }
             }
             if (j.size() == 0) {
-                id = dispatchBean.getForm_source_id();
-                String[] str = dispatchBean.getForm_source().getName().split("\\.");
-                type = str[str.length - 1];
-                tagPosition = 0;
-                showFile(id, type);
+                startShow();
             } else {
                 // 没有获取到权限，做特殊处理
                 StringBuffer sb = new StringBuffer();
@@ -508,12 +514,19 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private void initNotDoneView() {
         viewDelegate.setOnClickListener(onClickListener, R.id.sign_add_advise, R.id.sign_add_person, R.id.sign_agree, R.id.sign_refuse, R.id.sign_close, R.id.sign_daiqian);
         contentTv = new ArrayList<>();
-        contentTv.add("审批单");
+        if (hasFormData()) {
+            contentTv.add("审批单");
+        }
         String text;
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
-                text = dispatchBean.getAccessory_list().get(i).getName().split("_")[1];
                 if (BuildConfig.HOST.equals("http://112.35.0.188:9098/api/")) {
+                    String[] contentName = dispatchBean.getAccessory_list().get(i).getName().split("_");
+                    if (contentName.length > 1) {
+                        text = contentName[1];
+                    } else {
+                        text = contentName[0];
+                    }
                     if (text.length() <= 3) {
                         contentTv.add(text);
                     } else if (text.length() >= 4 && text.length() <= 6) {
@@ -550,17 +563,24 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                             sign_fileView = null;
                             createSignView();
                         }
-                        if (position == 0) {
-                            id = dispatchBean.getForm_source_id();
-                            String[] str = dispatchBean.getForm_source().getName().split("\\.");
-                            type = str[str.length - 1];
-                            showFile(dispatchBean.getForm_source_id(), str[str.length - 1]);
+                        if (hasFormData()) {
+                            if (position == 0) {
+                                id = dispatchBean.getForm_source_id();
+                                String[] str = dispatchBean.getForm_source().getName().split("\\.");
+                                type = str[str.length - 1];
+                                showFile(dispatchBean.getForm_source_id(), str[str.length - 1]);
 
+                            } else {
+                                id = Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id());
+                                String[] str = dispatchBean.getAccessory_list().get(position - 1).getName().split("\\.");
+                                type = str[str.length - 1];
+                                showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
+                            }
                         } else {
-                            id = Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id());
-                            String[] str = dispatchBean.getAccessory_list().get(position - 1).getName().split("\\.");
+                            id = Integer.parseInt(dispatchBean.getAccessory_list().get(position).getSource_id());
+                            String[] str = dispatchBean.getAccessory_list().get(position).getName().split("\\.");
                             type = str[str.length - 1];
-                            showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
+                            showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position).getSource_id()), type);
                         }
 
                     }
@@ -579,8 +599,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private String getNowType() {
-        String type = "";
-        for (int i = 0; i < contentTv.size(); i++) {
+        String type;
+        if (hasFormData()) {
             if (tagPosition == 0) {
                 String[] str = dispatchBean.getForm_source().getName().split("\\.");
                 type = str[str.length - 1];
@@ -588,6 +608,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 String[] str = dispatchBean.getAccessory_list().get(tagPosition - 1).getName().split("\\.");
                 type = str[str.length - 1];
             }
+        } else {
+            String[] str = dispatchBean.getAccessory_list().get(tagPosition).getName().split("\\.");
+            type = str[str.length - 1];
         }
         return type;
 
@@ -1015,7 +1038,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private String getFormSourceId() {
-        return String.valueOf(accessoryList.get(0));
+        if (hasFormData()) {
+            return String.valueOf(accessoryList.get(0));
+        } else return "0";
     }
 
     private String getAccessorySourceId() {
