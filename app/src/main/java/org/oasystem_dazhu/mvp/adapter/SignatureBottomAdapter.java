@@ -27,7 +27,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
         this.beanList = beanList;
         if (beanList.size() > 1) {
             for (int i = 1; i < beanList.size(); i++) {
-                if (beanList.get(i).getStatus() == 1) {
+                if (beanList.get(i).getStatus() >= 1) {
                     index = i;
                 }
             }
@@ -44,7 +44,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
         SignFlowsBean bean = beanList.get(position);
         holder.sign_update_time.setText(bean.getOpTime());
         if (position == 0) {
-            holder.sign_name.setText("起草人:" + bean.getName());
+            holder.sign_name.setText(bean.getName());
             holder.sign_status_img.setImageResource(R.mipmap.already_sign);
             holder.sign_line_img.setImageResource(R.mipmap.sign_line);
             holder.sign_flows.setText(bean.getOpName());
@@ -53,7 +53,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
             holder.sign_name.setText(bean.getName());
             if (position == index + 1) {
                 holder.sign_status_img.setImageResource(R.mipmap.is_signing);
-                holder.sign_flows.setText("等待审批");
+                holder.sign_flows.setText(bean.getOpName());
             } else {
                 if (position <= index) {
                     holder.sign_status_img.setImageResource(R.mipmap.already_sign);
@@ -75,7 +75,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
     }
 
     class SignatureBottomViewHolder extends RecyclerView.ViewHolder {
-        private TextView sign_name, sign_flows,sign_update_time;
+        private TextView sign_name, sign_flows, sign_update_time;
         private ImageView sign_status_img, sign_line_img;
 
         public SignatureBottomViewHolder(View itemView) {

@@ -1045,15 +1045,27 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private String getAccessorySourceId() {
         StringBuffer sb = new StringBuffer();
-        for (int i = 1; i < accessoryList.size(); i++) {
-            if (i == accessoryList.size() - 1) {
-                sb.append(accessoryList.get(i));
-            } else {
-                sb.append(accessoryList.get(i)).append("#");
+        if(hasFormData()) {
+            for (int i = 1; i < accessoryList.size(); i++) {
+                if (i == accessoryList.size() - 1) {
+                    sb.append(accessoryList.get(i));
+                } else {
+                    sb.append(accessoryList.get(i)).append("#");
+                }
+            }
+        }
+        else {
+            for (int i = 0; i < accessoryList.size(); i++) {
+                if (i == accessoryList.size() - 1) {
+                    sb.append(accessoryList.get(i));
+                } else {
+                    sb.append(accessoryList.get(i)).append("#");
+                }
             }
         }
         return sb.toString();
     }
+
 
 
     private void toExamine(int status, String form_source_id, String accessoryId, String reason) {
