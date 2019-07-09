@@ -70,6 +70,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import me.jessyan.autosize.AutoSize;
 import okhttp3.ResponseBody;
 
 import static org.oasystem_dazhu.R.id.toolbar_right_tv;
@@ -860,6 +861,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void addAccessory() {
         addAccessoryDialog = DialogUtil.createAlertDialog(OfficialDocumentDetailActivity.this, showDialogAndItemClickListener());
+        AutoSize.cancelAdapt(this);
         addAccessoryDialog.show();
     }
 
@@ -1101,6 +1103,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             dialog = null;
         }
         dialog = DialogUtil.createAlertDialog(this, view);
+        AutoSize.cancelAdapt(this);
         dialog.show();
     }
 

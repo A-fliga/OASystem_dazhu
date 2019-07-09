@@ -14,6 +14,7 @@ public final class Constants {
     public static Boolean ClearEraser = false;
     public static final String WANYUAN_URL = "http://112.35.6.11:9098/api/";
     public static final String DAZHU_URL = "http://112.35.1.224:9099/api/";
+    public static final int SIZE_IN_DP = 640;
 
     private static final String PACKAGE_PATH = "OASystem_dazhu";
     //已处理的文件路径

@@ -22,11 +22,12 @@
             android:text="用车人："
             android:textSize="11sp" />
 
-        <Spinner
+        <FrameLayout
             android:id="@+id/add_car_apply_user"
-            android:layout_width="250dp"
+            android:layout_width="230dp"
             android:layout_height="24dp"
-            android:layout_marginStart="9dp" />
+            android:layout_marginStart="9dp"
+            android:background="@drawable/et" />
     </LinearLayout>
 
     <View
@@ -51,11 +52,13 @@
             android:text="用车类型："
             android:textSize="11sp" />
 
-        <Spinner
+        <FrameLayout
             android:id="@+id/add_car_apply_type"
-            android:layout_width="250dp"
+            android:layout_width="230dp"
             android:layout_height="24dp"
-            android:layout_marginStart="9dp" />
+            android:layout_marginStart="9dp"
+            android:background="@drawable/et" />
+
     </LinearLayout>
 
     <View

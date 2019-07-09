@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import me.jessyan.autosize.AutoSize;
+
 /**
  * Created by www on 2019/3/26.
  */
@@ -142,6 +144,7 @@ public class AddLeaveActivity extends ActivityPresenter<AddLeaveDelegate> {
 
 
     public void setDate() {
+        AutoSize.cancelAdapt(this);
         final Calendar calendar = Calendar.getInstance();
         //通过自定义控件AlertDialog实现
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -158,7 +161,7 @@ public class AddLeaveActivity extends ActivityPresenter<AddLeaveDelegate> {
         builder.setTitle("请选择日期");
         builder.setPositiveButton("确  定", mOnClickListener);
         builder.setNegativeButton("取  消", mOnClickListener);
-        builder.create().show();
+        builder.show();
     }
 
     private DialogInterface.OnClickListener mOnClickListener = new DialogInterface.OnClickListener() {
@@ -271,7 +274,7 @@ public class AddLeaveActivity extends ActivityPresenter<AddLeaveDelegate> {
         for (int i = 0; i < bean.getData().size(); i++) {
             typeNameList.add(bean.getData().get(i).getName());
             typeIdList.add(bean.getData().get(i).getId() + "");
-            viewDelegate.initSpinner(R.id.add_leave_apply_type, typeNameList, new OnItemClickListener() {
+            viewDelegate.initSpinner(this,R.id.add_leave_apply_type, typeNameList, new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
                     commitBean.set(0, typeIdList.get(position));

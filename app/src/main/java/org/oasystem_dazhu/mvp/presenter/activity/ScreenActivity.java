@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.jessyan.autosize.AutoSize;
+
 /**
  * Created by www on 2019/1/8.
  */
@@ -155,6 +157,7 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
 
 
     public void setDate() {
+        AutoSize.cancelAdapt(this);
         final Calendar calendar = Calendar.getInstance();
         //通过自定义控件AlertDialog实现
         AlertDialog.Builder builder = new AlertDialog.Builder(ScreenActivity.this);
@@ -171,7 +174,7 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
         builder.setTitle("请选择日期");
         builder.setPositiveButton("确  定", mOnClickListener);
         builder.setNegativeButton("取  消", mOnClickListener);
-        builder.create().show();
+        builder.show();
     }
 
     private DialogInterface.OnClickListener mOnClickListener = new DialogInterface.OnClickListener() {

@@ -1,5 +1,6 @@
 package org.oasystem_dazhu.utils;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,10 +17,13 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.mvp.presenter.activity.ActivityPresenter;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+
+import me.jessyan.autosize.AutoSize;
 
 /**
  * Created by www on 2017/6/14.
@@ -33,7 +37,7 @@ public class ProgressDialogUtil {
     private static volatile ProgressDialogUtil utils;
     private AlertDialog dialog = null;
     private TextView title = null;
-    private WeakReference<Context> context = null;
+    private WeakReference<Activity> activity = null;
     private boolean canceledOnTouchOutside = false, cancelable = true;
 
     private Handler handler = new Handler(Looper.getMainLooper()) {
@@ -100,18 +104,18 @@ public class ProgressDialogUtil {
      * @返回值:void
      */
     private void init(String msg) {
-        if (context.get() != null) {
-            if (isBackground(context.get())) {
+        if (activity.get() != null) {
+            if (isBackground(activity.get())) {
                 // 如果程序在后台，则不加载
                 return;
             }
         }
-        if (context.get() != null) {
-            LayoutInflater flat = LayoutInflater.from(context.get());
+        if (activity.get() != null) {
+            LayoutInflater flat = LayoutInflater.from(activity.get());
             View v = flat.inflate(R.layout.prograss_dialog, null);
             // v.setBackgroundColor(context.getResources().getColor(android.R.color.transparent));
             // 创建对话
-            dialog = new AlertDialog.Builder(context.get(), R.style.MyProgressDialogStyle).create();
+            dialog = new AlertDialog.Builder(activity.get(), R.style.MyProgressDialogStyle).create();
             // 设置返回键点击消失对话框
             dialog.setCancelable(cancelable);
             // 设置点击返回框外边不消失
@@ -153,13 +157,14 @@ public class ProgressDialogUtil {
      */
     //无文本消息的对话框
     public void startLoad() {
-        context = new WeakReference<Context>(ActivityPresenter.getTopActivity());/// 获取当前的activity的上下文
-        if (context.get() == null) {
+        activity = new WeakReference<Activity>(ActivityPresenter.getTopActivity());/// 获取当前的activity的上下文
+        if (activity.get() == null) {
             return;
         }
-        if (isBackground(context.get())) {// 如果程序在后台，则不加载
+        if (isBackground(activity.get())) {// 如果程序在后台，则不加载
             return;
         }
+        AutoSize.autoConvertDensity(activity.get(), Constants.SIZE_IN_DP,false);
         final Message message = new Message();
         message.what = START_EMPTY_DIALOG;
         handler.sendMessage(message);
@@ -167,13 +172,14 @@ public class ProgressDialogUtil {
 
     //有文本消息的对话框
     public void startLoad(String msg) {
-        context = new WeakReference<Context>(ActivityPresenter.getTopActivity());// 获取当前的activity的上下文
-        if (context.get() == null) {
+        activity = new WeakReference<Activity>(ActivityPresenter.getTopActivity());// 获取当前的activity的上下文
+        if (activity.get() == null) {
             return;
         }
-        if (isBackground(context.get())) {// 如果程序在后台，则不加载
+        if (isBackground(activity.get())) {// 如果程序在后台，则不加载
             return;
         }
+        AutoSize.autoConvertDensity(activity.get(),Constants.SIZE_IN_DP,false);
         final Message message = new Message();
         message.what = START_DIALOG;
         message.obj = msg;
@@ -225,7 +231,7 @@ public class ProgressDialogUtil {
         handler.sendEmptyMessage(STOP_DIALOG);
     }
 
-    public boolean isBackground(Context context) {
+    public boolean isBackground(Activity context) {
         ActivityManager activityManager = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager

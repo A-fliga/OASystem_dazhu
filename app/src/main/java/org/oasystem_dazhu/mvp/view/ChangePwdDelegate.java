@@ -20,6 +20,5 @@ public class ChangePwdDelegate extends ViewDelegate {
 
     @Override
     public void initWidget() {
-        getTitleView().setText("修改密码");
     }
 }

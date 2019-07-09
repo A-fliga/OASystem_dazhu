@@ -62,6 +62,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import me.jessyan.autosize.AutoSize;
+
 
 public class MainActivity extends ActivityPresenter {
     public  NoScrollViewPager viewPager;
@@ -113,6 +115,7 @@ public class MainActivity extends ActivityPresenter {
         protected void onPreExecute() {
             super.onPreExecute();
             pd = DialogUtil.showProgressDialog(context);
+            AutoSize.cancelAdapt(activity);
             pd.show();
         }
 

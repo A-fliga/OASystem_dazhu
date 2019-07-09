@@ -1,5 +1,6 @@
 package org.oasystem_dazhu.utils;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -14,6 +15,8 @@ import android.view.View;
 
 import org.oasystem_dazhu.R;
 
+import me.jessyan.autosize.AutoSize;
+
 
 /**
  * Created by www on 2017/11/16.
@@ -23,34 +26,40 @@ public class DialogUtil {
     /**
      * 这是兼容的 AlertDialog
      */
-    public static void showDialog(Context context, String message, String sure,
+    public static void showDialog(Activity activity, String message, String sure,
                                   String cancel, DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle("温馨提示").setCancelable(false).setPositiveButton(sure, listener).
-                setNegativeButton(cancel, listener).setMessage(message).show();
+                setNegativeButton(cancel, listener).setMessage(message);
+        AutoSize.cancelAdapt(activity);
+        builder.show();
     }
 
     /**
      * 复选对话框
      */
-    public static void showChoiceDialog(Context context, String title,String sure,
-                                        String cancel,String[] data, boolean[] booleanList,
+    public static void showChoiceDialog(Activity activity, String title, String sure,
+                                        String cancel, String[] data, boolean[] booleanList,
                                         DialogInterface.OnClickListener listener,
                                         DialogInterface.OnMultiChoiceClickListener multiChoiceClickListener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title).setCancelable(false).setPositiveButton(sure, listener).
-                setNegativeButton(cancel, listener).setMultiChoiceItems(data,booleanList,multiChoiceClickListener).show();
+                setNegativeButton(cancel, listener).setMultiChoiceItems(data, booleanList, multiChoiceClickListener);
+        AutoSize.cancelAdapt(activity);
+        builder.show();
     }
 
     /**
      * 单选对话框
      */
-    public static void showSingleChoiceDialog(Context context, String title,String sure,
-                                        String cancel,String[] data,
-                                        DialogInterface.OnClickListener listener) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    public static void showSingleChoiceDialog(Activity activity, String title, String sure,
+                                              String cancel, String[] data,
+                                              DialogInterface.OnClickListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setTitle(title).setCancelable(false).setPositiveButton(sure, listener).
-                setNegativeButton(cancel, listener).setSingleChoiceItems(data,-1,listener).show();
+                setNegativeButton(cancel, listener).setSingleChoiceItems(data, -1, listener);
+        AutoSize.cancelAdapt(activity);
+        builder.show();
     }
 
     public static ProgressDialog showProgressDialog(Context context) {
@@ -80,8 +89,8 @@ public class DialogUtil {
     /**
      * 显示定位权限被拒绝对话框
      */
-    public static void showLocIgnoredDialog(final Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    public static void showLocIgnoredDialog(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setIcon(R.mipmap.mlogo);
         builder.setTitle("手机已关闭位置权限");
         builder.setMessage("请在权限管理里打开");
@@ -94,13 +103,13 @@ public class DialogUtil {
                 localIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (Build.VERSION.SDK_INT >= 9) {
                     localIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
-                    localIntent.setData(Uri.fromParts("package", context.getPackageName(), null));
+                    localIntent.setData(Uri.fromParts("package", activity.getPackageName(), null));
                 } else if (Build.VERSION.SDK_INT <= 8) {
                     localIntent.setAction(Intent.ACTION_VIEW);
                     localIntent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-                    localIntent.putExtra("com.android.settings.ApplicationPkgName", context.getPackageName());
+                    localIntent.putExtra("com.android.settings.ApplicationPkgName", activity.getPackageName());
                 }
-                context.startActivity(localIntent);
+                activity.startActivity(localIntent);
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -112,10 +121,10 @@ public class DialogUtil {
 
         //设置对话框是可取消的
         builder.setCancelable(true);
-        final AlertDialog dialog = builder.create();
+        AlertDialog dialog = builder.create();
+        AutoSize.cancelAdapt(activity);
         dialog.show();
     }
-
 
 
     /**
@@ -141,8 +150,9 @@ public class DialogUtil {
     /**
      * 显示定位服务未开启确认对话框
      */
-    public static void showLocServiceDialog(final Context context) {
-        new AlertDialog.Builder(context).setTitle("手机未开启位置服务")
+    public static void showLocServiceDialog(final Activity activity) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        builder.setTitle("手机未开启位置服务")
                 .setMessage("请在权限管理里打开")
                 .setNegativeButton("取消", null)
                 .setPositiveButton("去设置", new DialogInterface.OnClickListener() {
@@ -152,18 +162,20 @@ public class DialogUtil {
                         intent.setAction(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
-                            context.startActivity(intent);
+                            activity.startActivity(intent);
                         } catch (ActivityNotFoundException ex) {
                             intent.setAction(Settings.ACTION_SETTINGS);
                             try {
-                                context.startActivity(intent);
+                                activity.startActivity(intent);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
                     }
                 })
-                .show();
+        ;
+        AutoSize.cancelAdapt(activity);
+        builder.show();
     }
 
 

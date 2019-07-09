@@ -22,13 +22,13 @@
             android:text="请假类型："
             android:textSize="11sp" />
 
-        <Spinner
+        <FrameLayout
             android:id="@+id/add_leave_apply_type"
-            android:layout_width="300dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="10dp" />
+            android:layout_width="320dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/et" />
     </LinearLayout>
-
 
 
     <LinearLayout
@@ -46,32 +46,32 @@
             android:textSize="11sp" />
 
         <TextView
-            android:textSize="11sp"
             android:id="@+id/leave_apply_start_time"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:background="@drawable/et"
             android:clickable="true"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="11sp" />
 
         <TextView
-            android:textSize="11sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="—" />
+            android:text="—"
+            android:textSize="11sp" />
 
 
         <TextView
-            android:textSize="11sp"
             android:id="@+id/leave_apply_end_time"
             android:layout_width="150dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:background="@drawable/et"
             android:clickable="true"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="11sp" />
     </LinearLayout>
 
 
@@ -90,24 +90,25 @@
             android:textSize="11sp" />
 
         <TextView
-            android:textSize="11sp"
             android:id="@+id/leave_apply_approver"
             android:layout_width="320dp"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp"
             android:background="@drawable/et"
             android:clickable="true"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textSize="11sp" />
     </LinearLayout>
 
 
     <LinearLayout
-        android:layout_marginStart="22dp"
-        android:layout_marginEnd="22dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="22dp"
+        android:layout_marginStart="22dp"
         android:layout_marginTop="15dp"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
@@ -115,13 +116,13 @@
             android:textSize="11sp" />
 
         <EditText
-            android:textSize="11sp"
             android:id="@+id/leave_apply_reason"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginTop="15dp"
             android:background="@drawable/et"
-            android:gravity="left|top" />
+            android:gravity="left|top"
+            android:textSize="11sp" />
     </LinearLayout>
 </LinearLayout>

@@ -1,10 +1,13 @@
 package org.oasystem_dazhu.utils;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
 import org.oasystem_dazhu.mvp.presenter.activity.ActivityPresenter;
+
+import me.jessyan.autosize.AutoSize;
 
 
 /**
@@ -22,7 +25,9 @@ public class ToastUtil {
      * @param msg
      */
     public static void s(@NonNull final String msg) {
-        ActivityPresenter.getTopActivity().runOnUiThread(new Runnable() {
+        Activity activity = ActivityPresenter.getTopActivity();
+        AutoSize.cancelAdapt(activity);
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (toast == null) {
@@ -41,7 +46,9 @@ public class ToastUtil {
      * @param res
      */
     public static void s(@StringRes final int res) {
-        ActivityPresenter.getTopActivity().runOnUiThread(new Runnable() {
+        Activity activity = ActivityPresenter.getTopActivity();
+        AutoSize.cancelAdapt(activity);
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (toast == null) {
@@ -60,7 +67,9 @@ public class ToastUtil {
      * @param msg
      */
     public static void l(@NonNull final String msg) {
-        ActivityPresenter.getTopActivity().runOnUiThread(new Runnable() {
+        Activity activity = ActivityPresenter.getTopActivity();
+        AutoSize.cancelAdapt(activity);
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (toast == null) {
@@ -79,7 +88,9 @@ public class ToastUtil {
      * @param res
      */
     public static void l(@StringRes final int res) {
-        ActivityPresenter.getTopActivity().runOnUiThread(new Runnable() {
+        Activity activity = ActivityPresenter.getTopActivity();
+        AutoSize.cancelAdapt(activity);
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (toast == null) {

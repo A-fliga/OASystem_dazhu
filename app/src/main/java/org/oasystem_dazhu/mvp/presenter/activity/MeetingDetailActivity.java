@@ -18,6 +18,8 @@ import org.oasystem_dazhu.mvp.view.MeetingDetailDelegate;
 import org.oasystem_dazhu.utils.DialogUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
+import me.jessyan.autosize.AutoSize;
+
 
 /**
  * Created by www on 2019/3/20.
@@ -123,6 +125,7 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
     private void showDialog() {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_sign_in_meeting, null);
         dialog = DialogUtil.createAlertDialog(this, view);
+        AutoSize.cancelAdapt(this);
         dialog.show();
         radioGroup = view.findViewById(R.id.meeting_sign_in_buttonGroup);
         radioGroup.check(R.id.meeting_sign_in_agree);
