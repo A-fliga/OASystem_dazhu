@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="49dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical">
 
     <FrameLayout
-        android:layout_width="49dp"
-        android:layout_height="49dp">
+        android:layout_width="40dp"
+        android:layout_height="40dp">
 
         <ImageView
             android:id="@+id/type_img"
-            android:layout_width="49dp"
-            android:layout_height="49dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:layout_gravity="center" />
 
         <TextView
@@ -28,7 +28,7 @@
     </FrameLayout>
 
     <TextView
-        android:textSize="12sp"
+        android:textSize="10sp"
         android:textColor="#727171"
         android:id="@+id/type_tv"
         android:layout_width="wrap_content"

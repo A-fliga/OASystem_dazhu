@@ -5,11 +5,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
-import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.bean.AttendanceBean;
 import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
 import org.oasystem_dazhu.utils.InitDateUtil;
-import org.oasystem_dazhu.utils.LoadImgUtil;
+
 
 /**
  * Created by www on 2019/3/25.
@@ -33,13 +32,8 @@ public class AttendanceDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("考勤打卡");
-        ImageView icon = get(R.id.sign_in_icon);
-        LoadImgUtil.loadCirclePic(this.getActivity(), UserManager.getInstance().getUserInfo().getHeadimg(),
-                icon, R.mipmap.center_icon);
-        TextView userName = get(R.id.sign_in_name);
-        userName.setText(UserManager.getInstance().getUserInfo().getName());
         TextView sign_in_date = get(R.id.sign_in_date);
-        sign_in_date.setText(InitDateUtil.getDate2(System.currentTimeMillis()));
+        sign_in_date.setText(InitDateUtil.getDate2(System.currentTimeMillis()) + "  " + InitDateUtil.getWeek());
         sign_time = get(R.id.sign_time);
         sign_off_time = get(R.id.sign_off_time);
         sign_in_status = get(R.id.sign_in_status);

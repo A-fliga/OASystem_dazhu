@@ -61,12 +61,8 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
             }
         });
         if (position <= beanList.size() - 1) {
-            if (beanList.get(position).getDispatch_flow_list_count() == 0) {
-                holder.home_type_count.setVisibility(View.GONE);
-            } else {
-                holder.home_type_count.setVisibility(View.VISIBLE);
-                holder.home_type_count.setText(beanList.get(position).getDispatch_flow_list_count() > 99 ? "99" : String.valueOf(beanList.get(position).getDispatch_flow_list_count()));
-            }
+            holder.home_type_count.setVisibility(View.VISIBLE);
+            holder.home_type_count.setText(beanList.get(position).getDispatch_flow_list_count() > 99 ? "99" : String.valueOf(beanList.get(position).getDispatch_flow_list_count()));
         }
     }
 

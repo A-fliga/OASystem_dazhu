@@ -40,12 +40,12 @@
     <LinearLayout
         android:id="@+id/deal_with_option_bottom"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
         <TextView
-            android:textSize="17sp"
+            android:textSize="14sp"
             android:background="@color/color_f5f5f5"
             android:id="@+id/deal_with_option_num"
             android:layout_width="0dp"
@@ -67,7 +67,7 @@
             android:background="@color/color_E4393C"
             android:gravity="center"
             android:textColor="@color/color_ffffff"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 

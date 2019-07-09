@@ -44,7 +44,7 @@ public class AddOptionFormActivity extends ActivityPresenter<AddOptionFormDelega
                 add_option_et.setSelection(content.length());
             }
         }
-        viewDelegate.getToolBarRightTv2().setOnClickListener(new View.OnClickListener() {
+        viewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(TextUtils.isEmpty(add_option_et.getText().toString().replaceAll(" ",""))){
