@@ -70,7 +70,7 @@
                 android:ellipsize="middle"
                 android:text="最后操作"
                 android:textColor="@color/color_666666"
-                android:textSize="9dp" />
+                android:textSize="9sp" />
 
         </LinearLayout>
 
