@@ -20,12 +20,12 @@ import java.util.List;
  * Created by www on 2019/4/14.
  */
 
-public class HomeBusinessManagerAdapter extends RecyclerView.Adapter<HomeBusinessManagerAdapter.HomeBusinessManagerHolder> {
+public class MoreRegularAdapter extends RecyclerView.Adapter<MoreRegularAdapter.HomeBusinessManagerHolder> {
     private OnItemClickListener listener;
     private List<HomeBusinessManagerBean> beanList;
     private int width;
 
-    public HomeBusinessManagerAdapter(List<HomeBusinessManagerBean> beanList, Context context) {
+    public MoreRegularAdapter(List<HomeBusinessManagerBean> beanList, Context context) {
         this.beanList = beanList;
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);

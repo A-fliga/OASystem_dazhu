@@ -72,6 +72,7 @@
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AskForLeaveDetailActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.DealWithOptionFormActivity" />
         <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.AddOptionFormActivity" />
+        <activity android:name="org.oasystem_dazhu.mvp.presenter.activity.MoreTypeActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"

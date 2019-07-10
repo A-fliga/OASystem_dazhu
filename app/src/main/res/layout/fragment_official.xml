@@ -70,20 +70,11 @@
             </LinearLayout>
         </RelativeLayout>
 
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/home_manager_recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:visibility="visible" />
-
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/home_type_recyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp" />
+            android:layout_marginTop="15dp" />
 
         <View
             android:layout_width="match_parent"

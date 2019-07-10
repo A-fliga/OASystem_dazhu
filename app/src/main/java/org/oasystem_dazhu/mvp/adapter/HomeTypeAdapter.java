@@ -50,7 +50,11 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
     public void onBindViewHolder(HomeTypeViewHolder holder, final int position) {
         ViewGroup.LayoutParams param = holder.itemView.getLayoutParams();
         param.width = width / 6;
-        Glide.with(context).load(imgIdList.get(position % imgIdList.size())).placeholder(R.mipmap.sign_add_advise).into(holder.type_img);
+        if ("more".equals(imgIdList.get(position % imgIdList.size()))) {
+            Glide.with(context).load(R.mipmap.more_type).into(holder.type_img);
+        } else {
+            Glide.with(context).load(imgIdList.get(position % imgIdList.size())).placeholder(R.mipmap.sign_add_advise).into(holder.type_img);
+        }
         holder.type_tv.setText(typeContentList.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
