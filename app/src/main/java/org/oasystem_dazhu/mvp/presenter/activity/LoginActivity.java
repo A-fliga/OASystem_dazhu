@@ -1,6 +1,8 @@
 package org.oasystem_dazhu.mvp.presenter.activity;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
@@ -15,6 +17,10 @@ import org.oasystem_dazhu.simplecache.ACache;
 import org.oasystem_dazhu.utils.AppUtil;
 import org.oasystem_dazhu.utils.SharedPreferencesUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import static org.oasystem_dazhu.constants.Constants.LOGIN_INFO;
 
@@ -40,10 +46,41 @@ public class LoginActivity extends ActivityPresenter {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         unEt = viewDelegate.get(R.id.login_username);
+        addTextChangeListener(unEt);
         pwdEt = viewDelegate.get(R.id.login_password);
         viewDelegate.setOnClickListener(onClickListener, R.id.login_btn, R.id.can_not_login, R.id.forget_pwd);
     }
 
+    public static String stringFilter(String str) throws PatternSyntaxException {
+        String regEx = "[/\\:*?<>|\"\n\t]";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.replaceAll("");
+    }
+
+    private void addTextChangeListener(final EditText et) {
+        et.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before,
+                                      int count) {
+                String editable = et.getText().toString();
+                String str = stringFilter(editable); //过滤特殊字符
+                if (!editable.equals(str)) {
+                    et.setText(str);
+                }
+                et.setSelection(et.length());
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,
+                                          int after) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+    }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
