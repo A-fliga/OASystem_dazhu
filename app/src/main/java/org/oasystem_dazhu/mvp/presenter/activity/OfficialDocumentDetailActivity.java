@@ -541,7 +541,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
             }
         }
-        contentTv.add("办理\n意见");
+        contentTv.add("办理\n情况");
         SignOfficialAdapter adapter = new SignOfficialAdapter(contentTv, this);
         viewDelegate.setRecycler(recyclerView, adapter, true);
         adapter.setOnItemClickListener(new OnItemClickListener() {

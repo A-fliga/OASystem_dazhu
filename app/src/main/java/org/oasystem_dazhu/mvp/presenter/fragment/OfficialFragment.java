@@ -66,7 +66,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
         typeAdapter = viewDelegate.initTypeList();
-        getNotDoneList(new ScreenBean());
+        getFirmingType();
         viewDelegate.setOnClickListener(onClickListener,
                 R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh, R.id.home_user_icon);
         setOnItemClickListener();
@@ -77,13 +77,23 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
         typeAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                //这些是自定义分类
-                if (position <= FirmingTypeManager.getInstance().getBeanList().size() - 1) {
-                    start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
+                if (FirmingTypeManager.getInstance().getBeanList().size() > 5) {
+                    //position 到了5的话  一定是更多按钮
+                    if (position == 5) {
+                        startMyActivity(MoreTypeActivity.class, null);
+                    } else {
+                        start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
+                    }
                 }
-                //有多的代表是更多
                 else {
-                    startMyActivity(MoreTypeActivity.class, null);
+                    //这些是自定义分类
+                    if (position <= FirmingTypeManager.getInstance().getBeanList().size() - 1) {
+                        start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
+                    }
+                    //有多的代表是更多
+                    else {
+                        startMyActivity(MoreTypeActivity.class, null);
+                    }
                 }
             }
         });
@@ -95,9 +105,6 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
             public void onNext(final BaseEntity<DocumentBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    if (bean.getData().getData().size() == 0) {
-                        ToastUtil.s("暂无数据");
-                    }
                     List<DocumentBean.DataBean> beanList = bean.getData().getData();
                     newBeanList = new ArrayList<DocumentBean.DataBean>();
                     if (beanList.size() <= 10) {
@@ -120,6 +127,9 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });
+                    if (bean.getData().getData().size() == 0) {
+                        ToastUtil.s("暂无数据");
+                    }
                 }
 
             }
@@ -136,6 +146,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                 FirmingTypeManager.getInstance().addBeanList(beanList);
                 typeAdapter = viewDelegate.initTypeList();
                 setOnItemClickListener();
+                getNotDoneList(new ScreenBean());
             }
         });
     }
@@ -143,11 +154,9 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void refreshList(String content) {
         if (content.equals("upLoadSuccess")) {
-            getNotDoneList(new ScreenBean());
             getFirmingType();
         }
     }
-
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
@@ -164,7 +173,6 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     intent.putExtras(bundle2);
                     startActivityForResult(intent, 1000);
                     break;
-
                 case R.id.to_sort_create:
                     isPositive_create = !isPositive_create;
                     isPositive_update = false;
@@ -185,7 +193,6 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     if (newBeanList != null) {
                         newBeanList.clear();
                     }
-                    getNotDoneList(new ScreenBean());
                     getFirmingType();
                     break;
 

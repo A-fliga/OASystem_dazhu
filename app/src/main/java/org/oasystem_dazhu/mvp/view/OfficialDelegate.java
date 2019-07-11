@@ -1,6 +1,5 @@
 package org.oasystem_dazhu.mvp.view;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -41,7 +40,6 @@ public class OfficialDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         typeRecyclerView = get(R.id.home_type_recyclerView);
-
         home_user_icon = get(R.id.home_user_icon);
         home_user_name = get(R.id.home_user_name);
         home_user_unit = get(R.id.home_user_unit);
@@ -53,7 +51,6 @@ public class OfficialDelegate extends ViewDelegate {
             home_user_unit.setText(userInfo.getCompany_name());
         }
     }
-
 
     public HomeTypeAdapter initTypeList() {
         List<String> imgIdList = new ArrayList<>();
@@ -71,16 +68,9 @@ public class OfficialDelegate extends ViewDelegate {
         }
         typeContentList.add("更多");
         imgIdList.add("more");
-        HomeTypeAdapter adapter = new HomeTypeAdapter(imgIdList, typeContentList, beanList, this.getActivity());
-        setRecyclerView(typeRecyclerView, adapter);
+        HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, beanList, true);
+        setRecycler(typeRecyclerView, adapter, 6, true);
         return adapter;
     }
 
-
-    private void setRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
-    }
 }

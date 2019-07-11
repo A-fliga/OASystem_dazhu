@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.manager.FirmingTypeManager;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
 
@@ -26,18 +27,20 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
     private List<String> typeContentList;
     private OnItemClickListener listener;
     private Context context;
-    private int width;
+    private int windowWidth;
+    private boolean isHome;
+    private int visibleSize = 0;
     private List<HomeTypeBean.DataBean> beanList;
 
-    public HomeTypeAdapter(List<String> imgIdList, List<String> typeContentList, List<HomeTypeBean.DataBean> beanList, Context context) {
+    public HomeTypeAdapter(Context context, List<String> imgIdList, List<String> typeContentList, List<HomeTypeBean.DataBean> beanList, boolean isHome) {
         this.imgIdList = imgIdList;
         this.typeContentList = typeContentList;
         this.context = context;
         this.beanList = beanList;
+        this.isHome = isHome;
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
-
-        width = wm.getDefaultDisplay().getWidth();
+        windowWidth = wm.getDefaultDisplay().getWidth();
     }
 
 
@@ -49,11 +52,11 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
     @Override
     public void onBindViewHolder(HomeTypeViewHolder holder, final int position) {
         ViewGroup.LayoutParams param = holder.itemView.getLayoutParams();
-        param.width = width / 6;
+        param.width = windowWidth / 6;
         if ("more".equals(imgIdList.get(position % imgIdList.size()))) {
-            Glide.with(context).load(R.mipmap.more_type).into(holder.type_img);
+            Glide.with(context).load(R.mipmap.more_type).fitCenter().into(holder.type_img);
         } else {
-            Glide.with(context).load(imgIdList.get(position % imgIdList.size())).placeholder(R.mipmap.sign_add_advise).into(holder.type_img);
+            Glide.with(context).load(imgIdList.get(position % imgIdList.size())).fitCenter().placeholder(R.mipmap.sign_add_advise).into(holder.type_img);
         }
         holder.type_tv.setText(typeContentList.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -64,15 +67,32 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
                 }
             }
         });
-        if (position <= beanList.size() - 1) {
-            holder.home_type_count.setVisibility(View.VISIBLE);
-            holder.home_type_count.setText(beanList.get(position).getDispatch_flow_list_count() > 99 ? "99" : String.valueOf(beanList.get(position).getDispatch_flow_list_count()));
+        holder.home_type_count.setVisibility(View.VISIBLE);
+        if (position < visibleSize - 1) {
+            holder.home_type_count.setText(beanList.get(position).getDispatch_flow_list_count() > 99 ? "99"
+                    : String.valueOf(beanList.get(position).getDispatch_flow_list_count()));
+        } else {
+            long totalCount = 0;
+            for (int i = 0; i < FirmingTypeManager.getInstance().getBeanList().size(); i++) {
+                totalCount = totalCount + FirmingTypeManager.getInstance().getBeanList().get(i).getDispatch_flow_list_count();
+            }
+            holder.home_type_count.setText(totalCount > 99 ? "99"
+                    : String.valueOf(totalCount));
         }
     }
 
     @Override
     public int getItemCount() {
-        return typeContentList.size();
+        if (isHome) {
+            if (beanList.size() > 5) {
+                visibleSize = 6;
+            } else {
+                visibleSize = beanList.size() + 1;
+            }
+        } else {
+            visibleSize = beanList.size();
+        }
+        return visibleSize;
     }
 
     class HomeTypeViewHolder extends RecyclerView.ViewHolder {
@@ -81,7 +101,6 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
 
         public HomeTypeViewHolder(View itemView) {
             super(itemView);
-
             type_img = itemView.findViewById(R.id.type_img);
             type_tv = itemView.findViewById(R.id.type_tv);
             home_type_count = itemView.findViewById(R.id.home_type_count);

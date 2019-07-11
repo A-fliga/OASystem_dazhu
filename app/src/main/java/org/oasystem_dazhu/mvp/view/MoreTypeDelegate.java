@@ -1,6 +1,5 @@
 package org.oasystem_dazhu.mvp.view;
 
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import org.oasystem_dazhu.R;
@@ -72,7 +71,7 @@ public class MoreTypeDelegate extends ViewDelegate {
             beanList.add(bean);
         }
         MoreRegularAdapter adapter = new MoreRegularAdapter(beanList, this.getActivity());
-        setRecyclerView(regularRecyclerView, adapter);
+        setRecycler(regularRecyclerView, adapter, 6, true);
         return adapter;
     }
 
@@ -84,16 +83,8 @@ public class MoreTypeDelegate extends ViewDelegate {
             typeContentList.add(beanList.get(i).getName());
             imgIdList.add(beanList.get(i).getImg());
         }
-        HomeTypeAdapter adapter = new HomeTypeAdapter(imgIdList, typeContentList, beanList, this.getActivity());
-        setRecyclerView(customizeRecyclerView, adapter);
+        HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, beanList, false);
+        setRecycler(customizeRecyclerView, adapter, 6, true);
         return adapter;
-    }
-
-
-    private void setRecyclerView(RecyclerView recyclerView, RecyclerView.Adapter adapter) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getActivity());
-        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(adapter);
     }
 }
