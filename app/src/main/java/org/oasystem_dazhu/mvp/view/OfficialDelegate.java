@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
 import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.adapter.HomeTypeAdapter;
@@ -15,6 +16,8 @@ import org.oasystem_dazhu.utils.LoadImgUtil;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import me.jessyan.autosize.AutoSize;
 
 /**
  * Created by www on 2018/12/29.
@@ -68,6 +71,7 @@ public class OfficialDelegate extends ViewDelegate {
         }
         typeContentList.add("更多");
         imgIdList.add("more");
+        AutoSize.autoConvertDensity(this.getActivity(), Constants.SIZE_IN_DP,false);
         HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, beanList, true);
         setRecycler(typeRecyclerView, adapter, 6, true);
         return adapter;
