@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,8 +84,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     } else {
                         start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
                     }
-                }
-                else {
+                } else {
                     //这些是自定义分类
                     if (position <= FirmingTypeManager.getInstance().getBeanList().size() - 1) {
                         start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
@@ -202,15 +200,14 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null) {
                         activity.viewPager.setCurrentItem(1);
-                        Menu menu = activity.navigation.getMenu();
-                        menu.getItem(1).setChecked(true);
+                        activity.setCheck(1);
                     }
                     break;
-
-
             }
         }
     };
+
+
 
     private void start2Activity(int typeId) {
         Bundle bundle = new Bundle();

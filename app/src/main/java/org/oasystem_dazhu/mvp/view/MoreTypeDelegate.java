@@ -34,7 +34,7 @@ public class MoreTypeDelegate extends ViewDelegate {
 
     @Override
     public void initWidget() {
-        getTitleView().setText("全部应用");
+        getTitleView().setText("更多应用");
         regularRecyclerView = get(R.id.more_type_regular);
         customizeRecyclerView = get(R.id.more_type_customize);
     }

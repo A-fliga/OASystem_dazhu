@@ -1,7 +1,6 @@
 package org.oasystem_dazhu.mvp.presenter.activity;
 
 import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,9 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.internal.BottomNavigationMenuView;
-import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +20,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 
 import org.oasystem_dazhu.R;
@@ -54,7 +50,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -67,14 +62,13 @@ import me.jessyan.autosize.AutoSize;
 import me.jessyan.autosize.AutoSizeCompat;
 
 
-public class MainActivity extends ActivityPresenter {
-    public  NoScrollViewPager viewPager;
+public class MainActivity extends ActivityPresenter<MainDelegate> {
+    public NoScrollViewPager viewPager;
     private final int WRITE_STORAGE_CODE = 1000;
     private Boolean canFinish = false;//按两次退出APP的标志
     private TimerTask task;
     private Timer timer = new Timer();
     private static UpdateAsync async;
-    public BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +90,11 @@ public class MainActivity extends ActivityPresenter {
             async = new UpdateAsync(new WeakReference<MainActivity>(this));
             async.execute(UserManager.getInstance().getUserInfo().getSys_app().getApp_path());
         }
+    }
+
+    @Override
+    public Class<MainDelegate> getDelegateClass() {
+        return MainDelegate.class;
     }
 
     public static class UpdateAsync extends AsyncTask<String, Integer, String> {
@@ -263,6 +262,9 @@ public class MainActivity extends ActivityPresenter {
         }
     };
 
+    public void setCheck(int position){
+        viewDelegate.setCheck(position);
+    }
 
     private void getUserInfo() {
         PublicModel.getInstance().getUserInfo(new MSubscribe<BaseEntity<UserInfo>>() {
@@ -278,12 +280,12 @@ public class MainActivity extends ActivityPresenter {
         });
     }
 
-    private void getAllUserInfo(){
+    private void getAllUserInfo() {
         PublicModel.getInstance().getAllUser(new MSubscribe<BaseEntity<AllUserBean>>() {
             @Override
             public void onNext(BaseEntity<AllUserBean> bean) {
                 super.onNext(bean);
-                if(bean.getCode() == 0){
+                if (bean.getCode() == 0) {
                     UserManager.getInstance().setAllUserInfo(bean.getData());
                 }
             }
@@ -294,29 +296,31 @@ public class MainActivity extends ActivityPresenter {
         viewPager = viewDelegate.get(R.id.content_pager);
         mFragmentPagerAdapter mFragmentPagerAdapter = new mFragmentPagerAdapter(getSupportFragmentManager(), getFragments());
         viewPager.setAdapter(mFragmentPagerAdapter);
-        navigation = viewDelegate.get(R.id.navigation);
-        navigation.inflateMenu(R.menu.navigation_btn);
-        disableShiftMode(navigation);
-        navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        viewDelegate.setOnClickListener(mOnclickListener, R.id.home_official_btn, R.id.home_mine_btn);
+        setCheck(0);
     }
 
-    //反射取消BottomNavigationView的Item大于3个时的动画效果
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    public static void disableShiftMode(BottomNavigationView view) {
-        BottomNavigationMenuView menuView = (BottomNavigationMenuView) view.getChildAt(0);
-        try {
-            Field shiftingMode = menuView.getClass().getDeclaredField("mShiftingMode");
-            shiftingMode.setAccessible(true);
-            shiftingMode.setBoolean(menuView, false);
-            shiftingMode.setAccessible(false);
-            for (int i = 0; i < menuView.getChildCount(); i++) {
-                BottomNavigationItemView item = (BottomNavigationItemView) menuView.getChildAt(i);
-                item.setShiftingMode(false);
-                item.setChecked(item.getItemData().isChecked());
+
+    private View.OnClickListener mOnclickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.home_official_btn:
+                    if (viewPager != null) {
+                        viewPager.setCurrentItem(0);
+                        setCheck(0);
+                    }
+                    break;
+                case R.id.home_mine_btn:
+                    if (viewPager != null) {
+                        viewPager.setCurrentItem(1);
+                        setCheck(1);
+                    }
+                    break;
+
             }
-        } catch (NoSuchFieldException | IllegalAccessException e) {
         }
-    }
+    };
 
 
     public class mFragmentPagerAdapter extends FragmentPagerAdapter {
@@ -352,28 +356,6 @@ public class MainActivity extends ActivityPresenter {
     }
 
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-        @Override
-        public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.navigation_official:
-                    if (viewPager == null)
-                        return false;
-                    else {
-                        viewPager.setCurrentItem(0);
-                        return true;
-                    }
-                case R.id.navigation_user_center:
-                    if (viewPager == null)
-                        return false;
-                    else {
-                        viewPager.setCurrentItem(1);
-                        return true;
-                    }
-            }
-            return false;
-        }
-    };
 
 
     @Override
@@ -381,10 +363,6 @@ public class MainActivity extends ActivityPresenter {
         return false;
     }
 
-    @Override
-    public Class getDelegateClass() {
-        return MainDelegate.class;
-    }
 
 
     @Override
