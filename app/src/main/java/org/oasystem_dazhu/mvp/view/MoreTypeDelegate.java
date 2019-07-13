@@ -3,6 +3,7 @@ package org.oasystem_dazhu.mvp.view;
 import android.support.v7.widget.RecyclerView;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
 import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.adapter.HomeTypeAdapter;
@@ -79,7 +80,7 @@ public class MoreTypeDelegate extends ViewDelegate {
         List<String> imgIdList = new ArrayList<>();
         List<String> typeContentList = new ArrayList<>();
         List<HomeTypeBean.DataBean> beanList = FirmingTypeManager.getInstance().getBeanList();
-        for (int i = 0; i < beanList.size(); i++) {
+        for (int i = Constants.TYPE_WIDTH_COUNT; i < beanList.size(); i++) {
             typeContentList.add(beanList.get(i).getName());
             imgIdList.add(beanList.get(i).getImg());
         }

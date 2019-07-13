@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import org.oasystem_dazhu.R;
+import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
 import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
@@ -52,7 +53,7 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
     @Override
     public void onBindViewHolder(HomeTypeViewHolder holder, final int position) {
         ViewGroup.LayoutParams param = holder.itemView.getLayoutParams();
-        param.width = windowWidth / 6;
+        param.width = windowWidth / (Constants.TYPE_WIDTH_COUNT + 1);
         if ("more".equals(imgIdList.get(position % imgIdList.size()))) {
             Glide.with(context).load(R.mipmap.more_type).fitCenter().into(holder.type_img);
         } else {
@@ -68,29 +69,39 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
             }
         });
         holder.home_type_count.setVisibility(View.VISIBLE);
-        if (position < visibleSize - 1) {
+        if (isHome) {
+            if (position < visibleSize - 1) {
+                holder.home_type_count.setText(beanList.get(position).getDispatch_flow_list_count() > 99 ? "99"
+                        : String.valueOf(beanList.get(position).getDispatch_flow_list_count()));
+            } else {
+                long totalCount = 0;
+                //分类数小于5时，不显示统计的数量
+                if (FirmingTypeManager.getInstance().getBeanList().size() <= Constants.TYPE_WIDTH_COUNT) {
+                    holder.home_type_count.setVisibility(View.GONE);
+                } else {
+                    for (int i = Constants.TYPE_WIDTH_COUNT; i < FirmingTypeManager.getInstance().getBeanList().size(); i++) {
+                        totalCount = totalCount + FirmingTypeManager.getInstance().getBeanList().get(i).getDispatch_flow_list_count();
+                    }
+                    holder.home_type_count.setText(totalCount > 99 ? "99"
+                            : String.valueOf(totalCount));
+                }
+            }
+        } else {
             holder.home_type_count.setText(beanList.get(position).getDispatch_flow_list_count() > 99 ? "99"
                     : String.valueOf(beanList.get(position).getDispatch_flow_list_count()));
-        } else {
-            long totalCount = 0;
-            for (int i = 0; i < FirmingTypeManager.getInstance().getBeanList().size(); i++) {
-                totalCount = totalCount + FirmingTypeManager.getInstance().getBeanList().get(i).getDispatch_flow_list_count();
-            }
-            holder.home_type_count.setText(totalCount > 99 ? "99"
-                    : String.valueOf(totalCount));
         }
     }
 
     @Override
     public int getItemCount() {
         if (isHome) {
-            if (beanList.size() > 5) {
-                visibleSize = 6;
+            if (beanList.size() > Constants.TYPE_WIDTH_COUNT) {
+                visibleSize = Constants.TYPE_WIDTH_COUNT + 1;
             } else {
                 visibleSize = beanList.size() + 1;
             }
         } else {
-            visibleSize = beanList.size();
+            visibleSize = beanList.size() - Constants.TYPE_WIDTH_COUNT;
         }
         return visibleSize;
     }
