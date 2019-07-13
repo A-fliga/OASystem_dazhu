@@ -57,18 +57,35 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
             }
         });
         DocumentBean.DataBean bean = beanList.get(position);
-        if (bean.getDispatch() != null)
+        if (bean.getDispatch() != null) {
             urgent = bean.getDispatch().getUrgent();
+        }
+        if (position == 0) {
+            urgent = 1;
+        }
         setText(holder.official_title, bean.getDispatch().getName(), urgent);
-        setText(holder.official_step, "流程步骤：" + bean.getName(), urgent);
+        String serial = "-";
+        if (!TextUtils.isEmpty(bean.getDispatch().getSerial())) {
+            serial = bean.getDispatch().getSerial();
+        }
+        setText(holder.official_serial, "文件号：" + serial, urgent);
         setText(holder.official_time, "发起时间：" + bean.getDispatch().getCreated_at(), urgent);
         setText(holder.official_last_time, "最后操作：" + bean.getDispatch().getUpdated_at(), urgent);
         holder.item_percent_circle.setDisplayText(true);
-        if(TextUtils.isEmpty(bean.getSchedule())){
-            holder.item_percent_circle.setProgress(0);
+        if (urgent == 1) {
+            holder.official_end_time.setVisibility(View.VISIBLE);
+            String endTime = "-";
+            if (!TextUtils.isEmpty(bean.getDispatch().getUrgent_date())) {
+                endTime = bean.getDispatch().getUrgent_date();
+            }
+            setText(holder.official_end_time, "截办时间：" + endTime, urgent);
+        } else {
+            holder.official_end_time.setVisibility(View.GONE);
         }
-        else {
-            holder.item_percent_circle.setProgress(Integer.parseInt(bean.getSchedule().replace("%","")));
+        if (TextUtils.isEmpty(bean.getSchedule())) {
+            holder.item_percent_circle.setProgress(0);
+        } else {
+            holder.item_percent_circle.setProgress(Integer.parseInt(bean.getSchedule().replace("%", "")));
         }
         Glide.with(context).load(FirmingTypeManager.getInstance().getTypeImg(bean.getDispatch().getForm_type())).
                 placeholder(getDefaultResourceId(bean.getDispatch().getForm_type()))
@@ -76,19 +93,20 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
     }
 
 
-    private int getDefaultResourceId(int type){
-        if(type == 1){
+    private int getDefaultResourceId(int type) {
+        if (type == 1) {
             return R.mipmap.shangjilaiwen;
         }
-        if(type == 2){
+        if (type == 2) {
             return R.mipmap.pingjilaiwen;
         }
 
-        if(type == 3){
+        if (type == 3) {
             return R.mipmap.xiajilaiwen;
         }
         return R.mipmap.wenjianjiankong;
     }
+
     private void setText(TextView v, String content, int urgent) {
         if (urgent == 1) {
             v.setTextColor(context.getResources().getColor(R.color.color_f0000));
@@ -108,13 +126,15 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
 
     class OfficialDocumentViewHolder extends RecyclerView.ViewHolder {
         public ImageView official_left_img;
-        public TextView official_title, official_office_id, official_company_name, official_step, official_serial, official_user_name, official_time, official_last_time;
+        public TextView official_title, official_end_time, official_company_name, official_serial, official_user_name, official_time, official_last_time;
         public XCRoundProgressBar item_percent_circle;
+
         public OfficialDocumentViewHolder(View itemView) {
             super(itemView);
             official_left_img = itemView.findViewById(R.id.official_left_img);
-            official_step = itemView.findViewById(R.id.official_step);
+            official_serial = itemView.findViewById(R.id.official_serial);
             official_time = itemView.findViewById(R.id.official_time);
+            official_end_time = itemView.findViewById(R.id.official_end_time);
             official_title = itemView.findViewById(R.id.official_title);
             official_last_time = itemView.findViewById(R.id.official_last_time);
             item_percent_circle = itemView.findViewById(R.id.item_percent_circle);

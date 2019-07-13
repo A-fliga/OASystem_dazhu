@@ -193,7 +193,7 @@ public class DocumentBean implements Serializable {
             this.flows = flows;
         }
 
-        public static class DataFlowsBean implements Serializable{
+        public static class DataFlowsBean implements Serializable {
 
             /**
              * id : 140
@@ -409,7 +409,7 @@ public class DocumentBean implements Serializable {
                 this.user = user;
             }
 
-            public static class UserBeanXXXX implements Serializable{
+            public static class UserBeanXXXX implements Serializable {
                 /**
                  * id : 10
                  * name : 测试3
@@ -878,6 +878,15 @@ public class DocumentBean implements Serializable {
             private List<FlowsBean> flows;
             private int urgent;
             private int form_type;
+            private String urgent_date;
+
+            public String getUrgent_date() {
+                return urgent_date;
+            }
+
+            public void setUrgent_date(String urgent_date) {
+                this.urgent_date = urgent_date;
+            }
 
             public String getStatus_name() {
                 return status_name;
@@ -886,6 +895,7 @@ public class DocumentBean implements Serializable {
             public void setStatus_name(String status_name) {
                 this.status_name = status_name;
             }
+
             public int getForm_type() {
                 return form_type;
             }
