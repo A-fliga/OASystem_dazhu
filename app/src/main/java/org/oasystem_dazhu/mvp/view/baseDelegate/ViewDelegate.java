@@ -152,6 +152,9 @@ public abstract class ViewDelegate implements IDelegate {
         getTitleView().setTextColor(getActivity().getResources().getColor(id));
     }
 
+    public RelativeLayout getToolbarBackGround(){
+        return get(R.id.mToolbar_rl);
+    }
     /**
      * 设置toolbar背景色
      */

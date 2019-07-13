@@ -17,6 +17,12 @@
         android:layout_width="match_parent"
         android:layout_height="44dp">
 
+        <RelativeLayout
+            android:id="@+id/mToolbar_rl"
+            android:layout_width="220dp"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true" />
+
         <TextView
             android:id="@+id/toolbar_left_tv"
             android:layout_width="wrap_content"
@@ -38,14 +44,14 @@
             android:textSize="16sp" />
 
         <ImageView
-            android:scaleType="fitXY"
             android:id="@+id/toolBar_img_right"
             android:layout_width="17dp"
             android:layout_height="17dp"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="55dp"
-            android:clickable="true" />
+            android:clickable="true"
+            android:scaleType="fitXY" />
 
         <RelativeLayout
             android:id="@+id/toolbar_right_rl"

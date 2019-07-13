@@ -36,8 +36,8 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
     public void initWidget() {
         sign_left_ll = get(R.id.sign_top_ll);
         sign_bottom = get(R.id.sign_bottom);
-        setToolBarRightImg(R.mipmap.save_sign);
-        getToolBarRightImg().setVisibility(View.GONE);
+        setToolBarRightTv2("保存");
+        getToolBarRightTv2().setVisibility(View.GONE);
     }
 
     public void hideLeftBtn(String auth) {
