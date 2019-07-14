@@ -107,7 +107,7 @@ public class MoreTypeActivity extends ActivityPresenter<MoreTypeDelegate> {
         mCustomizeAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                start2Activity(FirmingTypeManager.getInstance().getBeanList().get(position).getId());
+                start2Activity(mCustomizeAdapter.getBeanList().get(position).getId());
             }
         });
     }

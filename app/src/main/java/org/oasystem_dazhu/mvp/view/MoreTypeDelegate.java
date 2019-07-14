@@ -80,11 +80,13 @@ public class MoreTypeDelegate extends ViewDelegate {
         List<String> imgIdList = new ArrayList<>();
         List<String> typeContentList = new ArrayList<>();
         List<HomeTypeBean.DataBean> beanList = FirmingTypeManager.getInstance().getBeanList();
+        List<HomeTypeBean.DataBean> newList = new ArrayList<>();
         for (int i = Constants.TYPE_WIDTH_COUNT; i < beanList.size(); i++) {
             typeContentList.add(beanList.get(i).getName());
             imgIdList.add(beanList.get(i).getImg());
+            newList.add(beanList.get(i));
         }
-        HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, beanList, false);
+        HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, newList, false);
         setRecycler(customizeRecyclerView, adapter, 6, true);
         return adapter;
     }

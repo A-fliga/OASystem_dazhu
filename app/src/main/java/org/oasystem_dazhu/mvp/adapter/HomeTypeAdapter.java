@@ -44,6 +44,10 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
         windowWidth = wm.getDefaultDisplay().getWidth();
     }
 
+    public List<HomeTypeBean.DataBean> getBeanList() {
+        return beanList;
+    }
+
 
     @Override
     public HomeTypeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -101,7 +105,7 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
                 visibleSize = beanList.size() + 1;
             }
         } else {
-            visibleSize = beanList.size() - Constants.TYPE_WIDTH_COUNT;
+            visibleSize = beanList.size();
         }
         return visibleSize;
     }
