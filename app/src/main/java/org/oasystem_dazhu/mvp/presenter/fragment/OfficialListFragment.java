@@ -111,20 +111,6 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("done", done);
                             bundle.putSerializable("DocumentDataBean", doneBeanList.get(position));
-//                            StringBuffer sb = new StringBuffer();
-////                            for (int i = 0; i < bean.getData().getData().get(position).getDispatch().getAccessory_list().size(); i++) {
-////                                sb.append(bean.getData().getData().get(position).getDispatch().getAccessory_list().get(i).getSource_id() + "  ");
-////                            }
-////                            sb.append(bean.getData().getData().get(position).getDispatch().getForm_source_id() + "");
-////                            LogUtil.d("paixu", "得到的" + sb.toString());
-////
-////                            sb.setLength(0);
-//                            sb.append(doneBeanList.get(position).getForm_source_id() + "");
-//                            for (int i = 0; i < doneBeanList.get(position).getDispatch().getAccessory_list().size(); i++) {
-//                                sb.append(doneBeanList.get(position).getDispatch().getAccessory_list().get(i).getSource_id() + " ");
-//                            }
-//
-//                            LogUtil.d("paixu", "排序后的" + sb.toString());
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.http.MSubscribe;
@@ -33,6 +35,9 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
     private List<DocumentBean.DataBean> newBeanList;
     private Boolean isPositive_create = false, isPositive_update = false;
     private ScreenBean screenBean;
+    private boolean done = false;
+    private List<Integer> idList;
+    private int selectedId;
 
     @Override
     public Class<FileMonitorDelegate> getDelegateClass() {
@@ -47,13 +52,29 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        viewDelegate.setOnClickListener(onClickListener, R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
-
+        viewDelegate.setOnClickListener(onClickListener, R.id.official_not_done_tab, R.id.official_done_tab,
+                R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
+        init();
         getFileMonitorList(new ScreenBean());
     }
 
+
+    private void init() {
+        idList = new ArrayList<>();
+        idList.add(R.id.official_not_done_tab);
+        idList.add(R.id.official_done_tab);
+        selectedId = R.id.official_not_done_tab;
+        setCheckStates(selectedId);
+        viewDelegate.get(R.id.official_not_done_tab).setSelected(true);
+    }
+
+
     private void getFileMonitorList(ScreenBean screenBean) {
+        if (done) {
+            screenBean.setStatus("1");
+        } else {
+            screenBean.setStatus("0");
+        }
         PublicModel.getInstance().getMonitorList(new MSubscribe<BaseEntity<DocumentBean>>() {
             @Override
             public void onNext(BaseEntity<DocumentBean> bean) {
@@ -88,6 +109,20 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
         @Override
         public void onClick(View view) {
             switch (view.getId()) {
+                case R.id.official_not_done_tab:
+                    if (done) {
+                        done = false;
+                        getFileMonitorList(new ScreenBean());
+                    }
+                    setCheckStates(view.getId());
+                    break;
+                case R.id.official_done_tab:
+                    if (!done) {
+                        done = true;
+                        getFileMonitorList(new ScreenBean());
+                    }
+                    setCheckStates(view.getId());
+                    break;
                 //去筛选
                 case R.id.to_screen:
                     Intent intent = new Intent(FileMonitorActivity.this, ScreenActivity.class);
@@ -123,6 +158,24 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
             }
         }
     };
+
+    private void setCheckStates(int id) {
+        RelativeLayout parent;
+        for (int i = 0; i < idList.size(); i++) {
+            if (idList.get(i) == id) {
+                viewDelegate.get(id).setSelected(true);
+                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
+
+            } else {
+                viewDelegate.get(idList.get(i)).setSelected(false);
+                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                TextView childTv = (TextView) parent.getChildAt(1);
+                childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
+            }
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -31,7 +31,6 @@ import me.jessyan.autosize.AutoSize;
  */
 
 public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
-    //    private List<String> beanList;
     private ScreenBean screenBean;
     private ScreenTypeAdapter adapter;
     private TextView s_date, e_date;

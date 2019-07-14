@@ -20,6 +20,16 @@ public class ScreenBean implements Serializable {
     public String organ = "";
     //文件编号
     public String number = "";
+    //文件监控使用，0代表未处理，1代表已处理
+    public String status = "";
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getNumber() {
         return number;
