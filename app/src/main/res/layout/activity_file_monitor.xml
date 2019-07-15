@@ -9,6 +9,7 @@
     <include layout="@layout/sort_tool_ll" />
 
     <LinearLayout
+        android:id="@+id/file_monitor_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
