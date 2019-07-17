@@ -8,7 +8,6 @@
         android:id="@+id/sign_toolbar"
         layout="@layout/toolbar" />
 
-
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -39,160 +38,103 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginEnd="8dp"
-            android:layout_marginTop="97dp"
+            android:layout_marginTop="80dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginBottom="55dp"
                 android:id="@+id/sign_right_list"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="55dp" />
 
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/sign_top_ll"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:background="@color/color_f5f5f5"
-            android:gravity="center"
-            android:orientation="horizontal">
+            android:id="@+id/sign_left_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="70dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/sign_agree"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="2dp"
+                android:background="@mipmap/sign_right_back"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:text="同意"
+                android:textSize="10sp" />
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/sign_agree" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="同意"
-                    android:textSize="9sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:id="@+id/sign_add_person"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/sign_right_back"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/sign_add_person" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:gravity="center"
-                    android:text="加签"
-                    android:textSize="9sp"
-                    android:visibility="visible" />
-
-            </LinearLayout>
+                android:text="加签"
+                android:textSize="10sp"
+                android:visibility="visible" />
 
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/sign_add_advise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/sign_right_back"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/sign_add_advise" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="意见"
-                    android:textSize="9sp"
-                    android:visibility="visible" />
-            </LinearLayout>
+                android:text="意见"
+                android:textSize="10sp"
+                android:visibility="visible" />
 
 
-            <LinearLayout
+            <TextView
                 android:id="@+id/sign_refuse"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/sign_right_back"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:text="退回"
+                android:textSize="10sp" />
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/sign_refuse" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="退回"
-                    android:textSize="9sp" />
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:id="@+id/sign_close"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/sign_right_back"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:text="关闭"
+                android:textSize="10sp" />
 
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/sign_close" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="关闭"
-                    android:textSize="9sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:id="@+id/sign_daiqian"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginTop="10dp"
+                android:background="@mipmap/sign_right_back"
+                android:clickable="true"
                 android:gravity="center"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@mipmap/sign_daiqian" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="代签"
-                    android:textSize="9sp" />
-            </LinearLayout>
+                android:text="代签"
+                android:textSize="10sp" />
         </LinearLayout>
 
         <FrameLayout
@@ -202,39 +144,136 @@
             android:visibility="gone">
 
             <LinearLayout
-                android:id="@+id/sign_left_ll"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom"
-                android:layout_marginBottom="88dp"
-                android:layout_marginStart="14dp"
+                android:id="@+id/sign_top_ll"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@color/color_b93837"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/eraser_ll"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/sign_eraser_selector" />
+                <LinearLayout
+                    android:id="@+id/save_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <ImageView
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/sign_save_selector" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="保存"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="9sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/pen_ll"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="7dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/sign_pen_selector" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-                <ImageView
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/sign_pen_selector" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="画笔"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="9sp" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/eraser_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/sign_eraser_selector" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="橡皮擦"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="9sp" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/clear_ll"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginTop="7dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/sign_clear_selector" />
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:layout_marginTop="2dp"
+                        android:src="@drawable/sign_clear_selector" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:text="清除"
+                        android:textColor="@color/color_ffffff"
+                        android:textSize="9sp" />
+                </LinearLayout>
+
+                <!--<LinearLayout-->
+                <!--android:id="@+id/yinzhang_ll"-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="match_parent"-->
+                <!--android:layout_weight="1"-->
+                <!--android:clickable="true"-->
+                <!--android:gravity="center"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<ImageView-->
+                <!--android:layout_width="38dp"-->
+                <!--android:layout_height="38dp"-->
+                <!--android:layout_marginTop="2dp"-->
+                <!--android:src="@drawable/sign_seal_selector" />-->
+
+                <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginBottom="2dp"-->
+                <!--android:text="印章"-->
+                <!--android:textColor="@color/color_ffffff"-->
+                <!--android:textSize="9sp" />-->
+                <!--</LinearLayout>-->
 
             </LinearLayout>
+
 
         </FrameLayout>
     </FrameLayout>
