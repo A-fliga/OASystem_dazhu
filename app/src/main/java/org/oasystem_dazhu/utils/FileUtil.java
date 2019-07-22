@@ -1,6 +1,10 @@
 package org.oasystem_dazhu.utils;
 
+import android.os.Environment;
+
 import java.io.File;
+
+import static org.oasystem_dazhu.constants.Constants.PACKAGE_PATH;
 
 /**
  * Created by www on 2019/1/20.
@@ -18,5 +22,10 @@ public class FileUtil {
         } else if (file.exists()) {
             file.delete();
         }
+    }
+
+    public static void clearCache(){
+        File file = new File(Environment.getExternalStorageDirectory().toString() + File.separator + PACKAGE_PATH);
+        deleteFile(file);
     }
 }

@@ -17,7 +17,7 @@ public final class Constants {
     public static final int SIZE_IN_DP = 640;
     public static final int TYPE_WIDTH_COUNT = 5;
 
-    private static final String PACKAGE_PATH = "OASystem_dazhu";
+    public static final String PACKAGE_PATH = "OASystem_dazhu";
     //已处理的文件路径
     public static final String OFFICE_PREVIEW = Environment.getExternalStorageDirectory().toString() +
             File.separator + PACKAGE_PATH + File.separator+"OfficePreView";

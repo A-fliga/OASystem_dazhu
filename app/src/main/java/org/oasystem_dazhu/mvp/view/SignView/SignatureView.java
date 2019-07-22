@@ -113,6 +113,9 @@ public class SignatureView extends FrameLayout {
         @Override
         public void onError(Throwable t) {
             ToastUtil.l("文件已损坏");
+            if(sourceFile.exists()){
+                sourceFile.delete();
+            }
             ProgressDialogUtil.instance().stopLoad();
         }
     };

@@ -14,6 +14,8 @@ import org.oasystem_dazhu.mvp.presenter.activity.MySealActivity;
 import org.oasystem_dazhu.mvp.view.UserCenterDelegate;
 import org.oasystem_dazhu.simplecache.ACache;
 import org.oasystem_dazhu.utils.DialogUtil;
+import org.oasystem_dazhu.utils.FileUtil;
+import org.oasystem_dazhu.utils.ToastUtil;
 
 /**
  * Created by www on 2018/12/29.
@@ -38,8 +40,7 @@ public class UserCenterFragment extends FragmentPresenter {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewDelegate.setOnClickListener(mOnClickListener, R.id.logout, R.id.mySeal, R.id.changePwd);
-
+        viewDelegate.setOnClickListener(mOnClickListener, R.id.logout, R.id.mySeal, R.id.changePwd,R.id.clear_cache);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -55,6 +56,11 @@ public class UserCenterFragment extends FragmentPresenter {
 
                 case R.id.changePwd:
                     startMyActivity(ChangePassWordActivity.class,null);
+                    break;
+
+                case R.id.clear_cache:
+                    FileUtil.clearCache();
+                    ToastUtil.s("清理完成");
                     break;
             }
         }
