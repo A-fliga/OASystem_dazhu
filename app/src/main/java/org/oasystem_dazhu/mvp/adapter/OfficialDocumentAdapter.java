@@ -60,9 +60,6 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
         if (bean.getDispatch() != null) {
             urgent = bean.getDispatch().getUrgent();
         }
-        if (position == 0) {
-            urgent = 1;
-        }
         setText(holder.official_title, bean.getDispatch().getName(), urgent);
         String serial = "-";
         if (!TextUtils.isEmpty(bean.getDispatch().getSerial())) {
@@ -72,6 +69,7 @@ public class OfficialDocumentAdapter extends RecyclerView.Adapter<OfficialDocume
         setText(holder.official_time, "发起时间：" + bean.getDispatch().getCreated_at(), urgent);
         setText(holder.official_last_time, "最后操作：" + bean.getDispatch().getUpdated_at(), urgent);
         holder.item_percent_circle.setDisplayText(true);
+        //专门的处理，是加急文件就显示截办时间
         if (urgent == 1) {
             holder.official_end_time.setVisibility(View.VISIBLE);
             String endTime = "-";

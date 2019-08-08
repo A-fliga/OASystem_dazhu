@@ -34,7 +34,7 @@ public class OfficialDocumentDetailDelegate extends ViewDelegate {
 
     @Override
     public void initWidget() {
-        sign_left_ll = get(R.id.sign_top_ll);
+        sign_left_ll = get(R.id.sign_left_ll);
         sign_bottom = get(R.id.sign_bottom);
         setToolBarRightTv2("保存");
         getToolBarRightTv2().setVisibility(View.GONE);

@@ -23,8 +23,8 @@ android {
         applicationId "org.oasystem_dazhu"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 14
-        versionName "2.4"
+        versionCode 16
+        versionName "2.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //X5兼容64位手机
@@ -78,11 +78,11 @@ android {
             //宣汉
 //            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
             //大竹
-//            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
+            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //渠县
 //            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
             //测试
-            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
+//            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
         }
 
         release {
@@ -95,11 +95,11 @@ android {
             //大竹
 //            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //威远
-            buildConfigField "String", "HOST", '"http://112.33.39.86:9098/api/"'
+//            buildConfigField "String", "HOST", '"http://112.33.39.86:9098/api/"'
             //渠县
 //            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
             //测试
-//            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
+            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
 
             signingConfig android.signingConfigs.release
             minifyEnabled true
