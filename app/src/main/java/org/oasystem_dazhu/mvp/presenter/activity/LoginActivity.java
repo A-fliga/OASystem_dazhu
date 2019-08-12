@@ -2,25 +2,34 @@ package org.oasystem_dazhu.mvp.presenter.activity;
 
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.http.MSubscribe;
+import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
+import org.oasystem_dazhu.mvp.model.bean.JPushRegisterBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
 import org.oasystem_dazhu.mvp.view.LoginDelegate;
 import org.oasystem_dazhu.simplecache.ACache;
 import org.oasystem_dazhu.utils.AppUtil;
+import org.oasystem_dazhu.utils.ProgressDialogUtil;
 import org.oasystem_dazhu.utils.SharedPreferencesUtil;
 import org.oasystem_dazhu.utils.ToastUtil;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import cn.jpush.android.api.JPushInterface;
 
 import static org.oasystem_dazhu.constants.Constants.LOGIN_INFO;
 
@@ -31,6 +40,7 @@ import static org.oasystem_dazhu.constants.Constants.LOGIN_INFO;
 
 public class LoginActivity extends ActivityPresenter {
     private EditText unEt, pwdEt;
+    private boolean isRequestSuccess = false;
 
     @Override
     public Class getDelegateClass() {
@@ -49,6 +59,7 @@ public class LoginActivity extends ActivityPresenter {
         addTextChangeListener(unEt);
         pwdEt = viewDelegate.get(R.id.login_password);
         viewDelegate.setOnClickListener(onClickListener, R.id.login_btn, R.id.can_not_login, R.id.forget_pwd);
+        EventBus.getDefault().register(this);
     }
 
     public static String stringFilter(String str) throws PatternSyntaxException {
@@ -117,9 +128,37 @@ public class LoginActivity extends ActivityPresenter {
                     SharedPreferencesUtil.saveUserName(unEt.getText().toString().replaceAll(" ", ""));
                     ACache aCache = ACache.get(MyApplication.getContext());
                     aCache.put(LOGIN_INFO, bean.getData());
-                    startMyActivityWithFinish(MainActivity.class);
+                    if (UserManager.getInstance().isDazhu()) {
+                        startMyActivityWithFinish(MainActivity.class);
+                    } else {
+                        if (!TextUtils.isEmpty(JPushInterface.getRegistrationID(LoginActivity.this))) {
+                            startMyActivityWithFinish(MainActivity.class);
+                        } else {
+                            isRequestSuccess = true;
+                            ProgressDialogUtil.instance().startLoad("初始化中");
+                        }
+                    }
                 }
             }
         }, unEt.getText().toString().replaceAll(" ", ""), pwdEt.getText().toString().replaceAll(" ", ""));
     }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    //极光注册成功的监听
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void jPushRegister(JPushRegisterBean bean) {
+        if (bean != null) {
+            ProgressDialogUtil.instance().stopLoad();
+            if (isRequestSuccess) {
+                startMyActivityWithFinish(MainActivity.class);
+            }
+        }
+    }
+
 }

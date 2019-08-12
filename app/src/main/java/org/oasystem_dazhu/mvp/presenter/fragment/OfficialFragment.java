@@ -19,6 +19,7 @@ import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
+import org.oasystem_dazhu.mvp.model.bean.RefreshListBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
 import org.oasystem_dazhu.mvp.presenter.activity.MainActivity;
 import org.oasystem_dazhu.mvp.presenter.activity.MoreTypeActivity;
@@ -150,8 +151,8 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void refreshList(String content) {
-        if (content.equals("upLoadSuccess")) {
+    public void refreshList(RefreshListBean bean) {
+        if (bean != null && bean.isNeedRefresh()) {
             getFirmingType();
         }
     }

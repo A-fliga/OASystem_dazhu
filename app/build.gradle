@@ -23,14 +23,19 @@ android {
         applicationId "org.oasystem_dazhu"
         minSdkVersion 17
         targetSdkVersion 26
-        versionCode 16
-        versionName "2.6"
+        versionCode 18
+        versionName "2.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         //X5兼容64位手机
         ndk {
             abiFilters "armeabi","armeabi-v7a"
         }
+        manifestPlaceholders = [
+                JPUSH_PKGNAME : applicationId,
+                JPUSH_APPKEY : "028722340c6ba8a65817024e", //JPush 上注册的包名对应的 Appkey.
+                JPUSH_CHANNEL : "developer-default", //暂时填写默认值即可.
+        ]
     }
     sourceSets {
         main {
@@ -78,9 +83,9 @@ android {
             //宣汉
 //            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
             //大竹
-            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
+//            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //渠县
-//            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
+            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
             //测试
 //            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
         }
@@ -95,11 +100,11 @@ android {
             //大竹
 //            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //威远
-//            buildConfigField "String", "HOST", '"http://112.33.39.86:9098/api/"'
+            buildConfigField "String", "HOST", '"http://112.33.39.86:9098/api/"'
             //渠县
 //            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
             //测试
-            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
+//            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
 
             signingConfig android.signingConfigs.release
             minifyEnabled true
@@ -160,4 +165,6 @@ dependencies {
     compile(name: 'utils-release', ext: 'aar')
     compile(name: 'recognizer-release', ext: 'aar')
     compile 'me.jessyan:autosize:1.1.2'
+    compile 'cn.jiguang.sdk:jpush:3.3.4'
+    compile 'cn.jiguang.sdk:jcore:2.1.2'
 }

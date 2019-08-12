@@ -64,8 +64,8 @@ public class PublicModel implements IModel {
     /**
      * 获取用户信息
      */
-    public void getUserInfo(Subscriber<BaseEntity<UserInfo>> subscriber) {
-        HttpClient.getInstance().getUserInfo(subscriber);
+    public void getUserInfo(Subscriber<BaseEntity<UserInfo>> subscriber,String registration_id) {
+        HttpClient.getInstance().getUserInfo(subscriber,registration_id);
     }
 
     /**

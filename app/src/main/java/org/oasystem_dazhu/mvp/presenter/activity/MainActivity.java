@@ -57,6 +57,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.jpush.android.api.JPushInterface;
 import me.jessyan.autosize.AutoSize;
 
 
@@ -260,7 +261,7 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
         }
     };
 
-    public void setCheck(int position){
+    public void setCheck(int position) {
         viewDelegate.setCheck(position);
     }
 
@@ -275,7 +276,7 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
                     getAllUserInfo();
                 }
             }
-        });
+        }, UserManager.getInstance().isDazhu() ? "" : JPushInterface.getRegistrationID(this));
     }
 
     private void getAllUserInfo() {
@@ -354,13 +355,10 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
     }
 
 
-
-
     @Override
     public boolean isSetDisplayHomeAsUpEnabled() {
         return false;
     }
-
 
 
     @Override

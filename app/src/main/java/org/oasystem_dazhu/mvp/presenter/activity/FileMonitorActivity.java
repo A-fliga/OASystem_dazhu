@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.http.MSubscribe;
 import org.oasystem_dazhu.mvp.adapter.OfficialDocumentAdapter;
@@ -14,6 +16,7 @@ import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.DocumentBean;
+import org.oasystem_dazhu.mvp.model.bean.RefreshListBean;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
 import org.oasystem_dazhu.mvp.view.FileMonitorDelegate;
 import org.oasystem_dazhu.utils.SortUtl;
@@ -83,8 +86,9 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
                     if (bean.getData().getData().size() == 0) {
                         ToastUtil.l("暂无数据");
                     }
-                    if (newBeanList != null)
+                    if (newBeanList != null) {
                         newBeanList.clear();
+                    }
                     newBeanList = new ArrayList<DocumentBean.DataBean>();
                     newBeanList.addAll(SortUtl.sort(bean.getData().getData()));
                     RecyclerView recyclerView = viewDelegate.get(R.id.file_monitor_recyclerView);
@@ -185,6 +189,13 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
             if (screenBean != null) {
                 getFileMonitorList(screenBean);
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
+    public void refreshList(RefreshListBean bean) {
+        if (bean != null && bean.isNeedRefresh()) {
+            getFileMonitorList(new ScreenBean());
         }
     }
 }

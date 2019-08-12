@@ -2,6 +2,8 @@ package org.oasystem_dazhu.constants;
 
 import android.os.Environment;
 
+import org.oasystem_dazhu.BuildConfig;
+
 import java.io.File;
 
 /**
@@ -20,21 +22,21 @@ public final class Constants {
     public static final String PACKAGE_PATH = "OASystem_dazhu";
     //已处理的文件路径
     public static final String OFFICE_PREVIEW = Environment.getExternalStorageDirectory().toString() +
-            File.separator + PACKAGE_PATH + File.separator+"OfficePreView";
+            File.separator + PACKAGE_PATH + File.separator + "OfficePreView";
     public static int currenPage = 0;
 
     //准备签字的路径
     public static final String SIGN_OFFICIAL = Environment.getExternalStorageDirectory().toString() +
-            File.separator + PACKAGE_PATH + File.separator+"SignOfficial";
+            File.separator + PACKAGE_PATH + File.separator + "SignOfficial";
 
-//    public static int SIGN_BITMAP_WIDTH = 0,SIGN_BITMAP_HEIGHT = 0;
+    //    public static int SIGN_BITMAP_WIDTH = 0,SIGN_BITMAP_HEIGHT = 0;
     //签完字的路径
     public static final String SIGN_RESULT = Environment.getExternalStorageDirectory().toString() +
-            File.separator +PACKAGE_PATH + File.separator+"SignResult";
+            File.separator + PACKAGE_PATH + File.separator + "SignResult";
 
     //下载更新包的路径
     public static final String DOWNLOAD_UPDATE = Environment.getExternalStorageDirectory().toString() +
-            File.separator + PACKAGE_PATH + File.separator+"Apk";
+            File.separator + PACKAGE_PATH + File.separator + "Apk";
     //极光别名，不可修改
     public static final String JPUSH_NAME = "USER_ID";
 
@@ -82,21 +84,35 @@ public final class Constants {
     //用户的登录手机和密码
     public static final String USER_NAME = "USER_NAME";
 
-
     public static final String FROM_CHANGE_PWD = "FROM_CHANGE_PWD";
     public static final String FROM_NORMAL = "FROM_NORMAL";
-
     public static final int IS_INIT = 0;
     public static final int IS_REFRESH = 1;
     public static final int IS_LOAD_MORE = 2;
-
     public static final int FROM_BANNER = 1000;
     public static final int FROM_INFO = 1001;
     public static final int FROM_SPIRIT = 1002;
     public static final String FROM_WHERE = "FROM_WHERE";
     public static final String INFO_ID = "INFO_ID";
     public static final String BANNER_ID = "BANNER_ID";
-
-
     public static final String LOGIN_INFO = "LOGIN_INFO";
+
+    public static String getOrg() {
+        switch (BuildConfig.HOST) {
+            case "http://112.33.26.41:9098/api/":
+                return "jingkaiqu";
+            case "http://112.35.0.188:9098/api/":
+                return "xuanhan";
+            case "http://112.35.1.224:9099/api/":
+                return "dazhu";
+            case "http://112.33.39.86:9098/api/":
+                return "weiyuan";
+            case "http://112.33.63.90:9098/api/":
+                return "quxian";
+            case "http://106.12.106.117/api/":
+                return "ceshi";
+            default:
+                return "OA_System";
+        }
+    }
 }

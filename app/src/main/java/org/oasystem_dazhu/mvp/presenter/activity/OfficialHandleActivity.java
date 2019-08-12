@@ -13,6 +13,7 @@ import android.widget.TextView;
 import org.greenrobot.eventbus.EventBus;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
+import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.bean.ScreenBean;
 import org.oasystem_dazhu.mvp.presenter.fragment.OfficialListFragment;
 import org.oasystem_dazhu.mvp.view.OfficialHandleDelegate;
@@ -114,7 +115,7 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
                 case R.id.refresh:
                     isPositive_update = false;
                     isPositive_create = false;
-                    EventBus.getDefault().post("upLoadSuccess");
+                    EventBus.getDefault().post(UserManager.getInstance().getRefreshBean());
                     break;
             }
         }

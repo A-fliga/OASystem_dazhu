@@ -1,8 +1,10 @@
 package org.oasystem_dazhu.manager;
 
 import org.oasystem_dazhu.application.MyApplication;
+import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.mvp.model.bean.AllUserBean;
 import org.oasystem_dazhu.mvp.model.bean.LoginBean;
+import org.oasystem_dazhu.mvp.model.bean.RefreshListBean;
 import org.oasystem_dazhu.mvp.model.bean.UserInfo;
 import org.oasystem_dazhu.simplecache.ACache;
 
@@ -60,5 +62,13 @@ public class UserManager {
 
     public UserInfo getUserInfo() {
         return userInfo;
+    }
+
+    public RefreshListBean getRefreshBean() {
+        return new RefreshListBean().setNeedRefresh(true);
+    }
+
+    public boolean isDazhu() {
+        return "eqzhu".equals(Constants.getOrg());
     }
 }

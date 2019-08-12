@@ -154,7 +154,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             }
         }
         initView(done);
-        viewDelegate.setOnClickListener(onClickListener, R.id.save_ll, R.id.pen_ll, R.id.clear_ll, R.id.eraser_ll,R.id.mToolbar_rl);
+        viewDelegate.setOnClickListener(onClickListener, R.id.save_ll, R.id.pen_ll, R.id.clear_ll, R.id.eraser_ll, R.id.mToolbar_rl);
         initNotDoneView();
         viewDelegate.initBottomRecyclerView(dataBean, done);
         checkLocationPermission();
@@ -247,7 +247,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
             } else {
                 viewDelegate.get(R.id.sign_img).setVisibility(View.GONE);
-                if (!done && type.equals("pdf")) {
+                if (!done && type.toLowerCase().equals("pdf")) {
                     //用自己的view加载
                     viewDelegate.get(R.id.mSignatureView).setVisibility(View.VISIBLE);
                     viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
@@ -262,7 +262,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 }
             }
         } else {
-            downLoadFile(id, type);
+            downLoadFile(id, type.toLowerCase());
         }
     }
 
@@ -617,7 +617,6 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             type = str[str.length - 1];
         }
         return type;
-
     }
 
 
@@ -634,7 +633,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         opType = 3;
                         DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "您确定要取消吗？", "确定", "不确定", dOnClickListener);
                     } else {
-                        if (getNowType().equals("pdf")) {
+                        if (getNowType().toLowerCase().equals("pdf")) {
                             setSigningStatus();
                         } else {
                             ToastUtil.l("当前仅支持pdf文件");
@@ -777,7 +776,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     super.onNext(bean);
                     if (bean.getCode() == 0) {
                         ToastUtil.s("操作成功");
-                        EventBus.getDefault().post("upLoadSuccess");
+                        EventBus.getDefault().post(UserManager.getInstance().getRefreshBean());
                         finish();
                     }
                 }
@@ -832,7 +831,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
                     ToastUtil.l("操作成功");
-                    EventBus.getDefault().post("upLoadSuccess");
+                    EventBus.getDefault().post(UserManager.getInstance().getRefreshBean());
                     finish();
                 }
             }
@@ -990,7 +989,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
                     ToastUtil.l("操作成功");
-                    EventBus.getDefault().post("upLoadSuccess");
+                    EventBus.getDefault().post(UserManager.getInstance().getRefreshBean());
                     finish();
                 }
             }
@@ -1056,7 +1055,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     super.onNext(bean);
                     if (bean.getCode() == 0) {
                         ToastUtil.l("操作成功");
-                        EventBus.getDefault().post("upLoadSuccess");
+                        EventBus.getDefault().post(UserManager.getInstance().getRefreshBean());
                         finish();
                     }
                 }
@@ -1100,7 +1099,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
                     ToastUtil.l("操作成功");
-                    EventBus.getDefault().post("upLoadSuccess");
+                    EventBus.getDefault().post(UserManager.getInstance().getRefreshBean());
                     finish();
                 }
             }

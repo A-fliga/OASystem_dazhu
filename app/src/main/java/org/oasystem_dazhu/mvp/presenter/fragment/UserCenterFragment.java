@@ -40,7 +40,7 @@ public class UserCenterFragment extends FragmentPresenter {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewDelegate.setOnClickListener(mOnClickListener, R.id.logout, R.id.mySeal, R.id.changePwd,R.id.clear_cache);
+        viewDelegate.setOnClickListener(mOnClickListener, R.id.logout, R.id.mySeal, R.id.changePwd, R.id.clear_cache);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -55,7 +55,7 @@ public class UserCenterFragment extends FragmentPresenter {
                     break;
 
                 case R.id.changePwd:
-                    startMyActivity(ChangePassWordActivity.class,null);
+                    startMyActivity(ChangePassWordActivity.class, null);
                     break;
 
                 case R.id.clear_cache:
@@ -75,6 +75,7 @@ public class UserCenterFragment extends FragmentPresenter {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == -1) {
+                //退出帐号，退出极光推送
                 //// TODO: 2018/12/30
                 ACache.get(MyApplication.getContext()).clear();
                 startMyActivityWithFinish(LoginActivity.class, null);

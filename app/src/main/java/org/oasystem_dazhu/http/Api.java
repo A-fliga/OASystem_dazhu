@@ -67,6 +67,16 @@ public interface Api {
      */
     @Headers({"Content-Type: application/json"})
     @POST("user/info")
+    Observable<BaseEntity<UserInfo>> getUserInfo(@Header("Authorization") String token,@Body RequestBody registration_id);
+
+
+    /**
+     * 获取用户信息
+     *
+     * @return
+     */
+    @Headers({"Content-Type: application/json"})
+    @POST("user/info")
     Observable<BaseEntity<UserInfo>> getUserInfo(@Header("Authorization") String token);
 
     /**

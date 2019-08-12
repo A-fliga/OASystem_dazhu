@@ -191,7 +191,7 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
         finish();
     }
 
-    public void startMyActivityWithFinish(Class<?> pClass) {
+    public synchronized void startMyActivityWithFinish(Class<?> pClass) {
         Intent intent = new Intent(this, pClass);
         startActivity(intent);
         finish();

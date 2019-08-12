@@ -88,6 +88,29 @@
             android:enabled="true"
             android:process=":remote" />
 
+        <service android:name=".service.JPushService"
+            android:enabled="true"
+            android:exported="false"
+            android:process=":pushcore">
+            <intent-filter>
+                <action android:name="cn.jiguang.user.service.action" />
+            </intent-filter>
+        </service>
+        <receiver
+            android:name=".broadcast.JPushBroadCastReceiver"
+            android:enabled="true"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_CLICK_ACTION" />
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+                <category android:name="org.oasystem_dazhu" />
+            </intent-filter>
+        </receiver>
+
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="fzLxUZ4psxpdpMibyigdO5CceO8XXRCM" />

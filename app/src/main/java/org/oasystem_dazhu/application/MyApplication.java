@@ -5,6 +5,9 @@ import android.content.Context;
 
 import com.tencent.smtt.sdk.QbSdk;
 
+import org.oasystem_dazhu.manager.UserManager;
+
+import cn.jpush.android.api.JPushInterface;
 import me.jessyan.autosize.AutoSizeConfig;
 
 import static org.oasystem_dazhu.constants.Constants.CORE_INIT;
@@ -22,6 +25,9 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
+        if (!UserManager.getInstance().isDazhu()) {
+            JPushInterface.init(this);
+        }
         application = this;
         AutoSizeConfig.getInstance().setBaseOnWidth(false);
         //增加这句话

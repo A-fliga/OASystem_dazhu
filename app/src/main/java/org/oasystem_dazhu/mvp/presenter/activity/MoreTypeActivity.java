@@ -15,6 +15,7 @@ import org.oasystem_dazhu.mvp.adapter.itemClickListener.OnItemClickListener;
 import org.oasystem_dazhu.mvp.model.BaseEntity;
 import org.oasystem_dazhu.mvp.model.PublicModel;
 import org.oasystem_dazhu.mvp.model.bean.HomeTypeBean;
+import org.oasystem_dazhu.mvp.model.bean.RefreshListBean;
 import org.oasystem_dazhu.mvp.view.MoreTypeDelegate;
 
 import java.util.ArrayList;
@@ -82,13 +83,15 @@ public class MoreTypeActivity extends ActivityPresenter<MoreTypeDelegate> {
         });
     }
 
+
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void refreshList(String content) {
-        if (content.equals("upLoadSuccess")) {
+    public void refreshList(RefreshListBean bean) {
+        if (bean != null && bean.isNeedRefresh()) {
             getFirmingType();
             initCustomize();
         }
     }
+
 
     private void getFirmingType() {
         PublicModel.getInstance().getType(new MSubscribe<BaseEntity<HomeTypeBean>>() {

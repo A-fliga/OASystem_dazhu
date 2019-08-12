@@ -130,10 +130,12 @@ public class DialogUtil {
     /**
      * 这是兼容的 AlertDialog
      */
-    public static void showDialog(Context context, String message, String sure, DialogInterface.OnClickListener listener) {
+    public static void showDialog(Activity context, String message, String sure, DialogInterface.OnClickListener listener) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("温馨提示").setCancelable(false).setPositiveButton(sure, listener).
-                setMessage(message).show();
+        builder.setTitle("温馨提示").setCancelable(true).setPositiveButton(sure, listener).
+                setMessage(message);
+        AutoSize.cancelAdapt(context);
+        builder.show();
     }
 
     /**
