@@ -253,8 +253,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
                     if (!cacheFileList.get(tagPosition).isEmpty())
                         disPlayBySignView(new File(cacheFileList.get(tagPosition)));
-                    else
+                    else {
                         disPlayBySignView(new File(getPath(id, type)));
+                    }
                 } else {
                     viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
                     viewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
@@ -272,10 +273,6 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void disPlayBySignView(File file) {
-        if (mSignatureView != null) {
-            mSignatureView.stopFling();
-            mSignatureView = null;
-        }
         mSignatureView = viewDelegate.get(R.id.mSignatureView);
         mSignatureView.loadFile(file);
     }
@@ -1228,8 +1225,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         @Override
                         public void onFinished(String path) {
                             LogUtil.d("pianyi", "签完字后的路径" + path);
-                            if (needUpLoad)
+                            if (needUpLoad) {
                                 upLoadFile(path);
+                            }
                         }
 
                         @Override

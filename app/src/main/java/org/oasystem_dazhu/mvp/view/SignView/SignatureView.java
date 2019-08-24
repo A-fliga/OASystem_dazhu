@@ -160,12 +160,7 @@ public class SignatureView extends FrameLayout {
     }
 
     public void loadFile(File file, Boolean auto) {
-        if (pdf_view != null) {
-            pdf_view.recycle();
-        }
-        if (penViewList != null) {
-            penViewList.clear();
-        }
+        stopFling();
         ProgressDialogUtil.instance().startLoad("加载文件中");
         this.autoSpacing = auto;
 
@@ -199,14 +194,16 @@ public class SignatureView extends FrameLayout {
                     reader = new PdfReader(sourceFile.getAbsolutePath());
                     document = new Document(reader.getPageSize(1));
                     reader.close();
+                    penViewList = new ArrayList<>();
+                    viewPager = findViewById(R.id.signature_viewpager);
+                    getSuitableSizeAndInitView(nbPages, document);
+                    MPagerAdapter adapter = new MPagerAdapter(SignatureView.this);
+                    viewPager.setAdapter(adapter);
+                    document.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                penViewList = new ArrayList<>();
-                viewPager = findViewById(R.id.signature_viewpager);
-                getSuitableSizeAndInitView(nbPages, document);
-                MPagerAdapter adapter = new MPagerAdapter(SignatureView.this);
-                viewPager.setAdapter(adapter);
+
             }
             isFirstViewChange = false;
         }
@@ -243,7 +240,6 @@ public class SignatureView extends FrameLayout {
             penView = new MPenLayout(context, bitMapWidth, bitMapHeight);
             penView.setSignatureView(this);
             penViewList.add(penView);
-            penView = null;
         }
         initPenAfterAutoSpacing();
     }
@@ -523,12 +519,15 @@ public class SignatureView extends FrameLayout {
     }
 
     public void stopFling() {
-        pdf_view.stopFling();
-        pdf_view.recycle();
+        if (pdf_view != null) {
+            pdf_view.stopFling();
+            pdf_view.recycle();
+        }
         if (penViewList != null) {
             for (int i = 0; i < penViewList.size(); i++) {
                 penViewList.get(i).setSignatureView(null);
                 penViewList.get(i).clear();
+                penViewList.get(i).removeAllViews();
             }
             penViewList.clear();
         }
