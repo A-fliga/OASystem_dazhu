@@ -553,7 +553,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         //切换界面要恢复一下设置
                         if (mSignatureView != null) {
                             mSignatureView.resetConfig();
-                            mSignatureView.setNewPath(cacheFileList.get(position));
+                            mSignatureView.setmNewPath(cacheFileList.get(position));
                         }
 
                         //回收掉原来的tbsView，否则不能显示
@@ -1212,15 +1212,15 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             if (cacheFileList != null && cacheFileList.size() != 0) {
                 cacheFileList.set(tagPosition, "");
             }
-            mSignatureView.setNewPath("");
+            mSignatureView.setmNewPath("");
             mSignatureView.clearCanvas(new File(getPath(id, type)));
         }
     }
 
     private void saveImg(final Boolean needUpLoad) {
         if (mSignatureView != null) {
-            LogUtil.d("pianyi", "签字文件的路径" + (TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(id, getNowType()) : mSignatureView.getNewPath()));
-            mSignatureView.addSignature2Pdf(TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(id, getNowType()) : mSignatureView.getNewPath()
+            LogUtil.d("pianyi", "签字文件的路径" + (TextUtils.isEmpty(mSignatureView.getmNewPath()) ? getPath(id, getNowType()) : mSignatureView.getmNewPath()));
+            mSignatureView.addSignature2Pdf(TextUtils.isEmpty(mSignatureView.getmNewPath()) ? getPath(id, getNowType()) : mSignatureView.getmNewPath()
                     , false, new SignatureView.DataFinishListener() {
                         @Override
                         public void onFinished(String path) {
