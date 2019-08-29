@@ -210,38 +210,37 @@ public class SignatureView extends FrameLayout {
                     reader = new PdfReader(mSourceFile.getAbsolutePath());
                     //这里是第几页，不能写0
                     document = new Document(reader.getPageSize(1));
+                    getSuitableSizeAndInitView(nbPages, document.getPageSize().getHeight(), document.getPageSize().getWidth());
                     reader.close();
-                    getSuitableSizeAndInitView(nbPages, document);
                     document.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
             mIsFirstViewChange = false;
         }
     };
 
-    private void getSuitableSizeAndInitView(final int nbPages, final Document document) {
+    private void getSuitableSizeAndInitView(final int nbPages, float height, float width) {
         int bitMapHeight;
         int bitMapWidth;
-        if (document.getPageSize().getHeight() >= document.getPageSize().getWidth()) {
+        if (height >= width) {
             bitMapHeight = mPenView.getHeight();
-            bitMapWidth = (int) ((mPenView.getHeight() / document.getPageSize().getHeight()) * document.getPageSize().getWidth());
+            bitMapWidth = (int) ((mPenView.getHeight() / height) * width);
             if (bitMapWidth > mPenView.getWidth()) {
                 bitMapWidth = mPenView.getWidth();
             }
-            if (bitMapWidth / document.getPageSize().getWidth() < bitMapHeight / document.getPageSize().getHeight()) {
-                bitMapHeight = (int) (bitMapWidth / document.getPageSize().getWidth() * document.getPageSize().getHeight());
+            if (bitMapWidth / width < bitMapHeight / height) {
+                bitMapHeight = (int) (bitMapWidth / width * height);
             }
         } else {
             bitMapWidth = mPenView.getWidth();
-            bitMapHeight = (int) ((mPdfView.getWidth() / document.getPageSize().getWidth()) * document.getPageSize().getHeight());
+            bitMapHeight = (int) ((mPdfView.getWidth() / width) * height);
             if (bitMapHeight > mPenView.getHeight()) {
                 bitMapHeight = mPenView.getHeight();
             }
-            if (bitMapHeight / document.getPageSize().getHeight() < bitMapWidth / document.getPageSize().getWidth()) {
-                bitMapWidth = (int) (bitMapHeight / document.getPageSize().getHeight() * document.getPageSize().getWidth());
+            if (bitMapHeight / height < bitMapWidth / width) {
+                bitMapWidth = (int) (bitMapHeight / height * width);
             }
         }
         LayoutParams params = (LayoutParams) mPdfView.getLayoutParams();
