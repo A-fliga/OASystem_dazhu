@@ -8,8 +8,8 @@
         android:layout_gravity="center"
         android:gravity="center" />
 
-    <org.oasystem_dazhu.mvp.view.customView.NoAnimationViewPager
-        android:id="@+id/signature_viewpager"
+    <org.oasystem_dazhu.mvp.view.SignView.MPenLayout
+        android:id="@+id/signature_penLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"

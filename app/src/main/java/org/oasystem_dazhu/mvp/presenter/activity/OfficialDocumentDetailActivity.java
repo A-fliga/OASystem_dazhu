@@ -1,6 +1,7 @@
 package org.oasystem_dazhu.mvp.presenter.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -17,6 +18,7 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckedTextView;
@@ -32,7 +34,6 @@ import com.tencent.smtt.sdk.TbsReaderView;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.oasystem_dazhu.BuildConfig;
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.application.MyApplication;
 import org.oasystem_dazhu.constants.Constants;
@@ -82,9 +83,8 @@ import static org.oasystem_dazhu.constants.Constants.SIGN_RESULT;
  */
 
 public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDocumentDetailDelegate> implements TbsReaderView.ReaderCallback {
-    private static String TAG = "wwwceshi";
+    private static String TAG = "OfficialDocumentDetailActivity";
     private final int WRITE_STORAGE_CODE = 1000;
-    private final int REQUEST_CODE_WRITE_SETTINGS = 1002;
     private DocumentBean.DataBean.DispatchBean dispatchBean;
     private DocumentBean.DataBean dataBean;
     private RecyclerView recyclerView;
@@ -274,6 +274,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void disPlayBySignView(File file) {
         mSignatureView = viewDelegate.get(R.id.mSignatureView);
+        mSignatureView.setDocumentId(String.valueOf(id));
         mSignatureView.loadFile(file);
     }
 
@@ -441,6 +442,16 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        View view = getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
     private Boolean isFileExist(int id, String type) {
         File file = new File(getPath(id, type));
         if (file.length() == 0) {
@@ -521,7 +532,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         String text;
         if (dispatchBean.getAccessory_list() != null) {
             for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
-                if (BuildConfig.HOST.equals("http://112.35.0.188:9098/api/")) {
+                if ("xuanhan".equals(Constants.getOrg())) {
                     String[] contentName = dispatchBean.getAccessory_list().get(i).getName().split("_");
                     if (contentName.length > 1) {
                         text = contentName[1];
@@ -552,8 +563,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         tagPosition = position;
                         //切换界面要恢复一下设置
                         if (mSignatureView != null) {
-                            mSignatureView.resetConfig();
-                            mSignatureView.setmNewPath(cacheFileList.get(position));
+                            mSignatureView.setNewPath(cacheFileList.get(position));
                         }
 
                         //回收掉原来的tbsView，否则不能显示
@@ -1159,10 +1169,11 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 }
                 if (opType == 3) {
                     setSelectedSates(viewDelegate.get(R.id.toolBar_img_right));
-                    if (cacheFileList.get(tagPosition).isEmpty())
+                    if (cacheFileList.get(tagPosition).isEmpty()) {
                         clearCanvas(null);
-                    else
+                    } else {
                         clearCanvas(cacheFileList.get(tagPosition));
+                    }
                     noSigning();
                 }
                 if (opType == 4) {
@@ -1199,7 +1210,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         for (int j = 0; j < linearList.size(); j++) {
             linearList.get(j).setSelected(false);
         }
-//        mSignatureView.resetZoomWithAnimation();
+        mSignatureView.resetCacheMap();
     }
 
     private void clearCanvas(String path) {
@@ -1212,19 +1223,19 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             if (cacheFileList != null && cacheFileList.size() != 0) {
                 cacheFileList.set(tagPosition, "");
             }
-            mSignatureView.setmNewPath("");
+            mSignatureView.setNewPath("");
             mSignatureView.clearCanvas(new File(getPath(id, type)));
         }
     }
 
     private void saveImg(final Boolean needUpLoad) {
         if (mSignatureView != null) {
-            LogUtil.d("pianyi", "签字文件的路径" + (TextUtils.isEmpty(mSignatureView.getmNewPath()) ? getPath(id, getNowType()) : mSignatureView.getmNewPath()));
-            mSignatureView.addSignature2Pdf(TextUtils.isEmpty(mSignatureView.getmNewPath()) ? getPath(id, getNowType()) : mSignatureView.getmNewPath()
+            LogUtil.d(TAG, "签字文件的路径" + (TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(id, getNowType()) : mSignatureView.getNewPath()));
+            mSignatureView.addSignature2Pdf(TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(id, getNowType()) : mSignatureView.getNewPath()
                     , false, new SignatureView.DataFinishListener() {
                         @Override
                         public void onFinished(String path) {
-                            LogUtil.d("pianyi", "签完字后的路径" + path);
+                            LogUtil.d(TAG, "签完字后的路径" + path);
                             if (needUpLoad) {
                                 upLoadFile(path);
                             }

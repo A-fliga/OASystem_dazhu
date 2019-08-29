@@ -68,7 +68,6 @@ public class OfficeDetailActivity extends ActivityPresenter {
             @Override
             public void onClick(View view) {
                 pdf_view.startSignature();
-
             }
         });
     }

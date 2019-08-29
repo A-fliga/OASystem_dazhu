@@ -160,7 +160,9 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
             if (apkDir.exists()) {
                 FileUtil.deleteFile(apkDir);
                 apkDir.mkdirs();
-            } else apkDir.mkdirs();
+            } else {
+                apkDir.mkdirs();
+            }
             try {
                 URL url = new URL(appUtl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
