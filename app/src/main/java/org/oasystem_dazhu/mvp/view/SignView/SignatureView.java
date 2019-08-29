@@ -195,12 +195,18 @@ public class SignatureView extends FrameLayout {
                 .load();
     }
 
+    public void resetConfig() {
+        mPrePage = 0;
+    }
 
     private OnLoadCompleteListener completeListener = new OnLoadCompleteListener() {
         @Override
         public void loadComplete(int nbPages) {
 
             //如果不是自动保存的 就清空一下设置
+            if (!mAutoSpacing) {
+                resetConfig();
+            }
             resetZoomWithAnimation();
             ProgressDialogUtil.instance().stopLoad();
             Document document = null;

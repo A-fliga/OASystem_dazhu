@@ -133,15 +133,9 @@ public class SavePdf {
                     } else {
                         xOffset = (-getCurrentXOffset() - (mPdfView.getWidth() * getZoom() * getCurrentPage())) / getZoom() - (mPdfView.getWidth() - mBitmap.getWidth()) / 2 * (getZoom() - 1) / getZoom();
                     }
-//                    LogUtil.d("pianyi", "我是第" + getCurrentPage() + "页，我来位移了");
-//                    LogUtil.d("pianyi", "原pdf大小 x:" + rectangle.getWidth() + " y: " + rectangle.getHeight());
-//                    LogUtil.d("pianyi", "当前偏移量" + getCurrentXOffset() + "   " + getCurrentYOffset() + "   " + getZoom());
-//                    LogUtil.d("pianyi", "缩放的图片 x: " + rectangle.getWidth() / getZoom() + "  y: " + rectangle.getHeight() / getZoom());
-//                    LogUtil.d("pianyi", "要偏移x: " + (xOffset / imgZoom2) + "  要偏移y: " + (bitmap.getHeight() * getZoom() + getCurrentYOffset() - bitmap.getHeight()) / getZoom() / imgZoom);
                     img.scaleAbsolute(rectangle.getWidth() / getZoom(), rectangle.getHeight() / getZoom());
                     img.setAbsolutePosition(xOffset / imgZoom2, (mBitmap.getHeight() * getZoom() + getCurrentYOffset() - mBitmap.getHeight()) / getZoom() / imgZoom);
                 } else {
-//                    LogUtil.d("pianyi", "我是第" + signatureList.get(i) + "页，我来复位了");
                     img.scaleAbsolute(rectangle.getWidth(), rectangle.getHeight());
                     img.setAbsolutePosition(0, 0);
 

@@ -563,6 +563,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         tagPosition = position;
                         //切换界面要恢复一下设置
                         if (mSignatureView != null) {
+                            mSignatureView.resetConfig();
                             mSignatureView.setNewPath(cacheFileList.get(position));
                         }
 
