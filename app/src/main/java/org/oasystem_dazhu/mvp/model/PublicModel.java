@@ -92,8 +92,8 @@ public class PublicModel implements IModel {
     /**
      * 待我审批
      */
-    public void getNotDoneDocument(Subscriber<BaseEntity<DocumentBean>> subscriber, ScreenBean bean) {
-        HttpClient.getInstance().getNotDoneDocument(subscriber, bean);
+    public void getNotDoneDocument(Subscriber<BaseEntity<DocumentBean>> subscriber, ScreenBean bean,int page) {
+        HttpClient.getInstance().getNotDoneDocument(subscriber, bean,page);
     }
 
 

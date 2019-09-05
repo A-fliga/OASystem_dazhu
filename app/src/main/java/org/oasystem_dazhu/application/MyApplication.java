@@ -29,6 +29,7 @@ public class MyApplication extends Application {
             JPushInterface.init(this);
         }
         application = this;
+        //默认已高度来适配
         AutoSizeConfig.getInstance().setBaseOnWidth(false);
         //增加这句话
         QbSdk.initX5Environment(this, new QbSdk.PreInitCallback() {

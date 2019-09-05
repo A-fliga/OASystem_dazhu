@@ -59,12 +59,20 @@ public abstract class MSubscribe<T> extends Subscriber<T> {
     @Override
     public void onStart() {
         super.onStart();
-        if (HttpClient.getTaskNum() == 1)
+        if (HttpClient.getTaskNum() == 1) {
             ProgressDialogUtil.instance().startLoad("加载中");
+        }
         if (!NetUtil.isConnect()) {
             this.unsubscribe();
             HttpClient.finishRequest();
             ProgressDialogUtil.instance().stopLoad();
+        }
+    }
+
+    public void onStartWithoutLoadingView() {
+        if (!NetUtil.isConnect()) {
+            this.unsubscribe();
+            HttpClient.finishRequest();
         }
     }
 }

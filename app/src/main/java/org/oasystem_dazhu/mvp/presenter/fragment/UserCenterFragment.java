@@ -40,7 +40,7 @@ public class UserCenterFragment extends FragmentPresenter {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewDelegate.setOnClickListener(mOnClickListener, R.id.logout, R.id.mySeal, R.id.changePwd, R.id.clear_cache);
+        mViewDelegate.setOnClickListener(mOnClickListener, R.id.logout, R.id.mySeal, R.id.changePwd, R.id.clear_cache);
     }
 
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {

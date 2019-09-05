@@ -4,6 +4,8 @@ import android.support.v7.widget.RecyclerView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+
 import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.constants.Constants;
 import org.oasystem_dazhu.manager.FirmingTypeManager;
@@ -24,11 +26,10 @@ import me.jessyan.autosize.AutoSize;
  */
 
 public class OfficialDelegate extends ViewDelegate {
-    private ImageView home_user_icon;
-    private TextView home_user_name, home_user_unit;
-    private RecyclerView typeRecyclerView;
-
-
+    private ImageView mHomeUserIcon;
+    private TextView mHomeUserName, mHomeUserInit;
+    private RecyclerView mTypeRecyclerView;
+    public SmartRefreshLayout mRefreshLayout;
     @Override
     public void onDestroy() {
 
@@ -42,16 +43,16 @@ public class OfficialDelegate extends ViewDelegate {
 
     @Override
     public void initWidget() {
-        typeRecyclerView = get(R.id.home_type_recyclerView);
-        home_user_icon = get(R.id.home_user_icon);
-        home_user_name = get(R.id.home_user_name);
-        home_user_unit = get(R.id.home_user_unit);
-
+        mTypeRecyclerView = get(R.id.home_type_recyclerView);
+        mHomeUserIcon = get(R.id.home_user_icon);
+        mHomeUserName = get(R.id.home_user_name);
+        mHomeUserInit = get(R.id.home_user_unit);
+        mRefreshLayout = get(R.id.refreshView);
         UserInfo userInfo = UserManager.getInstance().getUserInfo();
         if (userInfo != null) {
-            LoadImgUtil.loadCirclePic(this.getActivity(), userInfo.getHeadimg(), home_user_icon, R.mipmap.home_user_icon);
-            home_user_name.setText(userInfo.getName());
-            home_user_unit.setText(userInfo.getCompany_name());
+            LoadImgUtil.loadCirclePic(this.getActivity(), userInfo.getHeadimg(), mHomeUserIcon, R.mipmap.home_user_icon);
+            mHomeUserName.setText(userInfo.getName());
+            mHomeUserInit.setText(userInfo.getCompany_name());
         }
     }
 
@@ -73,7 +74,7 @@ public class OfficialDelegate extends ViewDelegate {
         imgIdList.add("more");
         AutoSize.autoConvertDensity(this.getActivity(), Constants.SIZE_IN_DP,false);
         HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, beanList, true);
-        setRecycler(typeRecyclerView, adapter, 6, true);
+        setRecycler(mTypeRecyclerView, adapter, 6, true);
         return adapter;
     }
 

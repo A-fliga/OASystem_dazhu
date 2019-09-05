@@ -30,13 +30,16 @@ import java.io.Serializable;
  * @author kymjs (http://www.kymjs.com/) on 10/23/15.
  */
 public abstract class FragmentPresenter<T extends ViewDelegate> extends Fragment implements IPresenter<T> {
-    protected boolean viewCreated = false;
-    protected T viewDelegate;
+    protected boolean mViewCreated = false;
+    protected T mViewDelegate;
+    public int mPage = 0;
+    public boolean mIsRefreshMode = true;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        viewDelegate = ViewDelegate.newInstance(this);
+        mViewDelegate = ViewDelegate.newInstance(this);
     }
 
     @Nullable
@@ -44,7 +47,7 @@ public abstract class FragmentPresenter<T extends ViewDelegate> extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle
             savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = viewDelegate.getRootView();
+        View rootView = mViewDelegate.getRootView();
         if (rootView != null) {
             ViewGroup parent = (ViewGroup) rootView.getParent();
             if (parent != null) {
@@ -52,15 +55,15 @@ public abstract class FragmentPresenter<T extends ViewDelegate> extends Fragment
             }
             return rootView;
         }
-        viewDelegate.create(inflater, container, savedInstanceState);
-        return viewDelegate.getRootView();
+        mViewDelegate.create(inflater, container, savedInstanceState);
+        return mViewDelegate.getRootView();
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        viewCreated = true;
-        viewDelegate.initWidget();
+        mViewCreated = true;
+        mViewDelegate.initWidget();
         bindEvenListener();
     }
 
@@ -68,31 +71,31 @@ public abstract class FragmentPresenter<T extends ViewDelegate> extends Fragment
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        viewCreated = false;
+        mViewCreated = false;
     }
 
     public void startMyActivity(Class<?> pClass, Bundle pBundle) {
-        viewDelegate.startMyActivity(pClass, pBundle);
+        mViewDelegate.startMyActivity(pClass, pBundle);
     }
 
     public void startMyActivity(Class<?> pClass, String key, Serializable pBundle) {
-        viewDelegate.startMyActivity(pClass, key, pBundle);
+        mViewDelegate.startMyActivity(pClass, key, pBundle);
     }
 
     public void startMyActivityWithFinish(Class<?> pClass, Bundle pBundle) {
-        viewDelegate.startMyActivityWithFinish(pClass, pBundle);
+        mViewDelegate.startMyActivityWithFinish(pClass, pBundle);
     }
 
     public void startMyActivityForResult(Intent intent, int requestCode) {
-        viewDelegate.startMyActivityForResult(intent, requestCode);
+        mViewDelegate.startMyActivityForResult(intent, requestCode);
     }
 
     public void startMyActivityForResult(Class<?> pClass, String action, int requestCode) {
-        viewDelegate.startMyActivityForResult(pClass, action, requestCode);
+        mViewDelegate.startMyActivityForResult(pClass, action, requestCode);
     }
 
     public void startMyActivityForResult(Class<?> clazz, int requestCode, Bundle bundle) {
-        viewDelegate.startMyActivityForResult(clazz, requestCode, bundle);
+        mViewDelegate.startMyActivityForResult(clazz, requestCode, bundle);
     }
 
     protected void bindEvenListener() {
@@ -101,22 +104,22 @@ public abstract class FragmentPresenter<T extends ViewDelegate> extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        viewDelegate.createMenu(menu, inflater);
+        mViewDelegate.createMenu(menu, inflater);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (viewDelegate == null) {
-            viewDelegate = ViewDelegate.newInstance(this);
+        if (mViewDelegate == null) {
+            mViewDelegate = ViewDelegate.newInstance(this);
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        viewDelegate.onDestroy();
-        viewDelegate = null;
+        mViewDelegate.onDestroy();
+        mViewDelegate = null;
     }
 
     @Override

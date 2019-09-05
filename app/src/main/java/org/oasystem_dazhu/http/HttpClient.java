@@ -145,21 +145,6 @@ public final class HttpClient {
         return sHttpClient;
     }
 
-//    /**
-//     * @return return {@link HttpClient} 单例
-//     */
-//    public static HttpClient getNewInstance() {
-//        if (sHttpClient == null) {
-//            synchronized (HttpClient.class) {
-//                if (sHttpClient == null) {
-//                    sHttpClient = new HttpClient(BuildConfig.HOST,1);
-//                }
-//            }
-//        }
-//        httpTaskNum.incrementAndGet();
-//        return sHttpClient;
-//    }
-
 
     public static void finishRequest() {
         httpTaskNum.decrementAndGet();
@@ -273,10 +258,13 @@ public final class HttpClient {
     /**
      * 待我审批
      */
-    public void getNotDoneDocument(Subscriber<BaseEntity<DocumentBean>> subscriber, ScreenBean bean) {
+    public void getNotDoneDocument(Subscriber<BaseEntity<DocumentBean>> subscriber, ScreenBean bean, int page) {
         String data = new Gson().toJson(bean);
         HashMap<String, String> bodyMap = new HashMap<>();
         bodyMap.put("param", data);
+        if (page > 0) {
+            bodyMap.put("page", String.valueOf(page));
+        }
         Observable<BaseEntity<DocumentBean>> observable = mApi.getNotDoneDocument(addToken(), getMapRequestBody(bodyMap));
         toSubscribe(observable, subscriber);
     }
