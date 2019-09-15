@@ -22,35 +22,31 @@ import java.util.List;
  */
 
 public class MyPainter implements CalendarPainter {
-    private Context context;
-    private Attrs mAttrs;
     protected Paint mTextPaint;
     protected Paint mCirclePaint;
-
-    private int noAlphaColor = 255;
-
+    private Context mContext;
+    private Attrs mAttrs;
+    private int mNoAlphaColor = 255;
     protected List<LocalDate> mHolidayList;
     protected List<LocalDate> mWorkdayList;
-
     private List<LocalDate> mPointList;
-    private List<LocalDate> normalList;
-
-    private List<LocalDate> lateOrLeaveList;
-    private List<LocalDate> lakeList;
-    private List<LocalDate> leaveList;
+    private List<LocalDate> mNormalList;
+    private List<LocalDate> mLateOrLeaveList;
+    private List<LocalDate> mLakeList;
+    private List<LocalDate> mLeaveList;
 
     public MyPainter(Attrs attrs, Context context) {
         this.mAttrs = attrs;
-        this.context = context;
+        this.mContext = context;
         mTextPaint = getPaint();
         mCirclePaint = getPaint();
         mPointList = new ArrayList<>();
         mHolidayList = new ArrayList<>();
         mWorkdayList = new ArrayList<>();
-        normalList = new ArrayList<>();
-        lateOrLeaveList = new ArrayList<>();
-        lakeList = new ArrayList<>();
-        leaveList = new ArrayList<>();
+        mNormalList = new ArrayList<>();
+        mLateOrLeaveList = new ArrayList<>();
+        mLakeList = new ArrayList<>();
+        mLeaveList = new ArrayList<>();
         List<String> holidayList = Util.getHolidayList();
         for (int i = 0; i < holidayList.size(); i++) {
             mHolidayList.add(new LocalDate(holidayList.get(i)));
@@ -73,9 +69,9 @@ public class MyPainter implements CalendarPainter {
     @Override
     public void onDrawToday(Canvas canvas, Rect rect, NDate nDate, boolean isSelect) {
         drawTodaySolar(canvas, rect, false, nDate.localDate);
-        drawLunar(canvas, rect, false, noAlphaColor, nDate);
-        drawPoint(canvas, rect, false, noAlphaColor, nDate.localDate);
-        drawHolidays(canvas, rect, false, noAlphaColor, nDate.localDate);
+        drawLunar(canvas, rect, false, mNoAlphaColor, nDate);
+        drawPoint(canvas, rect, false, mNoAlphaColor, nDate.localDate);
+        drawHolidays(canvas, rect, false, mNoAlphaColor, nDate.localDate);
     }
 
     @Override
@@ -89,10 +85,10 @@ public class MyPainter implements CalendarPainter {
     @Override
     public void onDrawCurrentMonthOrWeek(Canvas canvas, Rect rect, NDate nDate, boolean isSelect) {
         drawSolidCircle(canvas, rect, nDate.localDate);
-        drawOtherSolar(canvas, rect, noAlphaColor, nDate.localDate, true);
-        drawLunar(canvas, rect, false, noAlphaColor, nDate);
-        drawPoint(canvas, rect, false, noAlphaColor, nDate.localDate);
-        drawHolidays(canvas, rect, false, noAlphaColor, nDate.localDate);
+        drawOtherSolar(canvas, rect, mNoAlphaColor, nDate.localDate, true);
+        drawLunar(canvas, rect, false, mNoAlphaColor, nDate);
+        drawPoint(canvas, rect, false, mNoAlphaColor, nDate.localDate);
+        drawHolidays(canvas, rect, false, mNoAlphaColor, nDate.localDate);
     }
 
 
@@ -110,7 +106,7 @@ public class MyPainter implements CalendarPainter {
         mCirclePaint.setStyle(Paint.Style.STROKE);
         mCirclePaint.setStrokeWidth(mAttrs.hollowCircleStroke);
         mCirclePaint.setColor(mAttrs.hollowCircleColor);
-        mCirclePaint.setAlpha(noAlphaColor);
+        mCirclePaint.setAlpha(mNoAlphaColor);
         canvas.drawCircle(rect.centerX(), rect.centerY(), mAttrs.selectCircleRadius, mCirclePaint);
     }
 
@@ -123,49 +119,49 @@ public class MyPainter implements CalendarPainter {
             mCirclePaint.setStrokeWidth(mAttrs.hollowCircleStroke);
             //先默认缺卡，再根据有打卡记录的来更正数据
             mCirclePaint.setColor(getColor(R.color.color_E4393C));
-            if (normalList.contains(date)) {
+            if (mNormalList.contains(date)) {
                 mCirclePaint.setColor(getColor(R.color.color_03b318));
             }
-            if (lateOrLeaveList.contains(date)) {
+            if (mLateOrLeaveList.contains(date)) {
                 mCirclePaint.setColor(getColor(R.color.color_f7c414));
             }
-            if (lakeList.contains(date) && !InitDateUtil.isWeekend(date.toString())) {
+            if (mLakeList.contains(date) && !InitDateUtil.isWeekend(date.toString())) {
                 mCirclePaint.setColor(getColor(R.color.color_E4393C));
             }
-            if (leaveList.contains(date)) {
+            if (mLeaveList.contains(date)) {
                 mCirclePaint.setColor(getColor(R.color.color_2196f3));
             }
-            mCirclePaint.setAlpha(noAlphaColor);
+            mCirclePaint.setAlpha(mNoAlphaColor);
             canvas.drawCircle(rect.centerX(), rect.centerY(), mAttrs.selectCircleRadius, mCirclePaint);
         }
     }
 
     public void addNormalData(List<LocalDate> normalBean) {
-        normalList.addAll(normalBean);
+        mNormalList.addAll(normalBean);
     }
 
     public void addAbNormalData(List<LocalDate> abNormalBean) {
-        lateOrLeaveList.addAll(abNormalBean);
+        mLateOrLeaveList.addAll(abNormalBean);
     }
 
     public void addLakeData(List<LocalDate> lakeBean) {
-        lakeList.addAll(lakeBean);
+        mLakeList.addAll(lakeBean);
     }
 
     public void addLeaveData(List<LocalDate> leaveBean) {
-        leaveList.addAll(leaveBean);
+        mLeaveList.addAll(leaveBean);
     }
 
 
     private int getColor(int resId) {
-        return context.getResources().getColor(resId);
+        return mContext.getResources().getColor(resId);
     }
 
     //今天的公历
     private void drawTodaySolar(Canvas canvas, Rect rect, boolean isSelect, LocalDate date) {
         drawSolidCircle(canvas, rect, date);
         mTextPaint.setColor(mAttrs.todaySolarTextColor);
-        mTextPaint.setAlpha(noAlphaColor);
+        mTextPaint.setAlpha(mNoAlphaColor);
         mTextPaint.setTextSize(mAttrs.solarTextSize);
         canvas.drawText(date.getDayOfMonth() + "", rect.centerX(), mAttrs.isShowLunar ? rect.centerY() : getBaseLineY(rect), mTextPaint);
     }

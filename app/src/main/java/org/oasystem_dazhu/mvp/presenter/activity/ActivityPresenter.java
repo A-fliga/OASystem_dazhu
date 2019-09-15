@@ -38,40 +38,40 @@ import java.util.Stack;
  * @param <T> View delegate class type
  */
 public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompatActivity implements IPresenter<T> {
-    protected T viewDelegate;
-    private static Stack<Activity> activityStack;
-    protected Toolbar toolbar;
+    private static Stack<Activity> sActivityStack;
+    protected T mViewDelegate;
+    protected Toolbar mToolbar;
 
     public ActivityPresenter() {
-        viewDelegate = ViewDelegate.newInstance(this);
+        mViewDelegate = ViewDelegate.newInstance(this);
     }
 
     public static Stack<Activity> getActivityStack() {
-        return activityStack;
+        return sActivityStack;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         super.onCreate(savedInstanceState);
-        viewDelegate.create(getLayoutInflater(), null, savedInstanceState);
+        mViewDelegate.create(getLayoutInflater(), null, savedInstanceState);
         addActivity(this);
-        setContentView(viewDelegate.getRootView());
+        setContentView(mViewDelegate.getRootView());
         initToolbar();
-        viewDelegate.initWidget();
+        mViewDelegate.initWidget();
         bindEvenListener();
     }
 
 
     protected void initToolbar() {
-        toolbar = viewDelegate.getToolbar();
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
+        mToolbar = mViewDelegate.getToolbar();
+        if (mToolbar != null) {
+            setSupportActionBar(mToolbar);
             //禁止显示title
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             //是否显示返回箭头
             if (isSetDisplayHomeAsUpEnabled()) {
-                toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+                mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         finish();
@@ -83,7 +83,7 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
     }
 
     public <T extends View> T get(int id) {
-        return (T) viewDelegate.get(id);
+        return (T) mViewDelegate.get(id);
     }
 
     /**
@@ -98,7 +98,7 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
      * 结束指定类名的Activity
      */
     public static void finishActivity(Class<?> cls) {
-        for (Activity activity : activityStack) {
+        for (Activity activity : sActivityStack) {
             if (activity.getClass().equals(cls) && !activity.isFinishing()) {
                 activity.finish();
             }
@@ -106,14 +106,14 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
     }
 
     public static int getActivityCount() {
-        return activityStack.size();
+        return sActivityStack.size();
     }
 
     /**
      * 获取栈顶Activity（堆栈中最后一个压入的）
      */
     public static Activity getTopActivity() {
-        return activityStack.lastElement();
+        return sActivityStack.lastElement();
     }
 
 
@@ -121,8 +121,8 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
      * 结束所有Activity
      */
     public synchronized static void finishAllActivity() {
-        for (Activity activity : activityStack) {
-            if (activity != null && activityStack.size() != 1) {
+        for (Activity activity : sActivityStack) {
+            if (activity != null && sActivityStack.size() != 1) {
                 activity.finish();
             }
         }
@@ -132,10 +132,10 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
      * 添加Activity到堆栈
      */
     public void addActivity(Activity activity) {
-        if (activityStack == null) {
-            activityStack = new Stack<>();
+        if (sActivityStack == null) {
+            sActivityStack = new Stack<>();
         }
-        activityStack.add(activity);
+        sActivityStack.add(activity);
     }
 
     protected void bindEvenListener() {
@@ -144,9 +144,9 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (viewDelegate == null) {
+        if (mViewDelegate == null) {
             try {
-                viewDelegate = getDelegateClass().newInstance();
+                mViewDelegate = getDelegateClass().newInstance();
             } catch (InstantiationException e) {
                 throw new RuntimeException("create IDelegate error");
             } catch (IllegalAccessException e) {
@@ -157,8 +157,8 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (viewDelegate.getOptionsMenuId() != 0) {
-            getMenuInflater().inflate(viewDelegate.getOptionsMenuId(), menu);
+        if (mViewDelegate.getOptionsMenuId() != 0) {
+            getMenuInflater().inflate(mViewDelegate.getOptionsMenuId(), menu);
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -225,11 +225,11 @@ public abstract class ActivityPresenter<T extends ViewDelegate> extends AppCompa
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (activityStack == null) {
-            activityStack = new Stack<>();
+        if (sActivityStack == null) {
+            sActivityStack = new Stack<>();
         }
-        activityStack.remove(this);
-        viewDelegate = null;
+        sActivityStack.remove(this);
+        mViewDelegate = null;
     }
 
 }

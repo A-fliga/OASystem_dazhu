@@ -22,9 +22,9 @@ import java.util.List;
  */
 
 public class OfficeCenterActivity extends ActivityPresenter {
-    private List<OfficeListBean.DataBean> beanList;
-    private OfficeListAdapter adapter;
-    private Boolean fromHome = true;
+    private List<OfficeListBean.DataBean> mBeanList;
+    private OfficeListAdapter mAdapter;
+    private boolean mFromHome = true;
 
     @Override
     public Class getDelegateClass() {
@@ -39,27 +39,27 @@ public class OfficeCenterActivity extends ActivityPresenter {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        fromHome = getIntent().getExtras().getBoolean("fromHome", true);
-        beanList = new ArrayList<>();
-        final RecyclerView recyclerView = viewDelegate.get(R.id.my_office_recycler);
+        mFromHome = getIntent().getExtras().getBoolean("fromHome", true);
+        mBeanList = new ArrayList<>();
+        final RecyclerView recyclerView = mViewDelegate.get(R.id.my_office_recycler);
         String document_type_id = getIntent().getExtras().getString("document_type_id");
         PublicModel.getInstance().getOfficeList(new MSubscribe<BaseEntity<OfficeListBean>>() {
             @Override
             public void onNext(BaseEntity<OfficeListBean> bean) {
                 super.onNext(bean);
-                beanList.addAll(bean.getData().getData());
-                adapter = new OfficeListAdapter(beanList, OfficeCenterActivity.this);
-                viewDelegate.setRecycler(recyclerView, adapter, true);
-                adapter.setOnItemClickListener(new OnItemClickListener() {
+                mBeanList.addAll(bean.getData().getData());
+                mAdapter = new OfficeListAdapter(mBeanList, OfficeCenterActivity.this);
+                mViewDelegate.setRecycler(recyclerView, mAdapter, true);
+                mAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
                         //是从主页来的，点击后需要展示
-                        if (fromHome)
+                        if (mFromHome)
                             fromHome(position);
                         else {
                             AccessoryBean accessoryBean = new AccessoryBean();
-                            accessoryBean.setName(beanList.get(position).getSource().getName());
-                            accessoryBean.setSource_id(beanList.get(position).getSource_id());
+                            accessoryBean.setName(mBeanList.get(position).getSource().getName());
+                            accessoryBean.setSource_id(mBeanList.get(position).getSource_id());
                             EventBus.getDefault().post(accessoryBean);
                             finish();
                         }
@@ -73,8 +73,8 @@ public class OfficeCenterActivity extends ActivityPresenter {
 
     private void fromHome(int position) {
         Bundle bundle = new Bundle();
-        bundle.putString("source_id", beanList.get(position).getSource_id() + "");
-        String[] str = beanList.get(position).getSource().getName().split("\\.");
+        bundle.putString("source_id", mBeanList.get(position).getSource_id() + "");
+        String[] str = mBeanList.get(position).getSource().getName().split("\\.");
         bundle.putString("type", str[str.length - 1]);
         startMyActivity(OfficeDetailActivity.class, bundle);
     }

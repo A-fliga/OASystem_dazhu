@@ -12,8 +12,8 @@ import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
  */
 
 public class MeetingDetailDelegate extends ViewDelegate {
-    private TextView meeting_detail_title,meeting_detail_compere,meeting_detail_type,meeting_detail_start_time,
-            meeting_detail_end_time,meeting_detail_remember,meeting_detail_content;
+    private TextView mMeetingDetailTitle, mMeetingDetailCompere, mMeetingDetailType, mMeetingDetailStartTime,
+            mMeetingDetailEndTime, mMeetingDetailRemember, mMeetingDetailContent;
     @Override
     public void onDestroy() {
 
@@ -27,13 +27,13 @@ public class MeetingDetailDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("会议详情");
-        meeting_detail_title = get(R.id.meeting_detail_title);
-        meeting_detail_compere = get(R.id.meeting_detail_compere);
-        meeting_detail_type = get(R.id.meeting_detail_type);
-        meeting_detail_start_time = get(R.id.meeting_detail_start_time);
-        meeting_detail_end_time = get(R.id.meeting_detail_end_time);
-        meeting_detail_remember = get(R.id.meeting_detail_remember);
-        meeting_detail_content = get(R.id.meeting_detail_content);
+        mMeetingDetailTitle = get(R.id.meeting_detail_title);
+        mMeetingDetailCompere = get(R.id.meeting_detail_compere);
+        mMeetingDetailType = get(R.id.meeting_detail_type);
+        mMeetingDetailStartTime = get(R.id.meeting_detail_start_time);
+        mMeetingDetailEndTime = get(R.id.meeting_detail_end_time);
+        mMeetingDetailRemember = get(R.id.meeting_detail_remember);
+        mMeetingDetailContent = get(R.id.meeting_detail_content);
     }
 
     public void initTopView(int status){
@@ -43,11 +43,11 @@ public class MeetingDetailDelegate extends ViewDelegate {
     }
 
     public void initView(MeetingDetailBean bean){
-        meeting_detail_title.setText("会议主题："+bean.getName());
-        meeting_detail_compere.setText("主持人："+bean.getCompere_name());
-        meeting_detail_type.setText("会议类型："+bean.getConference_type_name());
-        meeting_detail_start_time.setText("开始时间："+bean.getStart_time());
-        meeting_detail_end_time.setText("结束时间："+bean.getEnd_time());
-        meeting_detail_remember.setText("会议纪要员："+bean.getAge_name());
+        mMeetingDetailTitle.setText("会议主题："+bean.getName());
+        mMeetingDetailCompere.setText("主持人："+bean.getCompere_name());
+        mMeetingDetailType.setText("会议类型："+bean.getConference_type_name());
+        mMeetingDetailStartTime.setText("开始时间："+bean.getStart_time());
+        mMeetingDetailEndTime.setText("结束时间："+bean.getEnd_time());
+        mMeetingDetailRemember.setText("会议纪要员："+bean.getAge_name());
     }
 }

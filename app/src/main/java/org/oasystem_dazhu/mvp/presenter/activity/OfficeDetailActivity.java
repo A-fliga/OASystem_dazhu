@@ -32,12 +32,12 @@ import static org.oasystem_dazhu.constants.Constants.OFFICE_PREVIEW;
  */
 
 public class OfficeDetailActivity extends ActivityPresenter {
-    private static String TAG = "OASystem";
+    private static String TAG = "OfficeDetailActivity";
     private final int WRITE_STORAGE_CODE = 1000;
-    private int id;
-    private String type;
-    private SignatureView pdf_view;
-    private String[] permissionStr = {"内存卡", "读取手机"};
+    private String mType;
+    private SignatureView mPdfView;
+    private String[] mPermissionStr = {"内存卡", "读取手机"};
+    private int mId;
 
     @Override
     public Class getDelegateClass() {
@@ -52,22 +52,22 @@ public class OfficeDetailActivity extends ActivityPresenter {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        id = Integer.parseInt(getIntent().getExtras().getString("source_id"));
-        type = getIntent().getExtras().getString("type");
-        pdf_view = viewDelegate.get(R.id.pdf_view);
+        mId = Integer.parseInt(getIntent().getExtras().getString("source_id"));
+        mType = getIntent().getExtras().getString("type");
+        mPdfView = mViewDelegate.get(R.id.pdf_view);
         checkLocationPermission();
-        viewDelegate.setToolBarRightTv("测试");
-        viewDelegate.setToolBarLeftTv("测试1");
-        viewDelegate.getToolBarLeftTv().setOnClickListener(new View.OnClickListener() {
+        mViewDelegate.setToolBarRightTv("测试");
+        mViewDelegate.setToolBarLeftTv("测试1");
+        mViewDelegate.getToolBarLeftTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                pdf_view.addSignature2Pdf(getPath(id, type));
             }
         });
-        viewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
+        mViewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pdf_view.startSignature();
+                mPdfView.startSignature();
             }
         });
     }
@@ -80,7 +80,7 @@ public class OfficeDetailActivity extends ActivityPresenter {
             // 申请一个（或多个）权限，并提供用于回调返回的获取码（用户定义）
             ActivityCompat.requestPermissions(OfficeDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE}, WRITE_STORAGE_CODE);
         } else {
-            showFile(id, type);
+            showFile(mId, mType);
         }
     }
 
@@ -91,11 +91,11 @@ public class OfficeDetailActivity extends ActivityPresenter {
         if (requestCode == WRITE_STORAGE_CODE) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    j.add(permissionStr[i]);
+                    j.add(mPermissionStr[i]);
                 }
             }
             if (j.size() == 0) {
-                showFile(id, type);
+                showFile(mId, mType);
             } else {
                 // 没有获取到权限，做特殊处理
                 StringBuffer sb = new StringBuffer();
@@ -131,8 +131,8 @@ public class OfficeDetailActivity extends ActivityPresenter {
         }
         if (isFileExist(id, type)) {
 //            pdf_view.setMaxZoom(1f);
-            pdf_view.startSignature();
-            pdf_view.loadFile(new File(getPath(id, type)));
+            mPdfView.startSignature();
+            mPdfView.loadFile(new File(getPath(id, type)));
 
         } else {
             downLoadFile();
@@ -157,7 +157,7 @@ public class OfficeDetailActivity extends ActivityPresenter {
                             is = bean.byteStream();
                             long total = bean.contentLength();
 
-                            File tempFile = new File(getTempPath(id));
+                            File tempFile = new File(getTempPath(mId));
                             if (tempFile.exists()) {
                                 tempFile.delete();
                             } else tempFile.createNewFile();
@@ -171,7 +171,7 @@ public class OfficeDetailActivity extends ActivityPresenter {
                                 LogUtil.d(TAG, "写入缓存文件" + tempFile.getName() + "进度: " + progress);
                             }
                             fos.flush();
-                            tempFile.renameTo(new File(getPath(id, type)));
+                            tempFile.renameTo(new File(getPath(mId, mType)));
                             LogUtil.d(TAG, "文件下载成功,准备展示文件。");
                             //2.ACache记录文件的有效期
                             runOnUiThread(new Runnable() {
@@ -209,15 +209,15 @@ public class OfficeDetailActivity extends ActivityPresenter {
 
 
             }
-        }, id + "");
+        }, mId + "");
     }
 
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (pdf_view != null)
-            pdf_view.stopFling();
+        if (mPdfView != null)
+            mPdfView.stopFling();
     }
 
 }

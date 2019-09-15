@@ -14,14 +14,15 @@ import java.util.List;
 
 /**
  * Created by www on 2019/3/23.
+ * 申请用车的Adapter
  */
 
 public class CarApplyListAdapter extends RecyclerView.Adapter<CarApplyListAdapter.CarApplyViewHolder> {
-    private List<CarApplyListBean.DataBean> beanList;
-    private OnItemClickListenerWithData itemClickListenerWithData;
+    private List<CarApplyListBean.DataBean> mBeanList;
+    private OnItemClickListenerWithData mItemClickListenerWithData;
 
     public CarApplyListAdapter(List<CarApplyListBean.DataBean> beanList) {
-        this.beanList = beanList;
+        this.mBeanList = beanList;
     }
 
     @Override
@@ -31,7 +32,7 @@ public class CarApplyListAdapter extends RecyclerView.Adapter<CarApplyListAdapte
 
     @Override
     public void onBindViewHolder(CarApplyViewHolder holder, int position) {
-        final CarApplyListBean.DataBean bean = beanList.get(position);
+        final CarApplyListBean.DataBean bean = mBeanList.get(position);
         holder.car_apply_user_name.setText("申请人："+bean.getUser().getName());
         holder.car_apply_position.setText("目的地：" + bean.getDestination());
         holder.car_apply_mileage.setText("预计里程：" + bean.getMileage() + "km");
@@ -41,8 +42,8 @@ public class CarApplyListAdapter extends RecyclerView.Adapter<CarApplyListAdapte
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (itemClickListenerWithData != null) {
-                    itemClickListenerWithData.onItemClick(bean);
+                if (mItemClickListenerWithData != null) {
+                    mItemClickListenerWithData.onItemClick(bean);
                 }
             }
         });
@@ -50,7 +51,7 @@ public class CarApplyListAdapter extends RecyclerView.Adapter<CarApplyListAdapte
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     class CarApplyViewHolder extends RecyclerView.ViewHolder {
@@ -71,6 +72,6 @@ public class CarApplyListAdapter extends RecyclerView.Adapter<CarApplyListAdapte
     }
 
     public void setOnItemClickListener(OnItemClickListenerWithData itemClickListener) {
-        this.itemClickListenerWithData = itemClickListener;
+        this.mItemClickListenerWithData = itemClickListener;
     }
 }

@@ -15,31 +15,32 @@ import java.util.List;
 
 /**
  * Created by www on 2019/1/5.
+ * 我的印章的A
  */
 
 public class MySealAdapter extends RecyclerView.Adapter<MySealAdapter.MySealHolder> {
-    private List<byte[]> idList;
-    private Context context;
+    private List<byte[]> mIdList;
+    private Context mContext;
 
     public MySealAdapter(List<byte[]> idList, Context context) {
-        this.idList = idList;
-        this.context = context;
+        this.mIdList = idList;
+        this.mContext = context;
     }
 
 
     @Override
     public MySealHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MySealHolder(LayoutInflater.from(context).inflate(R.layout.item_myseal, parent, false));
+        return new MySealHolder(LayoutInflater.from(mContext).inflate(R.layout.item_myseal, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final MySealHolder holder, final int position) {
-        Glide.with(context).load(idList.get(position)).into(holder.my_seal);
+        Glide.with(mContext).load(mIdList.get(position)).into(holder.my_seal);
     }
 
     @Override
     public int getItemCount() {
-        return idList.size();
+        return mIdList.size();
     }
 
     class MySealHolder extends RecyclerView.ViewHolder {

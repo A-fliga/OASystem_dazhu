@@ -19,10 +19,10 @@ import org.oasystem_dazhu.utils.InitDateUtil;
  */
 
 public class AttendanceStatisticsDelegate extends ViewDelegate {
-    private MyMonthCalendar calendar;
-    private MyPainter myPainter;
-    private TextView sign_time, sign_off_time;
-    private ImageView sign_regular, sign_late, sign_regular_off, sign_leave;
+    private MyMonthCalendar mCalendar;
+    private MyPainter mMyPainter;
+    private TextView mSignTime, mSignOffTime;
+    private ImageView mSignRegular, mSignLate, mSignRegularOff, mSignLeave;
 
     @Override
     public void onDestroy() {
@@ -36,34 +36,34 @@ public class AttendanceStatisticsDelegate extends ViewDelegate {
 
     @Override
     public void initWidget() {
-        sign_time = get(R.id.sign_time);
-        sign_off_time = get(R.id.sign_off_time);
-        sign_regular = get(R.id.sign_regular);
-        sign_late = get(R.id.sign_late);
-        sign_regular_off = get(R.id.sign_regular_off);
-        sign_leave = get(R.id.sign_leave);
+        mSignTime = get(R.id.sign_time);
+        mSignOffTime = get(R.id.sign_off_time);
+        mSignRegular = get(R.id.sign_regular);
+        mSignLate = get(R.id.sign_late);
+        mSignRegularOff = get(R.id.sign_regular_off);
+        mSignLeave = get(R.id.sign_leave);
     }
 
 
     public MyMonthCalendar initCalendar() {
-        calendar = get(R.id.monthCalendar);
-        calendar.setOnYearMonthChangeListener(new OnYearMonthChangedListener() {
+        mCalendar = get(R.id.monthCalendar);
+        mCalendar.setOnYearMonthChangeListener(new OnYearMonthChangedListener() {
             @Override
             public void onYearMonthChanged(BaseCalendar baseCalendar, int year, int month, boolean isClick) {
                 getTitleView().setText(year + "年" + month + "月");
             }
         });
-        calendar.setDateInterval(InitDateUtil.getLastMonth(3) + "-01", InitDateUtil.ConverToString(InitDateUtil.getTime()));
-        myPainter = (MyPainter) calendar.getCalendarPainter();
-        return calendar;
+        mCalendar.setDateInterval(InitDateUtil.getLastMonth(3) + "-01", InitDateUtil.ConverToString(InitDateUtil.getTime()));
+        mMyPainter = (MyPainter) mCalendar.getCalendarPainter();
+        return mCalendar;
     }
 
     public MyPainter getMyPainter() {
-        return myPainter;
+        return mMyPainter;
     }
 
     public MyMonthCalendar getCalendar() {
-        return calendar;
+        return mCalendar;
     }
 
 
@@ -73,42 +73,42 @@ public class AttendanceStatisticsDelegate extends ViewDelegate {
     }
 
     public void initView(AttendanceBean bean) {
-        sign_regular.setVisibility(View.GONE);
-        sign_late.setVisibility(View.GONE);
-        sign_regular_off.setVisibility(View.GONE);
-        sign_leave.setVisibility(View.GONE);
+        mSignRegular.setVisibility(View.GONE);
+        mSignLate.setVisibility(View.GONE);
+        mSignRegularOff.setVisibility(View.GONE);
+        mSignLeave.setVisibility(View.GONE);
         if (null == bean || bean.getStart_type() == null || Integer.parseInt(bean.getStart_type()) == 0) {
-            sign_time.setText("未打卡");
-            sign_off_time.setText("");
+            mSignTime.setText("未打卡");
+            mSignOffTime.setText("");
         } else {
             if (bean.getStart_time() != null)
-                sign_time.setText(bean.getStart_time());
+                mSignTime.setText(bean.getStart_time());
             if (bean.getStart_type() != null) {
                 if (Integer.parseInt(bean.getStart_type()) == 2) {
-                    sign_regular.setVisibility(View.VISIBLE);
+                    mSignRegular.setVisibility(View.VISIBLE);
                 }
                 if (Integer.parseInt(bean.getStart_type()) == 1) {
-                    sign_late.setVisibility(View.VISIBLE);
+                    mSignLate.setVisibility(View.VISIBLE);
                 }
             }
             if (bean.getEnd_time() != null) {
-                sign_off_time.setText(bean.getEnd_time());
+                mSignOffTime.setText(bean.getEnd_time());
             }
             else {
-                sign_off_time.setText("");
+                mSignOffTime.setText("");
             }
             if (bean.getEnd_type() != null) {
                 if (Integer.parseInt(bean.getEnd_type()) == 0) {
-                    sign_off_time.setText("未打卡");
+                    mSignOffTime.setText("未打卡");
                 }
                 if (Integer.parseInt(bean.getEnd_type()) == 2) {
-                    sign_regular_off.setVisibility(View.VISIBLE);
+                    mSignRegularOff.setVisibility(View.VISIBLE);
                 }
                 if (Integer.parseInt(bean.getEnd_type()) == 1) {
-                    sign_leave.setVisibility(View.VISIBLE);
+                    mSignLeave.setVisibility(View.VISIBLE);
                 }
             } else {
-                sign_off_time.setText("未打卡");
+                mSignOffTime.setText("未打卡");
             }
         }
     }

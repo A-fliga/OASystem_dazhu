@@ -15,8 +15,8 @@ import java.util.List;
  */
 
 public class CarManagementDelegate extends ViewDelegate {
-    private RecyclerView recyclerView;
-    private CarApplyListAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private CarApplyListAdapter mAdapter;
     @Override
     public void onDestroy() {
 
@@ -31,16 +31,16 @@ public class CarManagementDelegate extends ViewDelegate {
     public void initWidget() {
         getTitleView().setText("用车管理");
         setToolBarRightTv("申请");
-        recyclerView = get(R.id.car_apply_list);
+        mRecyclerView = get(R.id.car_apply_list);
     }
 
 
     public CarApplyListAdapter initList(List<CarApplyListBean.DataBean> beanList) {
-        adapter = new CarApplyListAdapter(beanList);
-        setRecycler(recyclerView, adapter, true);
+        mAdapter = new CarApplyListAdapter(beanList);
+        setRecycler(mRecyclerView, mAdapter, true);
         if (beanList.size() == 0) {
             ToastUtil.s("暂无数据");
         }
-        return adapter;
+        return mAdapter;
     }
 }

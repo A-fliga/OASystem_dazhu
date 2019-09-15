@@ -21,12 +21,13 @@ import java.util.List;
 
 /**
  * Created by www on 2019/1/5.
+ * 选择个人文件上传的时候用的。现在暂时没有用处。
  */
 
 public class MyOfficeActivity extends ActivityPresenter {
-    private MyOfficeTypeAdapter adapter;
-    private List<OfficeTypeBean.DataBean> beanList;
-    private Boolean fromHome = true;
+    private MyOfficeTypeAdapter mAdapter;
+    private List<OfficeTypeBean.DataBean> mBeanList;
+    private boolean mFromHome = true;
 
     @Override
     public Class getDelegateClass() {
@@ -42,22 +43,22 @@ public class MyOfficeActivity extends ActivityPresenter {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
-        fromHome = getIntent().getExtras().getBoolean("fromHome", true);
-        final RecyclerView my_office_recycler = viewDelegate.get(R.id.my_office_recycler);
+        mFromHome = getIntent().getExtras().getBoolean("fromHome", true);
+        final RecyclerView my_office_recycler = mViewDelegate.get(R.id.my_office_recycler);
         PublicModel.getInstance().getOfficeType(new MSubscribe<BaseEntity<OfficeTypeBean>>() {
             @Override
             public void onNext(final BaseEntity<OfficeTypeBean> bean) {
                 super.onNext(bean);
-                beanList = new ArrayList<OfficeTypeBean.DataBean>();
-                beanList.addAll(bean.getData().getData());
-                adapter = new MyOfficeTypeAdapter(bean.getData().getData(), MyOfficeActivity.this);
-                viewDelegate.setRecycler(my_office_recycler, adapter, true);
-                adapter.setOnItemClickListener(new OnItemClickListener() {
+                mBeanList = new ArrayList<OfficeTypeBean.DataBean>();
+                mBeanList.addAll(bean.getData().getData());
+                mAdapter = new MyOfficeTypeAdapter(bean.getData().getData(), MyOfficeActivity.this);
+                mViewDelegate.setRecycler(my_office_recycler, mAdapter, true);
+                mAdapter.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(int position) {
                         Bundle bundle = new Bundle();
-                        bundle.putString("document_type_id", beanList.get(position).getId() + "");
-                        bundle.putBoolean("fromHome", fromHome);
+                        bundle.putString("document_type_id", mBeanList.get(position).getId() + "");
+                        bundle.putBoolean("fromHome", mFromHome);
                         startMyActivity(OfficeCenterActivity.class, bundle);
                     }
                 });

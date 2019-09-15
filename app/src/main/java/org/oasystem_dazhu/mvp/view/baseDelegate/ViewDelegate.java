@@ -50,15 +50,14 @@ import java.io.Serializable;
  */
 public abstract class ViewDelegate implements IDelegate {
     protected final SparseArray<View> mViews = new SparseArray<View>();
-
-    protected View rootView;
+    protected View mRootView;
 
     public abstract int getRootLayoutId();
 
     @Override
     public void create(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         int rootLayoutId = getRootLayoutId();
-        rootView = inflater.inflate(rootLayoutId, container, false);
+        mRootView = inflater.inflate(rootLayoutId, container, false);
     }
 
     public static <T extends ViewDelegate> T newInstance(IPresenter presenter) {
@@ -234,11 +233,11 @@ public abstract class ViewDelegate implements IDelegate {
 
     @Override
     public View getRootView() {
-        return rootView;
+        return mRootView;
     }
 
     public void setRootView(View rootView) {
-        this.rootView = rootView;
+        this.mRootView = rootView;
     }
 
     @Override
@@ -248,7 +247,7 @@ public abstract class ViewDelegate implements IDelegate {
     public <T extends View> T bindView(int id) {
         T view = (T) mViews.get(id);
         if (view == null) {
-            view = (T) rootView.findViewById(id);
+            view = (T) mRootView.findViewById(id);
             mViews.put(id, view);
         }
         return view;
@@ -274,11 +273,11 @@ public abstract class ViewDelegate implements IDelegate {
     }
 
     public void toast(CharSequence msg) {
-        Toast.makeText(rootView.getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(mRootView.getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     public <T extends Activity> T getActivity() {
-        return (T) rootView.getContext();
+        return (T) mRootView.getContext();
     }
 
 

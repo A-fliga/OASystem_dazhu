@@ -67,7 +67,7 @@ public final class HttpClient {
      * HttpClient 对象
      */
     private static volatile HttpClient sHttpClient;
-    private static AtomicInteger httpTaskNum = new AtomicInteger(0);
+    private static AtomicInteger sHttpTaskNum = new AtomicInteger(0);
     /**
      * mmApi 接口
      */
@@ -141,17 +141,17 @@ public final class HttpClient {
                 }
             }
         }
-        httpTaskNum.incrementAndGet();
+        sHttpTaskNum.incrementAndGet();
         return sHttpClient;
     }
 
 
     public static void finishRequest() {
-        httpTaskNum.decrementAndGet();
+        sHttpTaskNum.decrementAndGet();
     }
 
     public static int getTaskNum() {
-        return httpTaskNum.intValue();
+        return sHttpTaskNum.intValue();
     }
 
     /**

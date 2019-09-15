@@ -30,10 +30,11 @@ import java.io.Serializable;
  * @author kymjs (http://www.kymjs.com/) on 10/23/15.
  */
 public abstract class FragmentPresenter<T extends ViewDelegate> extends Fragment implements IPresenter<T> {
-    protected boolean mViewCreated = false;
-    protected T mViewDelegate;
     public int mPage = 0;
     public boolean mIsRefreshMode = true;
+    protected boolean mViewCreated = false;
+    protected T mViewDelegate;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

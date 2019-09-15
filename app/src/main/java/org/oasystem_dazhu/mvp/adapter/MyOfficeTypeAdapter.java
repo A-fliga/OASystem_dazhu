@@ -18,29 +18,29 @@ import java.util.List;
  */
 
 public class MyOfficeTypeAdapter extends RecyclerView.Adapter<MyOfficeTypeAdapter.OfficeTypeViewHolder> {
-    private List<OfficeTypeBean.DataBean> typeBeen;
-    private Context context;
-    private OnItemClickListener itemClickListener;
+    private List<OfficeTypeBean.DataBean> mTypeBeen;
+    private Context mContext;
+    private OnItemClickListener mItemClickListener;
 
     public MyOfficeTypeAdapter(List<OfficeTypeBean.DataBean> typeBeen, Context context) {
-        this.typeBeen = typeBeen;
-        this.context = context;
+        this.mTypeBeen = typeBeen;
+        this.mContext = context;
     }
 
     @Override
     public OfficeTypeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new OfficeTypeViewHolder(LayoutInflater.from(context).inflate(R.layout.item_office_type, parent, false));
+        return new OfficeTypeViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_office_type, parent, false));
     }
 
     @Override
     public void onBindViewHolder(OfficeTypeViewHolder holder, final int position) {
-        holder.office_type_name.setText(typeBeen.get(position).getName());
-        holder.office_type_count.setText(typeBeen.get(position).getDocument_count() + "项");
+        holder.office_type_name.setText(mTypeBeen.get(position).getName());
+        holder.office_type_count.setText(mTypeBeen.get(position).getDocument_count() + "项");
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (itemClickListener != null) {
-                    itemClickListener.onItemClick(position);
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(position);
                 }
             }
         });
@@ -48,7 +48,7 @@ public class MyOfficeTypeAdapter extends RecyclerView.Adapter<MyOfficeTypeAdapte
 
     @Override
     public int getItemCount() {
-        return typeBeen.size();
+        return mTypeBeen.size();
     }
 
     class OfficeTypeViewHolder extends RecyclerView.ViewHolder {
@@ -62,6 +62,6 @@ public class MyOfficeTypeAdapter extends RecyclerView.Adapter<MyOfficeTypeAdapte
     }
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+        this.mItemClickListener = itemClickListener;
     }
 }

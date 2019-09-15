@@ -18,17 +18,17 @@ import static org.oasystem_dazhu.constants.Constants.CORE_INIT;
  */
 
 public class MyApplication extends Application {
-    private static Context context;
-    private static MyApplication application;
+    private static Context sContext;
+    private static MyApplication sApplication;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+        sContext = getApplicationContext();
         if (!UserManager.getInstance().isDazhu()) {
             JPushInterface.init(this);
         }
-        application = this;
+        sApplication = this;
         //默认已高度来适配
         AutoSizeConfig.getInstance().setBaseOnWidth(false);
         //增加这句话
@@ -46,10 +46,10 @@ public class MyApplication extends Application {
     }
 
     public static Context getContext() {
-        return context;
+        return sContext;
     }
 
     public static MyApplication getAppContext() {
-        return application;
+        return sApplication;
     }
 }

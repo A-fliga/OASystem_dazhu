@@ -14,18 +14,19 @@ import java.util.List;
 
 /**
  * Created by www on 2019/3/26.
+ * 查看请假流程的Adapter
  */
 
 public class AskForLeaveFlowAdapter extends RecyclerView.Adapter<AskForLeaveFlowAdapter.AskForLeaveFlowViewHolder> {
-    private AskForLeaveDetailBean.UserBean userBean;
-    private List<AskForLeaveDetailBean.AttendanceExamineBean> beanList;
-    private AskForLeaveDetailBean bean;
-    private boolean firstAgree = false;
+    private AskForLeaveDetailBean.UserBean mUserBean;
+    private List<AskForLeaveDetailBean.AttendanceExamineBean> mBeanList;
+    private AskForLeaveDetailBean mBean;
+    private boolean mFirstAgree = false;
 
     public AskForLeaveFlowAdapter(AskForLeaveDetailBean bean) {
-        this.bean = bean;
-        this.beanList = bean.getAttendance_examine();
-        this.userBean = bean.getUser();
+        this.mBean = bean;
+        this.mBeanList = bean.getAttendance_examine();
+        this.mUserBean = bean.getUser();
     }
 
 
@@ -38,12 +39,12 @@ public class AskForLeaveFlowAdapter extends RecyclerView.Adapter<AskForLeaveFlow
     @Override
     public void onBindViewHolder(AskForLeaveFlowViewHolder holder, int position) {
         if (position == 0) {
-            holder.user_name.setText("申请人：" + userBean.getName());
-            holder.update_time.setText(bean.getCreated_at());
+            holder.user_name.setText("申请人：" + mUserBean.getName());
+            holder.update_time.setText(mBean.getCreated_at());
             holder.status_img.setImageResource(R.mipmap.already_sign);
             holder.line_img.setImageResource(R.mipmap.sign_line);
         } else {
-            AskForLeaveDetailBean.AttendanceExamineBean bean = beanList.get(position - 1);
+            AskForLeaveDetailBean.AttendanceExamineBean bean = mBeanList.get(position - 1);
             holder.user_name.setText(bean.getUser().getName());
             holder.flow_name.setText(getFlowName(bean.getStatus()));
             //除了待审批以外的状态才显示时间,
@@ -53,12 +54,12 @@ public class AskForLeaveFlowAdapter extends RecyclerView.Adapter<AskForLeaveFlow
                 holder.line_img.setImageResource(R.mipmap.sign_line);
             }
             //待审核状态  之后的条条都是灰色
-            if (Integer.parseInt(bean.getStatus()) == 1 && !firstAgree) {
-                firstAgree = true;
+            if (Integer.parseInt(bean.getStatus()) == 1 && !mFirstAgree) {
+                mFirstAgree = true;
                 holder.status_img.setImageResource(R.mipmap.is_signing);
             }
             //最后一个的 需要隐藏掉
-            if (position == beanList.size()) {
+            if (position == mBeanList.size()) {
                 holder.line_img.setVisibility(View.GONE);
             }
         }
@@ -66,7 +67,7 @@ public class AskForLeaveFlowAdapter extends RecyclerView.Adapter<AskForLeaveFlow
 
     @Override
     public int getItemCount() {
-        return beanList.size() + 1;
+        return mBeanList.size() + 1;
     }
 
     private String getFlowName(String status) {

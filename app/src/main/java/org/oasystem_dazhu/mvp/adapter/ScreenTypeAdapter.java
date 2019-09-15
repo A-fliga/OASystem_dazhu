@@ -18,85 +18,86 @@ import java.util.Map;
 
 /**
  * Created by www on 2019/1/8.
+ * 筛选界面的Adapter
  */
 
 public class ScreenTypeAdapter extends RecyclerView.Adapter<ScreenTypeAdapter.ScreenTypeViewHolder> {
-    private OnItemClickListener itemClickListener;
-    private List<HomeTypeBean.DataBean> beanList;
-    private Context context;
-    private List<TextView> tv_view = new ArrayList<>();
-    private List<Map<Integer, Boolean>> selectedList;
+    private List<HomeTypeBean.DataBean> mBeanList;
+    private List<TextView> mTv_view = new ArrayList<>();
+    private List<Map<Integer, Boolean>> mSelectedList;
+    private Context mContext;
+    private OnItemClickListener mItemClickListener;
 
     public ScreenTypeAdapter(List<HomeTypeBean.DataBean> beanList, List<Map<Integer, Boolean>> selectedList, Context context) {
-        this.beanList = beanList;
-        this.context = context;
-        this.selectedList = selectedList;
+        this.mBeanList = beanList;
+        this.mContext = context;
+        this.mSelectedList = selectedList;
     }
 
     @Override
     public ScreenTypeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ScreenTypeViewHolder(LayoutInflater.from(context).inflate(R.layout.item_screen_type, parent, false));
+        return new ScreenTypeViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_screen_type, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ScreenTypeViewHolder holder, final int position) {
-        tv_view.add(holder.item_type_tv);
-        holder.item_type_tv.setText(beanList.get(position).getName());
-        if(selectedList.get(position).get(beanList.get(position).getId())){
-            TextView tv = tv_view.get(position);
+        mTv_view.add(holder.item_type_tv);
+        holder.item_type_tv.setText(mBeanList.get(position).getName());
+        if (mSelectedList.get(position).get(mBeanList.get(position).getId())) {
+            TextView tv = mTv_view.get(position);
             tv.setBackgroundResource(R.drawable.et_selected);
-            tv.setTextColor(context.getResources().getColor(R.color.color_ffffff));
+            tv.setTextColor(mContext.getResources().getColor(R.color.color_ffffff));
         }
         setItemClick(holder, position);
     }
 
     public List<Map<Integer, Boolean>> getList() {
-        return selectedList;
+        return mSelectedList;
     }
 
     private void setItemClick(ScreenTypeViewHolder holder, final int position) {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Boolean b = selectedList.get(position).get(beanList.get(position).getId());
+                Boolean b = mSelectedList.get(position).get(mBeanList.get(position).getId());
                 Map<Integer, Boolean> map = new HashMap<Integer, Boolean>();
-                map.put(beanList.get(position).getId(), !b);
-                selectedList.set(position, map);
+                map.put(mBeanList.get(position).getId(), !b);
+                mSelectedList.set(position, map);
                 if (!b) {
-                    TextView tv = tv_view.get(position);
+                    TextView tv = mTv_view.get(position);
                     tv.setBackgroundResource(R.drawable.et_selected);
-                    tv.setTextColor(context.getResources().getColor(R.color.color_ffffff));
+                    tv.setTextColor(mContext.getResources().getColor(R.color.color_ffffff));
                 } else {
-                    TextView tv = tv_view.get(position);
+                    TextView tv = mTv_view.get(position);
                     tv.setBackgroundResource(R.drawable.et);
-                    tv.setTextColor(context.getResources().getColor(R.color.color_010101));
+                    tv.setTextColor(mContext.getResources().getColor(R.color.color_010101));
                 }
-                if (itemClickListener != null)
-                    itemClickListener.onItemClick(position);
+                if (mItemClickListener != null)
+                    mItemClickListener.onItemClick(position);
             }
         });
     }
 
     public void clearSelected() {
-        for (int i = 0; i < tv_view.size(); i++) {
-            TextView tv = tv_view.get(i);
+        for (int i = 0; i < mTv_view.size(); i++) {
+            TextView tv = mTv_view.get(i);
             tv.setBackgroundResource(R.drawable.et);
-            tv.setTextColor(context.getResources().getColor(R.color.color_010101));
+            tv.setTextColor(mContext.getResources().getColor(R.color.color_010101));
         }
-        if (selectedList != null) {
-            for (int i = 0; i < selectedList.size(); i++) {
-                selectedList.get(i).put(beanList.get(i).getId(), false);
+        if (mSelectedList != null) {
+            for (int i = 0; i < mSelectedList.size(); i++) {
+                mSelectedList.get(i).put(mBeanList.get(i).getId(), false);
             }
         }
     }
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+        this.mItemClickListener = itemClickListener;
     }
 
     class ScreenTypeViewHolder extends RecyclerView.ViewHolder {

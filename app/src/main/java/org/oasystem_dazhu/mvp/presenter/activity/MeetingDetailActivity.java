@@ -26,12 +26,12 @@ import me.jessyan.autosize.AutoSize;
  */
 
 public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelegate> {
-    private String meetingId;
-    private String meetingStatus;
-    private AlertDialog dialog;
-    private RadioGroup radioGroup;
-    private EditText remarkEt;
-    private int sign_status;
+    private String mMeetingId;
+    private String mMeetingStatus;
+    private AlertDialog mDialog;
+    private RadioGroup mRadioGroup;
+    private EditText mRemarkEt;
+    private int mSignStatus;
 
     @Override
     public Class<MeetingDetailDelegate> getDelegateClass() {
@@ -48,16 +48,16 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            meetingId = bundle.getString("meetingId");
-            meetingStatus = bundle.getString("meetingType");
-            viewDelegate.initTopView(Integer.parseInt(meetingStatus));
-            getMeetingDetail(meetingId);
+            mMeetingId = bundle.getString("meetingId");
+            mMeetingStatus = bundle.getString("meetingType");
+            mViewDelegate.initTopView(Integer.parseInt(mMeetingStatus));
+            getMeetingDetail(mMeetingId);
             setOnclick();
         }
     }
 
     private void setOnclick() {
-        viewDelegate.setOnClickListener(onClickListener, R.id.toolbar_right_rl);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.toolbar_right_rl);
     }
 
 
@@ -70,17 +70,17 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
                     break;
 
                 case R.id.meeting_sign_in_commit:
-                    if (dialog != null) {
-                        dialog.dismiss();
-                        dialog = null;
+                    if (mDialog != null) {
+                        mDialog.dismiss();
+                        mDialog = null;
                         showAnotherDialog();
                     }
                     break;
 
                 case R.id.meeting_sign_in_close:
-                    if (dialog != null) {
-                        dialog.dismiss();
-                        dialog = null;
+                    if (mDialog != null) {
+                        mDialog.dismiss();
+                        mDialog = null;
                     }
                     break;
             }
@@ -89,12 +89,12 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
 
     private void showAnotherDialog() {
         String note;
-        if (radioGroup.getCheckedRadioButtonId() == R.id.meeting_sign_in_agree) {
+        if (mRadioGroup.getCheckedRadioButtonId() == R.id.meeting_sign_in_agree) {
             note = "您确定准时参加吗？";
-            sign_status = 1;
+            mSignStatus = 1;
         } else {
             note = "您确定无法准时参加吗？";
-            sign_status = 2;
+            mSignStatus = 2;
         }
         DialogUtil.showDialog(this, note, "确定", "取消", mOnClickListener);
 
@@ -119,19 +119,19 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
                     ToastUtil.s("操作成功");
                 }
             }
-        }, meetingId, String.valueOf(sign_status), remarkEt.getText().toString().replaceAll(" ", ""));
+        }, mMeetingId, String.valueOf(mSignStatus), mRemarkEt.getText().toString().replaceAll(" ", ""));
     }
 
     private void showDialog() {
         View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_sign_in_meeting, null);
-        dialog = DialogUtil.createAlertDialog(this, view);
+        mDialog = DialogUtil.createAlertDialog(this, view);
         AutoSize.cancelAdapt(this);
-        dialog.show();
-        radioGroup = view.findViewById(R.id.meeting_sign_in_buttonGroup);
-        radioGroup.check(R.id.meeting_sign_in_agree);
+        mDialog.show();
+        mRadioGroup = view.findViewById(R.id.meeting_sign_in_buttonGroup);
+        mRadioGroup.check(R.id.meeting_sign_in_agree);
         ImageView commit = view.findViewById(R.id.meeting_sign_in_commit);
         ImageView close = view.findViewById(R.id.meeting_sign_in_close);
-        remarkEt = view.findViewById(R.id.meeting_sign_in_et);
+        mRemarkEt = view.findViewById(R.id.meeting_sign_in_et);
         commit.setOnClickListener(onClickListener);
         close.setOnClickListener(onClickListener);
     }
@@ -142,7 +142,7 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
             @Override
             public void onNext(BaseEntity<MeetingDetailBean> bean) {
                 super.onNext(bean);
-                viewDelegate.initView(bean.getData());
+                mViewDelegate.initView(bean.getData());
             }
         }, meetingId);
     }
@@ -150,9 +150,9 @@ public class MeetingDetailActivity extends ActivityPresenter<MeetingDetailDelega
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (dialog != null) {
-            dialog.dismiss();
-            dialog = null;
+        if (mDialog != null) {
+            mDialog.dismiss();
+            mDialog = null;
         }
     }
 }

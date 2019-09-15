@@ -40,11 +40,11 @@ import static org.oasystem_dazhu.R.id.toolbar_right_tv2;
  */
 
 public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {
-    private LocationClient locationClient;
-    private Timer timer;
-    private long currentTime;
-    private TextView textView;
-    private TimerTask task;
+    private LocationClient mLocationClient;
+    private Timer mTimer;
+    private TextView mTextView;
+    private TimerTask mTask;
+    private long mCurrentTime;
 
     @Override
     public Class<AttendanceDelegate> getDelegateClass() {
@@ -65,34 +65,34 @@ public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {
 
     private void initWeight() {
         getAttendanceInfo();
-        currentTime = System.currentTimeMillis();
-        textView = viewDelegate.get(R.id.sign_in_time);
-        textView.setText(InitDateUtil.initHours(currentTime));
+        mCurrentTime = System.currentTimeMillis();
+        mTextView = mViewDelegate.get(R.id.sign_in_time);
+        mTextView.setText(InitDateUtil.initHours(mCurrentTime));
 
-        task = new TimerTask() {
+        mTask = new TimerTask() {
             @Override
             public void run() {
-                currentTime = currentTime + 1000;
+                mCurrentTime = mCurrentTime + 1000;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        textView.setText(InitDateUtil.initHours(currentTime));
+                        mTextView.setText(InitDateUtil.initHours(mCurrentTime));
                     }
                 });
 
             }
         };
-        if (timer != null) {
-            timer.purge();
-            timer.cancel();
-            timer = null;
+        if (mTimer != null) {
+            mTimer.purge();
+            mTimer.cancel();
+            mTimer = null;
         }
-        timer = new Timer();
-        timer.schedule(task, 0, 1000);
+        mTimer = new Timer();
+        mTimer.schedule(mTask, 0, 1000);
     }
 
     private void setOnClickListener() {
-        viewDelegate.setOnClickListener(onClickListener, R.id.to_sign_in, R.id.toolbar_right_tv, toolbar_right_tv2);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.to_sign_in, R.id.toolbar_right_tv, toolbar_right_tv2);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -140,7 +140,7 @@ public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {
                                           ToastUtil.s(bean.getMsg());
                                       }
                                   }
-                              }, String.valueOf(viewDelegate.getSignType()),
+                              }, String.valueOf(mViewDelegate.getSignType()),
                         InitDateUtil.getDate(System.currentTimeMillis()).toString(), latitude, longitude);
     }
 
@@ -161,16 +161,16 @@ public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {
     }
 
     private void startLocation() {
-        locationClient = new LocationClient(this);
+        mLocationClient = new LocationClient(this);
         MyLocationListener locationListener = new MyLocationListener();
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
         option.setCoorType("bd09ll");
         option.setScanSpan(0);
         option.setOpenGps(true);
-        locationClient.registerLocationListener(locationListener);
-        locationClient.setLocOption(option);
-        locationClient.start();
+        mLocationClient.registerLocationListener(locationListener);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
     }
 
 
@@ -236,7 +236,7 @@ public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {
             @Override
             public void onNext(BaseEntity<AttendanceBean> bean) {
                 super.onNext(bean);
-                viewDelegate.initView(bean.getData());
+                mViewDelegate.initView(bean.getData());
             }
         }, InitDateUtil.getDate(System.currentTimeMillis()).toString());
     }
@@ -244,11 +244,11 @@ public class AttendanceActivity extends ActivityPresenter<AttendanceDelegate> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (timer != null) {
-            timer.purge();
-            timer.cancel();
+        if (mTimer != null) {
+            mTimer.purge();
+            mTimer.cancel();
         }
-        if (locationClient != null)
-            locationClient.stop();
+        if (mLocationClient != null)
+            mLocationClient.stop();
     }
 }

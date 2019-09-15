@@ -19,12 +19,13 @@ import org.oasystem_dazhu.utils.ToastUtil;
 
 /**
  * Created by www on 2019/3/23.
+ * 用车详情页面
  */
 
 public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDelegate> {
-    private String applyId = "";
-    private String examine_id = "";
-    private EditText remarkEt;
+    private String mApplyId = "";
+    private String mExamineId = "";
+    private EditText mRemarkEt;
 
     @Override
     public Class<CarApplyDetailDelegate> getDelegateClass() {
@@ -41,15 +42,15 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            applyId = bundle.getString("car_apply_id");
+            mApplyId = bundle.getString("car_apply_id");
             Boolean isApplyDetail = bundle.getBoolean("isApplyDetail");
-            viewDelegate.showBottom(!isApplyDetail);
+            mViewDelegate.showBottom(!isApplyDetail);
             if (!isApplyDetail) {
-                viewDelegate.setOnClickListener(onClickListener, R.id.car_apply_agree_img, R.id.car_apply_agree_refuse);
-                examine_id = bundle.getString("examine_id");
+                mViewDelegate.setOnClickListener(onClickListener, R.id.car_apply_agree_img, R.id.car_apply_agree_refuse);
+                mExamineId = bundle.getString("examine_id");
             }
         }
-        getApplyDetail(applyId);
+        getApplyDetail(mApplyId);
     }
 
 
@@ -68,13 +69,13 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
     };
 
     private void showRefuseDialog() {
-        remarkEt = new EditText(this);
+        mRemarkEt = new EditText(this);
         new AlertDialog.Builder(this).setTitle("拒绝原因(非必填)")
                 .setIcon(android.R.drawable.ic_dialog_info)
-                .setView(remarkEt)
+                .setView(mRemarkEt)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        toRefuse(remarkEt.getText().toString().replaceAll(" ", ""));
+                        toRefuse(mRemarkEt.getText().toString().replaceAll(" ", ""));
                     }
                 })
                 .setNegativeButton("取消", null)
@@ -111,7 +112,7 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
                 }
             }
 
-        }, examine_id, remark);
+        }, mExamineId, remark);
     }
 
     private void toAgree() {
@@ -127,7 +128,7 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
                     ToastUtil.s(bean.getMsg());
                 }
             }
-        }, examine_id, applyId);
+        }, mExamineId, mApplyId);
     }
 
 
@@ -136,8 +137,8 @@ public class CarApplyDetailActivity extends ActivityPresenter<CarApplyDetailDele
             @Override
             public void onNext(BaseEntity<CarApplyDetailBean> bean) {
                 super.onNext(bean);
-                viewDelegate.initView(bean.getData());
-                viewDelegate.initFlows(bean.getData());
+                mViewDelegate.initView(bean.getData());
+                mViewDelegate.initFlows(bean.getData());
             }
         }, applyId);
     }

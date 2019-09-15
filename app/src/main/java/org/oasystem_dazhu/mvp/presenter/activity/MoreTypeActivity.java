@@ -25,6 +25,7 @@ import me.jessyan.autosize.AutoSizeCompat;
 
 /**
  * Created by www on 2019/7/10.
+ * 首页点击更多分类的界面
  */
 
 public class MoreTypeActivity extends ActivityPresenter<MoreTypeDelegate> {
@@ -51,13 +52,13 @@ public class MoreTypeActivity extends ActivityPresenter<MoreTypeDelegate> {
 
     private void initCustomize() {
         if (FirmingTypeManager.getInstance().getBeanList().size() > Constants.TYPE_WIDTH_COUNT) {
-            mCustomizeAdapter = viewDelegate.initCustomizeList();
+            mCustomizeAdapter = mViewDelegate.initCustomizeList();
             setCustomizeClick();
         }
     }
 
     private void initRegular() {
-        mRegularAdapter = viewDelegate.initRegularAdapter();
+        mRegularAdapter = mViewDelegate.initRegularAdapter();
         setRegularClick();
     }
 

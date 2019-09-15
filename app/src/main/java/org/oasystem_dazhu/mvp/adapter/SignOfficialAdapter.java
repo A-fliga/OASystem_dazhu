@@ -23,45 +23,46 @@ import java.util.List;
  */
 
 public class SignOfficialAdapter extends RecyclerView.Adapter<SignOfficialAdapter.SignOfficialViewHolder> {
-    private List<String> contentTv;
-    private Context context;
-    private OnItemClickListener itemClickListener;
-    private List<FrameLayout> frameLayoutList = new ArrayList<>();
-    private List<TextView> textViewList = new ArrayList<>();
-    private boolean needLarge = false;
+    private List<String> mContentTv;
+    private List<FrameLayout> mFrameLayoutList = new ArrayList<>();
+    private List<TextView> mTextViewList = new ArrayList<>();
+    private Context mContext;
+    private OnItemClickListener mItemClickListener;
+    private boolean mNeedLarge = false;
+
     public SignOfficialAdapter(List<String> contentTv, Context context) {
-        this.contentTv = contentTv;
-        this.context = context;
-        needLarge = BuildConfig.HOST.equals("http://112.35.0.188:9098/api/");
+        this.mContentTv = contentTv;
+        this.mContext = context;
+        mNeedLarge = BuildConfig.HOST.equals("http://112.35.0.188:9098/api/");
     }
 
     @Override
     public SignOfficialViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SignOfficialViewHolder(LayoutInflater.from(context).inflate(R.layout.item_sign_right, parent, false));
+        return new SignOfficialViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_sign_right, parent, false));
     }
 
     @Override
     public void onBindViewHolder(final SignOfficialViewHolder holder, final int position) {
-        frameLayoutList.add(holder.sign_right_fl);
-        textViewList.add(holder.sign_list_tv);
+        mFrameLayoutList.add(holder.sign_right_fl);
+        mTextViewList.add(holder.sign_list_tv);
         if (position == 0) {
-            frameLayoutList.get(position).setBackgroundResource(R.mipmap.sign_right_selected);
-            textViewList.get(position).setTextColor(context.getResources().getColor(R.color.color_ffffff));
+            mFrameLayoutList.get(position).setBackgroundResource(R.mipmap.sign_right_selected);
+            mTextViewList.get(position).setTextColor(mContext.getResources().getColor(R.color.color_ffffff));
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(!AppUtil.isFastDoubleClick(1000)) {
-                    if (itemClickListener != null) {
-                        itemClickListener.onItemClick(position);
+                    if (mItemClickListener != null) {
+                        mItemClickListener.onItemClick(position);
                     }
-                    if (position < contentTv.size() - 1) {
+                    if (position < mContentTv.size() - 1) {
                         holder.sign_right_fl.setBackgroundResource(R.mipmap.sign_right_selected);
-                        holder.sign_list_tv.setTextColor(context.getResources().getColor(R.color.color_ffffff));
-                        for (int i = 0; i < frameLayoutList.size(); i++) {
+                        holder.sign_list_tv.setTextColor(mContext.getResources().getColor(R.color.color_ffffff));
+                        for (int i = 0; i < mFrameLayoutList.size(); i++) {
                             if (i != position) {
-                                frameLayoutList.get(i).setBackgroundResource(R.mipmap.sign_right_back);
-                                textViewList.get(i).setTextColor(context.getResources().getColor(R.color.color_000000));
+                                mFrameLayoutList.get(i).setBackgroundResource(R.mipmap.sign_right_back);
+                                mTextViewList.get(i).setTextColor(mContext.getResources().getColor(R.color.color_000000));
                             }
                         }
                     }
@@ -72,16 +73,16 @@ public class SignOfficialAdapter extends RecyclerView.Adapter<SignOfficialAdapte
             }
 
         });
-        holder.sign_list_tv.setText(contentTv.get(position));
+        holder.sign_list_tv.setText(mContentTv.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return contentTv.size();
+        return mContentTv.size();
     }
 
     public void setOnItemClickListener(OnItemClickListener itemClickListener) {
-        this.itemClickListener = itemClickListener;
+        this.mItemClickListener = itemClickListener;
     }
 
     class SignOfficialViewHolder extends RecyclerView.ViewHolder {
@@ -92,10 +93,10 @@ public class SignOfficialAdapter extends RecyclerView.Adapter<SignOfficialAdapte
             super(itemView);
             sign_list_tv = itemView.findViewById(R.id.sign_list_tv);
             sign_right_fl = (FrameLayout) itemView.findViewById(R.id.sign_right_fl);
-            if(needLarge){
+            if(mNeedLarge){
                 RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) sign_right_fl.getLayoutParams();
-                params.width = DensityUtil.dip2px(context,55);
-                params.height = DensityUtil.dip2px(context,55);
+                params.width = DensityUtil.dip2px(mContext,55);
+                params.height = DensityUtil.dip2px(mContext,55);
             }
         }
     }

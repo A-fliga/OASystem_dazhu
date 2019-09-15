@@ -50,10 +50,10 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         typeId = getIntent().getExtras().getInt("typeId");
-        viewDelegate.initViews(FirmingTypeManager.getInstance().getTypeName(typeId));
+        mViewDelegate.initViews(FirmingTypeManager.getInstance().getTypeName(typeId));
         init();
         initViewPager();
-        viewDelegate.setOnClickListener(onClickListener, R.id.official_not_done_tab, R.id.official_done_tab, R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.official_not_done_tab, R.id.official_done_tab, R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
     }
 
     private void init() {
@@ -62,7 +62,7 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
         idList.add(R.id.official_done_tab);
         selectedId = R.id.official_not_done_tab;
         setCheckStates(selectedId);
-        viewDelegate.get(R.id.official_not_done_tab).setSelected(true);
+        mViewDelegate.get(R.id.official_not_done_tab).setSelected(true);
     }
 
 
@@ -122,7 +122,7 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
     };
 
     private void initViewPager() {
-        viewPager = viewDelegate.getViewPager();
+        viewPager = mViewDelegate.getViewPager();
         mFragmentPagerAdapter mFragmentPagerAdapter = new mFragmentPagerAdapter(getSupportFragmentManager(), getFragments());
         viewPager.setAdapter(mFragmentPagerAdapter);
     }
@@ -131,14 +131,14 @@ public class OfficialHandleActivity extends ActivityPresenter<OfficialHandleDele
         RelativeLayout parent;
         for (int i = 0; i < idList.size(); i++) {
             if (idList.get(i) == id) {
-                viewDelegate.get(id).setSelected(true);
-                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+                mViewDelegate.get(id).setSelected(true);
+                parent = (RelativeLayout) mViewDelegate.get(id).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
 
             } else {
-                viewDelegate.get(idList.get(i)).setSelected(false);
-                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                mViewDelegate.get(idList.get(i)).setSelected(false);
+                parent = (RelativeLayout) mViewDelegate.get(idList.get(i)).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
             }

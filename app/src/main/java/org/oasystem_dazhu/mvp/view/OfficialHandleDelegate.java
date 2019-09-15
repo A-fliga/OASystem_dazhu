@@ -10,7 +10,7 @@ import org.oasystem_dazhu.mvp.view.customView.NoScrollViewPager;
  */
 
 public class OfficialHandleDelegate extends ViewDelegate {
-    private NoScrollViewPager viewPager;
+    private NoScrollViewPager mViewPager;
 
     @Override
     public void onDestroy() {
@@ -23,11 +23,11 @@ public class OfficialHandleDelegate extends ViewDelegate {
     }
 
     public NoScrollViewPager getViewPager(){
-        return viewPager;
+        return mViewPager;
     }
     @Override
     public void initWidget() {
-        viewPager = get(R.id.bottom_viewpager);
+        mViewPager = get(R.id.bottom_viewpager);
     }
 
     public void initViews(String typeId) {

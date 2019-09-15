@@ -31,16 +31,18 @@ import static org.oasystem_dazhu.utils.SortUtl.REVERSE;
 
 /**
  * Created by www on 2019/2/16.
+ * 文件监控的界面
  */
 
 public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> {
-    private OfficialDocumentAdapter adapter;
-    private List<DocumentBean.DataBean> newBeanList;
-    private Boolean isPositive_create = false, isPositive_update = false;
-    private ScreenBean screenBean;
-    private boolean done = false;
-    private List<Integer> idList;
-    private int selectedId;
+    private OfficialDocumentAdapter mAdapter;
+    private List<DocumentBean.DataBean> mNewBeanList;
+    private List<Integer> mIdList;
+    private ScreenBean mScreenBean;
+    private boolean mIsPositiveCreate = false;
+    private boolean mIsPositiveUpdate = false;
+    private boolean mDone = false;
+    private int mSelectedId;
 
     @Override
     public Class<FileMonitorDelegate> getDelegateClass() {
@@ -55,7 +57,7 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewDelegate.setOnClickListener(onClickListener, R.id.official_not_done_tab, R.id.official_done_tab,
+        mViewDelegate.setOnClickListener(onClickListener, R.id.official_not_done_tab, R.id.official_done_tab,
                 R.id.to_screen, R.id.to_sort_create, R.id.to_sort_update, R.id.refresh);
         init();
         getFileMonitorList(new ScreenBean());
@@ -63,17 +65,17 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
 
 
     private void init() {
-        idList = new ArrayList<>();
-        idList.add(R.id.official_not_done_tab);
-        idList.add(R.id.official_done_tab);
-        selectedId = R.id.official_not_done_tab;
-        setCheckStates(selectedId);
-        viewDelegate.get(R.id.official_not_done_tab).setSelected(true);
+        mIdList = new ArrayList<>();
+        mIdList.add(R.id.official_not_done_tab);
+        mIdList.add(R.id.official_done_tab);
+        mSelectedId = R.id.official_not_done_tab;
+        setCheckStates(mSelectedId);
+        mViewDelegate.get(R.id.official_not_done_tab).setSelected(true);
     }
 
 
     private void getFileMonitorList(ScreenBean screenBean) {
-        if (done) {
+        if (mDone) {
             screenBean.setStatus("1");
         } else {
             screenBean.setStatus("0");
@@ -86,20 +88,20 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
                     if (bean.getData().getData().size() == 0) {
                         ToastUtil.l("暂无数据");
                     }
-                    if (newBeanList != null) {
-                        newBeanList.clear();
+                    if (mNewBeanList != null) {
+                        mNewBeanList.clear();
                     }
-                    newBeanList = new ArrayList<DocumentBean.DataBean>();
-                    newBeanList.addAll(SortUtl.sort(bean.getData().getData()));
-                    RecyclerView recyclerView = viewDelegate.get(R.id.file_monitor_recyclerView);
-                    adapter = new OfficialDocumentAdapter(false, FileMonitorActivity.this, newBeanList);
-                    viewDelegate.setRecycler(recyclerView, adapter, true);
-                    adapter.setOnItemClickListener(new OnItemClickListener() {
+                    mNewBeanList = new ArrayList<DocumentBean.DataBean>();
+                    mNewBeanList.addAll(SortUtl.sort(bean.getData().getData()));
+                    RecyclerView recyclerView = mViewDelegate.get(R.id.file_monitor_recyclerView);
+                    mAdapter = new OfficialDocumentAdapter(false, FileMonitorActivity.this, mNewBeanList);
+                    mViewDelegate.setRecycler(recyclerView, mAdapter, true);
+                    mAdapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
                             Bundle bundle = new Bundle();
                             bundle.putBoolean("done", true);
-                            bundle.putSerializable("DocumentDataBean", newBeanList.get(position));
+                            bundle.putSerializable("DocumentDataBean", mNewBeanList.get(position));
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });
@@ -114,15 +116,15 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.official_not_done_tab:
-                    if (done) {
-                        done = false;
+                    if (mDone) {
+                        mDone = false;
                         getFileMonitorList(new ScreenBean());
                     }
                     setCheckStates(view.getId());
                     break;
                 case R.id.official_done_tab:
-                    if (!done) {
-                        done = true;
+                    if (!mDone) {
+                        mDone = true;
                         getFileMonitorList(new ScreenBean());
                     }
                     setCheckStates(view.getId());
@@ -132,30 +134,30 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
                     Intent intent = new Intent(FileMonitorActivity.this, ScreenActivity.class);
                     Bundle bundle2 = new Bundle();
                     bundle2.putBoolean("needShowTop", true);
-                    if (screenBean == null)
-                        screenBean = new ScreenBean();
-                    bundle2.putSerializable("localScreenBean", screenBean);
+                    if (mScreenBean == null)
+                        mScreenBean = new ScreenBean();
+                    bundle2.putSerializable("localScreenBean", mScreenBean);
                     intent.putExtras(bundle2);
                     startActivityForResult(intent, 1000);
                     break;
 
                 case R.id.to_sort_create:
-                    isPositive_create = !isPositive_create;
-                    isPositive_update = false;
-                    newBeanList = SortUtl.sort(newBeanList, isPositive_create ? POSITIVE : REVERSE, true);
-                    adapter.setBeanList(newBeanList);
-                    adapter.notifyDataSetChanged();
+                    mIsPositiveCreate = !mIsPositiveCreate;
+                    mIsPositiveUpdate = false;
+                    mNewBeanList = SortUtl.sort(mNewBeanList, mIsPositiveCreate ? POSITIVE : REVERSE, true);
+                    mAdapter.setBeanList(mNewBeanList);
+                    mAdapter.notifyDataSetChanged();
                     break;
                 case R.id.to_sort_update:
-                    isPositive_update = !isPositive_update;
-                    isPositive_create = false;
-                    newBeanList = SortUtl.sort(newBeanList, isPositive_update ? POSITIVE : REVERSE, false);
-                    adapter.setBeanList(newBeanList);
-                    adapter.notifyDataSetChanged();
+                    mIsPositiveUpdate = !mIsPositiveUpdate;
+                    mIsPositiveCreate = false;
+                    mNewBeanList = SortUtl.sort(mNewBeanList, mIsPositiveUpdate ? POSITIVE : REVERSE, false);
+                    mAdapter.setBeanList(mNewBeanList);
+                    mAdapter.notifyDataSetChanged();
                     break;
                 case R.id.refresh:
-                    isPositive_update = false;
-                    isPositive_create = false;
+                    mIsPositiveUpdate = false;
+                    mIsPositiveCreate = false;
                     getFileMonitorList(new ScreenBean());
                     break;
 
@@ -165,16 +167,16 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
 
     private void setCheckStates(int id) {
         RelativeLayout parent;
-        for (int i = 0; i < idList.size(); i++) {
-            if (idList.get(i) == id) {
-                viewDelegate.get(id).setSelected(true);
-                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+        for (int i = 0; i < mIdList.size(); i++) {
+            if (mIdList.get(i) == id) {
+                mViewDelegate.get(id).setSelected(true);
+                parent = (RelativeLayout) mViewDelegate.get(id).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
 
             } else {
-                viewDelegate.get(idList.get(i)).setSelected(false);
-                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                mViewDelegate.get(mIdList.get(i)).setSelected(false);
+                parent = (RelativeLayout) mViewDelegate.get(mIdList.get(i)).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
             }
@@ -185,9 +187,9 @@ public class FileMonitorActivity extends ActivityPresenter<FileMonitorDelegate> 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000 && resultCode == 2000) {
-            screenBean = (ScreenBean) data.getExtras().getSerializable("screenBean");
-            if (screenBean != null) {
-                getFileMonitorList(screenBean);
+            mScreenBean = (ScreenBean) data.getExtras().getSerializable("screenBean");
+            if (mScreenBean != null) {
+                getFileMonitorList(mScreenBean);
             }
         }
     }

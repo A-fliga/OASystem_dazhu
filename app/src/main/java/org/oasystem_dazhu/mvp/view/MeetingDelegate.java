@@ -15,8 +15,8 @@ import java.util.List;
  */
 
 public class MeetingDelegate extends ViewDelegate {
-    private RecyclerView recyclerView;
-    private MeetingListAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private MeetingListAdapter mAdapter;
 
     @Override
     public void onDestroy() {
@@ -31,18 +31,18 @@ public class MeetingDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("会议管理");
-        recyclerView = get(R.id.meeting_recyclerView);
+        mRecyclerView = get(R.id.meeting_recyclerView);
     }
 
     public void initList(List<MeetingListBean.DataBean> beanList) {
-        adapter = new MeetingListAdapter(this.getActivity(), beanList);
-        setRecycler(recyclerView, adapter, true);
+        mAdapter = new MeetingListAdapter(this.getActivity(), beanList);
+        setRecycler(mRecyclerView, mAdapter, true);
         if (beanList.size() == 0) {
             ToastUtil.s("暂无数据");
         }
     }
 
     public MeetingListAdapter getAdapter() {
-        return adapter;
+        return mAdapter;
     }
 }

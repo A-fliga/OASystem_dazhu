@@ -28,20 +28,24 @@ import me.jessyan.autosize.AutoSize;
 
 /**
  * Created by www on 2019/3/23.
+ * 新增用车申请的页面
  */
 
 public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> {
-    private List<String> commitBean;
-    private List<String> noteList;
-    private List<String> typeNameList;
-    private List<String> typeIdList;
-    private List<String> userNameList;
-    private List<String> userIdList;
-    private List<AllUserBean.DataBean> userBeanList;
-    private Boolean typeFinished = false, userReady = false;
-    private DatePicker datePicker;
-    private int opType = 0;
-    private StringBuffer selectedUserId, selectedUserName;
+    private DatePicker mDatePicker;
+    private StringBuilder mSelectedUserId;
+    private StringBuilder mSelectedUserName;
+    private List<String> mCommitBean;
+    private List<String> mNoteList;
+    private List<String> mTypeNameList;
+    private List<String> mTypeIdList;
+    private List<String> mUserNameList;
+    private List<String> mUserIdList;
+    private List<AllUserBean.DataBean> mUserBeanList;
+    private boolean mTypeFinished = false;
+    private boolean mUserReady = false;
+    private int mOpType = 0;
+
 
     @Override
     public Class<AddCarApplyDelegate> getDelegateClass() {
@@ -61,17 +65,17 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
         getUserData();
         initClickListener();
         //判断一下非空数据
-        viewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
+        mViewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (typeFinished && userReady) {
-                    commitBean.set(2, viewDelegate.getEt(R.id.car_apply_num).getText().toString());
-                    commitBean.set(5, viewDelegate.getEt(R.id.car_apply_mileage).getText().toString());
-                    commitBean.set(6, viewDelegate.getEt(R.id.car_apply_target).getText().toString());
+                if (mTypeFinished && mUserReady) {
+                    mCommitBean.set(2, mViewDelegate.getEt(R.id.car_apply_num).getText().toString());
+                    mCommitBean.set(5, mViewDelegate.getEt(R.id.car_apply_mileage).getText().toString());
+                    mCommitBean.set(6, mViewDelegate.getEt(R.id.car_apply_target).getText().toString());
 
-                    for (int i = 0; i < commitBean.size(); i++) {
-                        if (commitBean.get(i).isEmpty()) {
-                            ToastUtil.s(noteList.get(i) + "不能为空");
+                    for (int i = 0; i < mCommitBean.size(); i++) {
+                        if (mCommitBean.get(i).isEmpty()) {
+                            ToastUtil.s(mNoteList.get(i) + "不能为空");
                             return;
                         }
                     }
@@ -85,7 +89,7 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
     }
 
     private void initClickListener() {
-        viewDelegate.setOnClickListener(onClickListener, R.id.car_apply_start_time, R.id.car_apply_end_time, R.id.car_apply_approver);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.car_apply_start_time, R.id.car_apply_end_time, R.id.car_apply_approver);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -94,11 +98,11 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
             switch (view.getId()) {
                 case R.id.car_apply_start_time:
                     setDate();
-                    opType = 1;
+                    mOpType = 1;
                     break;
                 case R.id.car_apply_end_time:
                     setDate();
-                    opType = 2;
+                    mOpType = 2;
                     break;
                 case R.id.car_apply_approver:
                     showUserDialog();
@@ -108,11 +112,11 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
     };
 
     private void showUserDialog() {
-        opType = 4;
-        String[] peopleList = new String[userBeanList.size()];
-        boolean[] booleanList = new boolean[userBeanList.size()];
-        for (int i = 0; i < userBeanList.size(); i++) {
-            peopleList[i] = userBeanList.get(i).getName();
+        mOpType = 4;
+        String[] peopleList = new String[mUserBeanList.size()];
+        boolean[] booleanList = new boolean[mUserBeanList.size()];
+        for (int i = 0; i < mUserBeanList.size(); i++) {
+            peopleList[i] = mUserBeanList.get(i).getName();
             booleanList[i] = false;
         }
         DialogUtil.showChoiceDialog(this, "请选择人员（请注意顺序）", "确定", "取消", peopleList, booleanList,
@@ -123,21 +127,21 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
         @Override
         public void onClick(DialogInterface dialogInterface, int i, boolean b) {
             if (b) {
-                selectedUserId.append(userBeanList.get(i).getId()).append(",");
-                selectedUserName.append(userBeanList.get(i).getName()).append(",");
+                mSelectedUserId.append(mUserBeanList.get(i).getId()).append(",");
+                mSelectedUserName.append(mUserBeanList.get(i).getName()).append(",");
             } else {
-                String content = selectedUserId.toString();
-                if (content.contains(userBeanList.get(i).getId() + ",")) {
-                    content = content.replace(userBeanList.get(i).getId() + ",", "");
-                    selectedUserId.setLength(0);
-                    selectedUserId.append(content);
+                String content = mSelectedUserId.toString();
+                if (content.contains(mUserBeanList.get(i).getId() + ",")) {
+                    content = content.replace(mUserBeanList.get(i).getId() + ",", "");
+                    mSelectedUserId.setLength(0);
+                    mSelectedUserId.append(content);
                 }
 
-                String contentName = selectedUserName.toString();
-                if (contentName.contains(userBeanList.get(i).getName() + ",")) {
-                    contentName = contentName.replace(userBeanList.get(i).getName() + ",", "");
-                    selectedUserName.setLength(0);
-                    selectedUserName.append(contentName);
+                String contentName = mSelectedUserName.toString();
+                if (contentName.contains(mUserBeanList.get(i).getName() + ",")) {
+                    contentName = contentName.replace(mUserBeanList.get(i).getName() + ",", "");
+                    mSelectedUserName.setLength(0);
+                    mSelectedUserName.append(contentName);
                 }
 
             }
@@ -151,12 +155,12 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
         //通过自定义控件AlertDialog实现
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View view = getLayoutInflater().inflate(R.layout.data_dialog, null);
-        datePicker = (DatePicker) view.findViewById(R.id.date_picker);
+        mDatePicker = (DatePicker) view.findViewById(R.id.date_picker);
         //设置日期简略显示 否则详细显示 包括:星期\周
-        datePicker.setCalendarViewShown(false);
+        mDatePicker.setCalendarViewShown(false);
         //初始化当前日期
         calendar.setTimeInMillis(System.currentTimeMillis());
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+        mDatePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), null);
         //设置date布局
         builder.setView(view);
@@ -170,21 +174,21 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
             if (i == -1) {
-                if (opType == 1 || opType == 2)
-                    setDataMsg(opType);
-                if (opType == 3) {
+                if (mOpType == 1 || mOpType == 2)
+                    setDataMsg(mOpType);
+                if (mOpType == 3) {
                     toApply();
                 }
-                if (opType == 4) {
-                    viewDelegate.getTv(R.id.car_apply_approver).setText(selectedUserName.substring(0, selectedUserName.length() - 1));
-                    commitBean.set(7, selectedUserId.substring(0, selectedUserId.length() - 1));
-                    selectedUserId.setLength(0);
-                    selectedUserName.setLength(0);
+                if (mOpType == 4) {
+                    mViewDelegate.getTv(R.id.car_apply_approver).setText(mSelectedUserName.substring(0, mSelectedUserName.length() - 1));
+                    mCommitBean.set(7, mSelectedUserId.substring(0, mSelectedUserId.length() - 1));
+                    mSelectedUserId.setLength(0);
+                    mSelectedUserName.setLength(0);
                 }
             }
-            if (opType == 4) {
-                selectedUserId.setLength(0);
-                selectedUserName.setLength(0);
+            if (mOpType == 4) {
+                mSelectedUserId.setLength(0);
+                mSelectedUserName.setLength(0);
             }
             dialogInterface.dismiss();
         }
@@ -192,14 +196,14 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
 
     private void toApply() {
         CarApplyBean bean = new CarApplyBean();
-        bean.user_id = commitBean.get(0);
-        bean.car_use_type_id = commitBean.get(1);
-        bean.car_number = commitBean.get(2);
-        bean.start_time = commitBean.get(3);
-        bean.end_time = commitBean.get(4);
-        bean.mileage = commitBean.get(5);
-        bean.destination = commitBean.get(6);
-        bean.user_ids = commitBean.get(7);
+        bean.user_id = mCommitBean.get(0);
+        bean.car_use_type_id = mCommitBean.get(1);
+        bean.car_number = mCommitBean.get(2);
+        bean.start_time = mCommitBean.get(3);
+        bean.end_time = mCommitBean.get(4);
+        bean.mileage = mCommitBean.get(5);
+        bean.destination = mCommitBean.get(6);
+        bean.user_ids = mCommitBean.get(7);
         PublicModel.getInstance().car_apply(new MSubscribe<BaseEntity>() {
             @Override
             public void onNext(BaseEntity bean) {
@@ -213,68 +217,68 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
 
     private void setDataMsg(int opType) {
         //日期格式
-        StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(String.format("%d-%02d-%02d",
-                datePicker.getYear(),
-                datePicker.getMonth() + 1,
-                datePicker.getDayOfMonth()));
+        StringBuilder StringBuilder = new StringBuilder();
+        StringBuilder.append(String.format("%d-%02d-%02d",
+                mDatePicker.getYear(),
+                mDatePicker.getMonth() + 1,
+                mDatePicker.getDayOfMonth()));
         if (opType == 1) {
-            commitBean.set(3, stringBuffer.toString());
-            viewDelegate.getTv(R.id.car_apply_start_time).setText(stringBuffer.toString());
+            mCommitBean.set(3, StringBuilder.toString());
+            mViewDelegate.getTv(R.id.car_apply_start_time).setText(StringBuilder.toString());
         }
         if (opType == 2) {
-            commitBean.set(4, stringBuffer.toString());
-            viewDelegate.getTv(R.id.car_apply_end_time).setText(stringBuffer.toString());
+            mCommitBean.set(4, StringBuilder.toString());
+            mViewDelegate.getTv(R.id.car_apply_end_time).setText(StringBuilder.toString());
         }
 
     }
 
 
     private void getUserData() {
-        userBeanList = UserManager.getInstance().getAllUserInfo();
-        if (userBeanList != null) {
+        mUserBeanList = UserManager.getInstance().getAllUserInfo();
+        if (mUserBeanList != null) {
             //这里要剔除掉自己的那一个数据
-            for (int i = 0; i < userBeanList.size(); i++) {
-                userNameList.add(userBeanList.get(i).getName());
-                userIdList.add(userBeanList.get(i).getId() + "");
+            for (int i = 0; i < mUserBeanList.size(); i++) {
+                mUserNameList.add(mUserBeanList.get(i).getName());
+                mUserIdList.add(mUserBeanList.get(i).getId() + "");
             }
-            viewDelegate.initSpinner(this,R.id.add_car_apply_user, userNameList, new OnItemClickListener() {
+            mViewDelegate.initSpinner(this, R.id.add_car_apply_user, mUserNameList, new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    commitBean.set(0, userIdList.get(position));
+                    mCommitBean.set(0, mUserIdList.get(position));
                 }
             });
-            userReady = true;
+            mUserReady = true;
         }
     }
 
     private void initCommitBean() {
-        commitBean = new ArrayList<>();
+        mCommitBean = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
-            commitBean.add("");
+            mCommitBean.add("");
         }
-        noteList = new ArrayList<>();
-        noteList.add("用车人");
-        noteList.add("用车类型");
-        noteList.add("车牌号");
-        noteList.add("起始时间");
-        noteList.add("结束时间");
-        noteList.add("预定里程");
-        noteList.add("目的地");
-        noteList.add("审批人");
-        userNameList = new ArrayList<>();
-        userNameList.add("自己（默认）");
-        userIdList = new ArrayList<>();
-        userIdList.add(UserManager.getInstance().getUserInfo().getId() + "");
-        typeIdList = new ArrayList<>();
-        typeNameList = new ArrayList<>();
-        userBeanList = new ArrayList<>();
-        selectedUserId = new StringBuffer();
-        selectedUserName = new StringBuffer();
+        mNoteList = new ArrayList<>();
+        mNoteList.add("用车人");
+        mNoteList.add("用车类型");
+        mNoteList.add("车牌号");
+        mNoteList.add("起始时间");
+        mNoteList.add("结束时间");
+        mNoteList.add("预定里程");
+        mNoteList.add("目的地");
+        mNoteList.add("审批人");
+        mUserNameList = new ArrayList<>();
+        mUserNameList.add("自己（默认）");
+        mUserIdList = new ArrayList<>();
+        mUserIdList.add(UserManager.getInstance().getUserInfo().getId() + "");
+        mTypeIdList = new ArrayList<>();
+        mTypeNameList = new ArrayList<>();
+        mUserBeanList = new ArrayList<>();
+        mSelectedUserId = new StringBuilder();
+        mSelectedUserName = new StringBuilder();
     }
 
     private void showSureDialog() {
-        opType = 3;
+        mOpType = 3;
         DialogUtil.showDialog(this, "您确定要申请用车吗？", "确定", "取消", mOnClickListener);
     }
 
@@ -287,7 +291,7 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
                 if (bean.getCode() != 0) {
                     ToastUtil.s(bean.getMsg());
                 } else {
-                    typeFinished = true;
+                    mTypeFinished = true;
                     initTypeSpinner(bean);
                 }
             }
@@ -296,12 +300,12 @@ public class AddCarApplyActivity extends ActivityPresenter<AddCarApplyDelegate> 
 
     private void initTypeSpinner(CarTypeListBean bean) {
         for (int i = 0; i < bean.getData().size(); i++) {
-            typeNameList.add(bean.getData().get(i).getName());
-            typeIdList.add(bean.getData().get(i).getId() + "");
-            viewDelegate.initSpinner(this,R.id.add_car_apply_type, typeNameList, new OnItemClickListener() {
+            mTypeNameList.add(bean.getData().get(i).getName());
+            mTypeIdList.add(bean.getData().get(i).getId() + "");
+            mViewDelegate.initSpinner(this, R.id.add_car_apply_type, mTypeNameList, new OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
-                    commitBean.set(1, typeIdList.get(position));
+                    mCommitBean.set(1, mTypeIdList.get(position));
                 }
             });
         }

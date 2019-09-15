@@ -19,12 +19,13 @@ import org.oasystem_dazhu.utils.ToastUtil;
 
 /**
  * Created by www on 2019/3/26.
+ * 请假详情页面
  */
 
 public class AskForLeaveDetailActivity extends ActivityPresenter<AskForLeaveDetailDelegate> {
-    private String applyId = "";
-    private String examine_id = "";
-    private EditText remarkEt;
+    private String mApplyId = "";
+    private String mExamineId = "";
+    private EditText mRemarkEt;
 
     @Override
     public Class<AskForLeaveDetailDelegate> getDelegateClass() {
@@ -41,15 +42,15 @@ public class AskForLeaveDetailActivity extends ActivityPresenter<AskForLeaveDeta
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            applyId = bundle.getString("leave_apply_id");
+            mApplyId = bundle.getString("leave_apply_id");
             Boolean isApplyDetail = bundle.getBoolean("isApplyDetail");
-            viewDelegate.showBottom(!isApplyDetail);
+            mViewDelegate.showBottom(!isApplyDetail);
             if (!isApplyDetail) {
-                viewDelegate.setOnClickListener(onClickListener, R.id.leave_apply_agree_img, R.id.leave_apply_agree_refuse);
-                examine_id = bundle.getString("examine_id");
+                mViewDelegate.setOnClickListener(onClickListener, R.id.leave_apply_agree_img, R.id.leave_apply_agree_refuse);
+                mExamineId = bundle.getString("examine_id");
             }
         }
-        getApplyDetail(applyId);
+        getApplyDetail(mApplyId);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -72,21 +73,21 @@ public class AskForLeaveDetailActivity extends ActivityPresenter<AskForLeaveDeta
             public void onNext(BaseEntity<AskForLeaveDetailBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    viewDelegate.initView(bean.getData());
-                    viewDelegate.initFlows(bean.getData());
+                    mViewDelegate.initView(bean.getData());
+                    mViewDelegate.initFlows(bean.getData());
                 }
             }
         }, applyId);
     }
 
     private void showRefuseDialog() {
-        remarkEt = new EditText(this);
+        mRemarkEt = new EditText(this);
         new AlertDialog.Builder(this).setTitle("拒绝原因(非必填)")
                 .setIcon(android.R.drawable.ic_dialog_info)
-                .setView(remarkEt)
+                .setView(mRemarkEt)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        toRefuse(remarkEt.getText().toString().replaceAll(" ", ""));
+                        toRefuse(mRemarkEt.getText().toString().replaceAll(" ", ""));
                     }
                 })
                 .setNegativeButton("取消", null)
@@ -108,7 +109,7 @@ public class AskForLeaveDetailActivity extends ActivityPresenter<AskForLeaveDeta
                 }
             }
 
-        }, examine_id, remark);
+        }, mExamineId, remark);
     }
 
 
@@ -139,7 +140,7 @@ public class AskForLeaveDetailActivity extends ActivityPresenter<AskForLeaveDeta
                     ToastUtil.s(bean.getMsg());
                 }
             }
-        },examine_id,applyId);
+        }, mExamineId, mApplyId);
     }
 
 }

@@ -18,18 +18,19 @@ import java.util.List;
 
 /**
  * Created by www on 2019/4/14.
+ * 首页分类点击更多后的Adapter
  */
 
 public class MoreRegularAdapter extends RecyclerView.Adapter<MoreRegularAdapter.HomeBusinessManagerHolder> {
-    private OnItemClickListener listener;
-    private List<HomeBusinessManagerBean> beanList;
-    private int width;
+    private OnItemClickListener mListener;
+    private List<HomeBusinessManagerBean> mBeanList;
+    private int mWidth;
 
     public MoreRegularAdapter(List<HomeBusinessManagerBean> beanList, Context context) {
-        this.beanList = beanList;
+        this.mBeanList = beanList;
         WindowManager wm = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
-        width = wm.getDefaultDisplay().getWidth();
+        mWidth = wm.getDefaultDisplay().getWidth();
     }
 
     @NonNull
@@ -41,15 +42,15 @@ public class MoreRegularAdapter extends RecyclerView.Adapter<MoreRegularAdapter.
     @Override
     public void onBindViewHolder(@NonNull HomeBusinessManagerHolder holder, final int position) {
         ViewGroup.LayoutParams param = holder.itemView.getLayoutParams();
-        param.width = width / 6;
-        holder.type_tv.setText(beanList.get(position).name);
-        holder.type_img.setImageResource(beanList.get(position).resId);
+        param.width = mWidth / 6;
+        holder.type_tv.setText(mBeanList.get(position).name);
+        holder.type_img.setImageResource(mBeanList.get(position).resId);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (listener != null) {
-                    listener.onItemClick(position);
+                if (mListener != null) {
+                    mListener.onItemClick(position);
                 }
             }
         });
@@ -57,7 +58,7 @@ public class MoreRegularAdapter extends RecyclerView.Adapter<MoreRegularAdapter.
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     class HomeBusinessManagerHolder extends RecyclerView.ViewHolder {
@@ -71,6 +72,6 @@ public class MoreRegularAdapter extends RecyclerView.Adapter<MoreRegularAdapter.
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
-        this.listener = listener;
+        this.mListener = listener;
     }
 }

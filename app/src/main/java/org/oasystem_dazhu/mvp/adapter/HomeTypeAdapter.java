@@ -21,10 +21,11 @@ import java.util.List;
 
 /**
  * Created by www on 2019/2/16.
+ * 首页分类的adapter
  */
 
 public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTypeViewHolder> {
-    private List<String> imgIdList;
+    private List<String> mImgIdList;
     private List<String> typeContentList;
     private OnItemClickListener listener;
     private Context context;
@@ -34,7 +35,7 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
     private List<HomeTypeBean.DataBean> beanList;
 
     public HomeTypeAdapter(Context context, List<String> imgIdList, List<String> typeContentList, List<HomeTypeBean.DataBean> beanList, boolean isHome) {
-        this.imgIdList = imgIdList;
+        this.mImgIdList = imgIdList;
         this.typeContentList = typeContentList;
         this.context = context;
         this.beanList = beanList;
@@ -58,10 +59,10 @@ public class HomeTypeAdapter extends RecyclerView.Adapter<HomeTypeAdapter.HomeTy
     public void onBindViewHolder(HomeTypeViewHolder holder, final int position) {
         ViewGroup.LayoutParams param = holder.itemView.getLayoutParams();
         param.width = windowWidth / (Constants.TYPE_WIDTH_COUNT + 1);
-        if ("more".equals(imgIdList.get(position % imgIdList.size()))) {
+        if ("more".equals(mImgIdList.get(position % mImgIdList.size()))) {
             Glide.with(context).load(R.mipmap.more_type).fitCenter().into(holder.type_img);
         } else {
-            Glide.with(context).load(imgIdList.get(position % imgIdList.size())).fitCenter().placeholder(R.mipmap.sign_add_advise).into(holder.type_img);
+            Glide.with(context).load(mImgIdList.get(position % mImgIdList.size())).fitCenter().placeholder(R.mipmap.sign_add_advise).into(holder.type_img);
         }
         holder.type_tv.setText(typeContentList.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {

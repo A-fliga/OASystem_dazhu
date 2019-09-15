@@ -28,17 +28,22 @@ import me.jessyan.autosize.AutoSize;
 
 /**
  * Created by www on 2019/1/8.
+ * 筛选界面
  */
 
 public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
-    private ScreenBean screenBean;
-    private ScreenTypeAdapter adapter;
-    private TextView s_date, e_date;
-    private EditText office_name, office_serial, office_organ, office_number;
-    private int opType = 0;
-    private DatePicker datePicker;
-    private List<Map<Integer, Boolean>> selectedType;
-    private List<HomeTypeBean.DataBean> typeBeanList;
+    private List<Map<Integer, Boolean>> mSelectedType;
+    private List<HomeTypeBean.DataBean> mTypeBeanList;
+    private DatePicker mDatePicker;
+    private ScreenBean mScreenBean;
+    private ScreenTypeAdapter mAdapter;
+    private TextView mStartDate, mEndDate;
+    private EditText mOfficeName;
+    private EditText mOfficeSerial;
+    private EditText mOfficeOrgan;
+    private EditText mOfficeNumber;
+    private int mOpType = 0;
+
 
     @Override
     public Class<ScreenDelegate> getDelegateClass() {
@@ -56,48 +61,48 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
         initView();
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            screenBean = (ScreenBean) bundle.getSerializable("localScreenBean");
+            mScreenBean = (ScreenBean) bundle.getSerializable("localScreenBean");
         }
         if (bundle != null && bundle.getBoolean("needShowTop")) {
             initTypeList();
         } else {
-            viewDelegate.get(R.id.screen_top_line).setVisibility(View.GONE);
-            viewDelegate.get(R.id.screen_type_tv).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.screen_top_line).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.screen_type_tv).setVisibility(View.GONE);
         }
         initDataView();
-        viewDelegate.setOnClickListener(onClickListener, R.id.s_date, R.id.e_date, R.id.screen_reset, R.id.screen_sure);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.s_date, R.id.e_date, R.id.screen_reset, R.id.screen_sure);
 
     }
 
     private void initDataView() {
-        if (!screenBean.getOrgan().equals("")) {
-            office_organ.setText(screenBean.getOrgan());
+        if (!mScreenBean.getOrgan().equals("")) {
+            mOfficeOrgan.setText(mScreenBean.getOrgan());
         }
-        if (!screenBean.getName().equals("")) {
-            office_name.setText(screenBean.getName());
+        if (!mScreenBean.getName().equals("")) {
+            mOfficeName.setText(mScreenBean.getName());
         }
-        if (!screenBean.getSerial().equals("")) {
-            office_serial.setText(screenBean.getSerial());
+        if (!mScreenBean.getSerial().equals("")) {
+            mOfficeSerial.setText(mScreenBean.getSerial());
         }
-        if (!screenBean.getNumber().equals("")) {
-            office_number.setText(screenBean.getNumber());
+        if (!mScreenBean.getNumber().equals("")) {
+            mOfficeNumber.setText(mScreenBean.getNumber());
         }
-        if (!screenBean.getS_date().equals("")) {
-            s_date.setText(screenBean.getS_date());
+        if (!mScreenBean.getS_date().equals("")) {
+            mStartDate.setText(mScreenBean.getS_date());
         }
-        if (!screenBean.getE_date().equals("")) {
-            e_date.setText(screenBean.getE_date());
+        if (!mScreenBean.getE_date().equals("")) {
+            mEndDate.setText(mScreenBean.getE_date());
         }
 
     }
 
     private void initView() {
-        s_date = viewDelegate.get(R.id.s_date);
-        e_date = viewDelegate.get(R.id.e_date);
-        office_name = viewDelegate.get(R.id.office_name);
-        office_serial = viewDelegate.get(R.id.office_serial);
-        office_organ = viewDelegate.get(R.id.office_organ);
-        office_number = viewDelegate.get(R.id.office_number);
+        mStartDate = mViewDelegate.get(R.id.s_date);
+        mEndDate = mViewDelegate.get(R.id.e_date);
+        mOfficeName = mViewDelegate.get(R.id.office_name);
+        mOfficeSerial = mViewDelegate.get(R.id.office_serial);
+        mOfficeOrgan = mViewDelegate.get(R.id.office_organ);
+        mOfficeNumber = mViewDelegate.get(R.id.office_number);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -106,17 +111,17 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
             switch (view.getId()) {
                 //选择起始时间
                 case R.id.s_date:
-                    opType = 2;
+                    mOpType = 2;
                     setDate();
                     break;
                 //选择结束时间
                 case R.id.e_date:
-                    opType = 3;
+                    mOpType = 3;
                     setDate();
                     break;
                 //重置
                 case R.id.screen_reset:
-                    opType = 1;
+                    mOpType = 1;
                     DialogUtil.showDialog(ScreenActivity.this, "您确定要重置吗？", "确定", "取消", mOnClickListener);
 
                     break;
@@ -129,8 +134,8 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
     };
 
     private void returnToOrg() {
-        if (selectedType != null) {
-            List<Map<Integer, Boolean>> list = adapter.getList();
+        if (mSelectedType != null) {
+            List<Map<Integer, Boolean>> list = mAdapter.getList();
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < list.size(); i++) {
                 if (list.get(i).get(FirmingTypeManager.getInstance().getTypeIdList().get(i))) {
@@ -139,15 +144,15 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
                 }
             }
             if (sb.length() >= 1)
-                screenBean.setType(sb.substring(0, sb.length() - 1));
-            else screenBean.setType("");
+                mScreenBean.setType(sb.substring(0, sb.length() - 1));
+            else mScreenBean.setType("");
         }
-        screenBean.setSerial(office_serial.getText().toString().replaceAll(" ", ""));
-        screenBean.setName(office_name.getText().toString().replaceAll(" ", ""));
-        screenBean.setOrgan(office_organ.getText().toString().replaceAll(" ", ""));
-        screenBean.setNumber(office_number.getText().toString().replaceAll(" ", ""));
+        mScreenBean.setSerial(mOfficeSerial.getText().toString().replaceAll(" ", ""));
+        mScreenBean.setName(mOfficeName.getText().toString().replaceAll(" ", ""));
+        mScreenBean.setOrgan(mOfficeOrgan.getText().toString().replaceAll(" ", ""));
+        mScreenBean.setNumber(mOfficeNumber.getText().toString().replaceAll(" ", ""));
         Bundle bundle = new Bundle();
-        bundle.putSerializable("screenBean", screenBean);
+        bundle.putSerializable("screenBean", mScreenBean);
         Intent intent = new Intent();
         intent.putExtras(bundle);
         setResult(2000, intent);
@@ -161,12 +166,12 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
         //通过自定义控件AlertDialog实现
         AlertDialog.Builder builder = new AlertDialog.Builder(ScreenActivity.this);
         View view = getLayoutInflater().inflate(R.layout.data_dialog, null);
-        datePicker = (DatePicker) view.findViewById(R.id.date_picker);
+        mDatePicker = (DatePicker) view.findViewById(R.id.date_picker);
         //设置日期简略显示 否则详细显示 包括:星期\周
-        datePicker.setCalendarViewShown(false);
+        mDatePicker.setCalendarViewShown(false);
         //初始化当前日期
         calendar.setTimeInMillis(System.currentTimeMillis());
-        datePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+        mDatePicker.init(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH), null);
         //设置date布局
         builder.setView(view);
@@ -179,14 +184,14 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
     private DialogInterface.OnClickListener mOnClickListener = new DialogInterface.OnClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i) {
-            if (opType == 1 && i == -1) {
+            if (mOpType == 1 && i == -1) {
                 reset();
             }
             if (i == -1) {
-                if (opType == 2) {
+                if (mOpType == 2) {
                     setDataMsg(2);
                 }
-                if (opType == 3) {
+                if (mOpType == 3) {
                     setDataMsg(3);
                 }
             }
@@ -198,58 +203,58 @@ public class ScreenActivity extends ActivityPresenter<ScreenDelegate> {
         //日期格式
         StringBuffer stringBuffer = new StringBuffer();
         stringBuffer.append(String.format("%d-%02d-%02d",
-                datePicker.getYear(),
-                datePicker.getMonth() + 1,
-                datePicker.getDayOfMonth()));
+                mDatePicker.getYear(),
+                mDatePicker.getMonth() + 1,
+                mDatePicker.getDayOfMonth()));
         if (opType == 2) {
-            screenBean.setS_date(stringBuffer.toString());
-            s_date.setText(stringBuffer.toString());
+            mScreenBean.setS_date(stringBuffer.toString());
+            mStartDate.setText(stringBuffer.toString());
         }
         if (opType == 3) {
-            screenBean.setE_date(stringBuffer.toString());
-            e_date.setText(stringBuffer.toString());
+            mScreenBean.setE_date(stringBuffer.toString());
+            mEndDate.setText(stringBuffer.toString());
         }
     }
 
     private void reset() {
-        screenBean.setType("");
-        screenBean.setE_date("");
-        screenBean.setName("");
-        screenBean.setSerial("");
-        screenBean.setS_date("");
-        screenBean.setOrgan("");
-        if (adapter != null) {
-            adapter.clearSelected();
+        mScreenBean.setType("");
+        mScreenBean.setE_date("");
+        mScreenBean.setName("");
+        mScreenBean.setSerial("");
+        mScreenBean.setS_date("");
+        mScreenBean.setOrgan("");
+        if (mAdapter != null) {
+            mAdapter.clearSelected();
         }
-        s_date.setText("");
-        e_date.setText("");
-        office_name.setText("");
-        office_serial.setText("");
-        office_organ.setText("");
+        mStartDate.setText("");
+        mEndDate.setText("");
+        mOfficeName.setText("");
+        mOfficeSerial.setText("");
+        mOfficeOrgan.setText("");
     }
 
     private void initTypeList() {
         String[] type = new String[]{};
-        if (!screenBean.getType().equals("")) {
-            type = screenBean.getType().split(",");
+        if (!mScreenBean.getType().equals("")) {
+            type = mScreenBean.getType().split(",");
         }
-        typeBeanList = new ArrayList<>();
-        typeBeanList = FirmingTypeManager.getInstance().getBeanList();
-        selectedType = new ArrayList<>();
-        for (int i = 0; i < typeBeanList.size(); i++) {
+        mTypeBeanList = new ArrayList<>();
+        mTypeBeanList = FirmingTypeManager.getInstance().getBeanList();
+        mSelectedType = new ArrayList<>();
+        for (int i = 0; i < mTypeBeanList.size(); i++) {
             Map<Integer, Boolean> map = new HashMap<>();
-            map.put(typeBeanList.get(i).getId(), false);
-            selectedType.add(map);
+            map.put(mTypeBeanList.get(i).getId(), false);
+            mSelectedType.add(map);
         }
-        for (int i = 0; i < selectedType.size(); i++) {
+        for (int i = 0; i < mSelectedType.size(); i++) {
             for (String aType : type) {
-                if (selectedType.get(i).containsKey(Integer.parseInt(aType))) {
-                    selectedType.get(i).put(Integer.parseInt(aType), true);
+                if (mSelectedType.get(i).containsKey(Integer.parseInt(aType))) {
+                    mSelectedType.get(i).put(Integer.parseInt(aType), true);
                 }
             }
         }
-        RecyclerView recyclerView = viewDelegate.get(R.id.screen_recyclerView);
-        adapter = new ScreenTypeAdapter(typeBeanList, selectedType, this);
-        viewDelegate.setRecycler(recyclerView, adapter, 4, false);
+        RecyclerView recyclerView = mViewDelegate.get(R.id.screen_recyclerView);
+        mAdapter = new ScreenTypeAdapter(mTypeBeanList, mSelectedType, this);
+        mViewDelegate.setRecycler(recyclerView, mAdapter, 4, false);
     }
 }

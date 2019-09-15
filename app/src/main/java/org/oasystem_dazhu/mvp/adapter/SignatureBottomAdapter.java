@@ -18,17 +18,17 @@ import java.util.List;
  */
 
 public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottomAdapter.SignatureBottomViewHolder> {
-    private Context context;
-    private List<SignFlowsBean> beanList;
-    private int index = 0;
+    private Context mContext;
+    private List<SignFlowsBean> mBeanList;
+    private int mIndex = 0;
 
     public SignatureBottomAdapter(Context context, List<SignFlowsBean> beanList, Boolean done) {
-        this.context = context;
-        this.beanList = beanList;
+        this.mContext = context;
+        this.mBeanList = beanList;
         if (beanList.size() > 1) {
             for (int i = 1; i < beanList.size(); i++) {
                 if (beanList.get(i).getStatus() >= 1) {
-                    index = i;
+                    mIndex = i;
                 }
             }
         }
@@ -36,12 +36,12 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
 
     @Override
     public SignatureBottomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SignatureBottomViewHolder(LayoutInflater.from(context).inflate(R.layout.item_sign_flows, parent, false));
+        return new SignatureBottomViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_sign_flows, parent, false));
     }
 
     @Override
     public void onBindViewHolder(SignatureBottomViewHolder holder, int position) {
-        SignFlowsBean bean = beanList.get(position);
+        SignFlowsBean bean = mBeanList.get(position);
         holder.sign_update_time.setText(bean.getOpTime());
         if (position == 0) {
             holder.sign_name.setText(bean.getName());
@@ -51,18 +51,18 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
         } else {
             holder.sign_flows.setText(bean.getOpName());
             holder.sign_name.setText(bean.getName());
-            if (position == index + 1) {
+            if (position == mIndex + 1) {
                 holder.sign_status_img.setImageResource(R.mipmap.is_signing);
                 holder.sign_flows.setText(bean.getOpName());
             } else {
-                if (position <= index) {
+                if (position <= mIndex) {
                     holder.sign_status_img.setImageResource(R.mipmap.already_sign);
                     holder.sign_line_img.setImageResource(R.mipmap.sign_line);
                 }
             }
         }
 
-        if (position == beanList.size() - 1) {
+        if (position == mBeanList.size() - 1) {
             holder.sign_line_img.setVisibility(View.GONE);
         } else {
             holder.sign_line_img.setVisibility(View.VISIBLE);
@@ -71,7 +71,7 @@ public class SignatureBottomAdapter extends RecyclerView.Adapter<SignatureBottom
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     class SignatureBottomViewHolder extends RecyclerView.ViewHolder {

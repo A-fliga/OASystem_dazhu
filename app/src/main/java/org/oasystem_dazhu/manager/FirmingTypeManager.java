@@ -11,56 +11,56 @@ import java.util.List;
  */
 
 public class FirmingTypeManager {
-    private static volatile FirmingTypeManager instance;
-    private List<HomeTypeBean.DataBean> beanList;
+    private static volatile FirmingTypeManager sInstance;
+    private List<HomeTypeBean.DataBean> mBeanList;
 
     private FirmingTypeManager() {
     }
 
     public static FirmingTypeManager getInstance() {
-        if (instance == null) {
+        if (sInstance == null) {
             synchronized (FirmingTypeManager.class) {
-                if (instance == null) {
-                    instance = new FirmingTypeManager();
+                if (sInstance == null) {
+                    sInstance = new FirmingTypeManager();
                 }
             }
         }
-        return instance;
+        return sInstance;
     }
 
     public void addBeanList(List<HomeTypeBean.DataBean> beanList) {
-        this.beanList = new ArrayList<>();
-        this.beanList.addAll(beanList);
+        this.mBeanList = new ArrayList<>();
+        this.mBeanList.addAll(beanList);
     }
 
     public List<HomeTypeBean.DataBean> getBeanList() {
-        return beanList;
+        return mBeanList;
     }
 
     public String getTypeImg(int typeId){
         List<Integer> typeIdList = new ArrayList<>();
-        for (int i = 0; i < beanList.size(); i++) {
-            typeIdList.add(beanList.get(i).getId());
+        for (int i = 0; i < mBeanList.size(); i++) {
+            typeIdList.add(mBeanList.get(i).getId());
         }
         int index = typeIdList.indexOf(typeId);
         if (index < 0) {
             index = 0;
         }
-        return beanList.get(index).getImg();
+        return mBeanList.get(index).getImg();
     }
 
     public String getTypeName(int typeId){
         List<Integer> typeIdList = new ArrayList<>();
-        for (int i = 0; i < beanList.size(); i++) {
-            typeIdList.add(beanList.get(i).getId());
+        for (int i = 0; i < mBeanList.size(); i++) {
+            typeIdList.add(mBeanList.get(i).getId());
         }
         int index = typeIdList.indexOf(typeId);
-        return beanList.get(index).getName();
+        return mBeanList.get(index).getName();
     }
     public List<Integer> getTypeIdList(){
         List<Integer> typeIdList = new ArrayList<>();
-        for (int i = 0; i < beanList.size(); i++) {
-            typeIdList.add(beanList.get(i).getId());
+        for (int i = 0; i < mBeanList.size(); i++) {
+            typeIdList.add(mBeanList.get(i).getId());
         }
         return typeIdList;
     }

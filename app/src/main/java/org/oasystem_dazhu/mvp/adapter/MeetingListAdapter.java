@@ -15,40 +15,41 @@ import java.util.List;
 
 /**
  * Created by www on 2019/3/19.
+ * 会议列表的Adapter
  */
 
 public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.MeetingListViewHolder> {
-    private Context context;
-    private List<MeetingListBean.DataBean> beanList;
-    private OnItemClickListener itemClickListener;
+    private Context mContext;
+    private List<MeetingListBean.DataBean> mBeanList;
+    private OnItemClickListener mItemClickListener;
     public MeetingListAdapter(Context context, List<MeetingListBean.DataBean> beanList) {
-        this.context = context;
-        this.beanList = beanList;
+        this.mContext = context;
+        this.mBeanList = beanList;
     }
 
     @Override
     public MeetingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new MeetingListViewHolder(LayoutInflater.from(context).inflate(R.layout.item_meeting,parent,false));
+        return new MeetingListViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_meeting,parent,false));
     }
 
     @Override
     public void onBindViewHolder(MeetingListViewHolder holder, final int position) {
-        MeetingListBean.DataBean bean = beanList.get(position);
+        MeetingListBean.DataBean bean = mBeanList.get(position);
         holder.item_meeting_title.setText(bean.getName());
         holder.item_meeting_num.setText("会议编号："+bean.getId());
         holder.item_meeting_time.setText("开始时间："+bean.getStart_time());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(itemClickListener != null)
-                    itemClickListener.onItemClick(position);
+                if(mItemClickListener != null)
+                    mItemClickListener.onItemClick(position);
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     class MeetingListViewHolder extends RecyclerView.ViewHolder {
@@ -64,6 +65,6 @@ public class MeetingListAdapter extends RecyclerView.Adapter<MeetingListAdapter.
     }
 
     public void setOnItemClickListener(OnItemClickListener listener){
-        itemClickListener = listener;
+        mItemClickListener = listener;
     }
 }

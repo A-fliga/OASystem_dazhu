@@ -80,38 +80,50 @@ import static org.oasystem_dazhu.constants.Constants.SIGN_RESULT;
 
 /**
  * Created by www on 2019/1/6.
+ * 处理签字的页面，是核心类
  */
 
 public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDocumentDetailDelegate> implements TbsReaderView.ReaderCallback {
     private static String TAG = "OfficialDocumentDetailActivity";
     private final int WRITE_STORAGE_CODE = 1000;
-    private DocumentBean.DataBean.DispatchBean dispatchBean;
-    private DocumentBean.DataBean dataBean;
-    private RecyclerView recyclerView;
-    private Boolean isShowing = true, isSigning = false, done = false, eraser = false,
-            isPen = true, hideWeight = false;
-    private LinearLayout sign_right_ll;
-    private FrameLayout sign_full_fl;
-    private LinearLayout save_ll, pen_ll, clear_ll, eraser_ll;
-    private List<LinearLayout> linearList = new ArrayList<>();
-    private List<String> contentTv;
-    private TbsReaderView sign_fileView;
+    private static String sOfficePath;
+    private DocumentBean.DataBean.DispatchBean mDispatchBean;
+    private RecyclerView mRecyclerView;
+    private LinearLayout mSignRightLL;
+    private FrameLayout mSignFullFL;
+    private TbsReaderView mSignFileView;
     private SignatureView mSignatureView;
-    private String[] permissionStr = {"内存卡", "读取手机"};
-    private int id, tagPosition, opType = 0, itemId, color, tagColor;
-    private ArrayList<Integer> accessoryList;
-    private String type;
-    private static String OFFICE_PATH;
-    private AlertDialog dialog, addAccessoryDialog;
-    private float width, tagWidth;
-    private List<AllUserBean.DataBean> userBeanList;
-    private List<AllUserBean.DataBean> daiqianUserBeanList;
-    private int daiqianIndex = -1;
-    public List<String> cacheFileList = new ArrayList<>();
-    private MSubscribe<ResponseBody> subscribe;
-    private EditText remarkEt;
     //加签用的
-    private StringBuffer selectedUserId, selectedUserName;
+    private StringBuilder mSelectedUserId;
+    private StringBuilder mSelectedUserName;
+    private AlertDialog mDialog, mAddAccessoryDialog;
+    private MSubscribe<ResponseBody> mSubscribe;
+    private EditText mRemarkEt;
+    private List<LinearLayout> mLinearList = new ArrayList<>();
+    private List<AllUserBean.DataBean> mUserBeanList;
+    //代签列表
+    private List<AllUserBean.DataBean> mEndorsementUserBeanList;
+    private List<String> mCacheFileList = new ArrayList<>();
+    private ArrayList<Integer> mAccessoryList;
+    private List<String> mContentTv;
+    private String[] mPermissionStr = {"内存卡", "读取手机"};
+    private String mType;
+    private float mWidth;
+    private float mTagWidth;
+    private int mId;
+    private int mTagPosition;
+    private int mOpType = 0;
+    private int mItemId;
+    private int mColor;
+    private int mTagColor;
+    private int mEndorsementIndex = -1;
+    private boolean mIsShowing = true;
+    private boolean mIsSigning = false;
+    private boolean mDone = false;
+    private boolean mEraser = false;
+    private boolean mIsPen = true;
+    private boolean mHideWeight = false;
+
 
     @Override
     public Class<OfficialDocumentDetailDelegate> getDelegateClass() {
@@ -132,48 +144,48 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void initAllData() {
         initPenWidthAndColor();
-        done = getIntent().getExtras().getBoolean("done");
-        dataBean = (DocumentBean.DataBean) getIntent().getExtras().getSerializable("DocumentDataBean");
-        dispatchBean = dataBean.getDispatch();
+        mDone = getIntent().getExtras().getBoolean("done");
+        DocumentBean.DataBean mDataBean = (DocumentBean.DataBean) getIntent().getExtras().getSerializable("DocumentDataBean");
+        mDispatchBean = mDataBean.getDispatch();
         //记录Id
-        itemId = dataBean.getId();
-        accessoryList = new ArrayList<>();
-        selectedUserId = new StringBuffer();
-        selectedUserName = new StringBuffer();
+        mItemId = mDataBean.getId();
+        mAccessoryList = new ArrayList<>();
+        mSelectedUserId = new StringBuilder();
+        mSelectedUserName = new StringBuilder();
         if (hasFormData()) {
-            accessoryList.add(dispatchBean.getForm_source_id());
-            cacheFileList.add("");
-            LogUtil.d("itemId", "itemId:" + itemId);
-            LogUtil.d("itemId", "formId:" + dispatchBean.getForm_source_id());
+            mAccessoryList.add(mDispatchBean.getForm_source_id());
+            mCacheFileList.add("");
+            LogUtil.d("itemId", "itemId:" + mItemId);
+            LogUtil.d("itemId", "formId:" + mDispatchBean.getForm_source_id());
         }
-        if (dispatchBean.getAccessory_list() != null) {
-            for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
-                accessoryList.add(Integer.parseInt(dispatchBean.getAccessory_list().get(i).getSource_id()));
-                LogUtil.d("itemId", "AccessoryId:" + dispatchBean.getAccessory_list().get(i).getSource_id());
-                cacheFileList.add("");
+        if (mDispatchBean.getAccessory_list() != null) {
+            for (int i = 0; i < mDispatchBean.getAccessory_list().size(); i++) {
+                mAccessoryList.add(Integer.parseInt(mDispatchBean.getAccessory_list().get(i).getSource_id()));
+                LogUtil.d("itemId", "AccessoryId:" + mDispatchBean.getAccessory_list().get(i).getSource_id());
+                mCacheFileList.add("");
             }
         }
-        initView(done);
-        viewDelegate.setOnClickListener(onClickListener, R.id.save_ll, R.id.pen_ll, R.id.clear_ll, R.id.eraser_ll, R.id.mToolbar_rl);
+        initView(mDone);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.save_ll, R.id.pen_ll, R.id.clear_ll, R.id.eraser_ll, R.id.mToolbar_rl);
         initNotDoneView();
-        viewDelegate.initBottomRecyclerView(dataBean, done);
+        mViewDelegate.initBottomRecyclerView(mDataBean, mDone);
         checkLocationPermission();
-        if (!done) {
+        if (!mDone) {
             getAllUserBean();
         }
     }
 
     private void initPenWidthAndColor() {
-        width = SharedPreferencesUtil.getWidth() == -1f ? PenWidth.DEFAULT.getWidth() : SharedPreferencesUtil.getWidth();
-        color = SharedPreferencesUtil.getColor() == -1 ? Color.BLACK : SharedPreferencesUtil.getColor();
+        mWidth = SharedPreferencesUtil.getWidth() == -1f ? PenWidth.DEFAULT.getWidth() : SharedPreferencesUtil.getWidth();
+        mColor = SharedPreferencesUtil.getColor() == -1 ? Color.BLACK : SharedPreferencesUtil.getColor();
     }
 
     private boolean hasFormData() {
-        return dispatchBean.getForm_source_id() != 0;
+        return mDispatchBean.getForm_source_id() != 0;
     }
 
     private void getAllUserBean() {
-        userBeanList = UserManager.getInstance().getAllUserInfo();
+        mUserBeanList = UserManager.getInstance().getAllUserInfo();
     }
 
     public void checkLocationPermission() {
@@ -190,16 +202,16 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
     private void startShow() {
         if (hasFormData()) {
-            id = dispatchBean.getForm_source_id();
-            String[] str = dispatchBean.getForm_source().getName().split("\\.");
-            type = str[str.length - 1];
+            mId = mDispatchBean.getForm_source_id();
+            String[] str = mDispatchBean.getForm_source().getName().split("\\.");
+            mType = str[str.length - 1];
         } else {
-            id = Integer.parseInt(dispatchBean.getAccessory_list().get(0).getSource_id());
-            String[] str = dispatchBean.getAccessory_list().get(0).getName().split("\\.");
-            type = str[str.length - 1];
+            mId = Integer.parseInt(mDispatchBean.getAccessory_list().get(0).getSource_id());
+            String[] str = mDispatchBean.getAccessory_list().get(0).getName().split("\\.");
+            mType = str[str.length - 1];
         }
-        tagPosition = 0;
-        showFile(id, type);
+        mTagPosition = 0;
+        showFile(mId, mType);
     }
 
 
@@ -225,40 +237,40 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void isEraserMode(IsEraserMode bean) {
         if (bean.eraserMode) {
-            eraser = true;
-            setSelectedSates(viewDelegate.get(R.id.eraser_ll));
-            mSignatureView.initEraserMode(Color.TRANSPARENT, width + 40f);
+            mEraser = true;
+            setSelectedSates(mViewDelegate.get(R.id.eraser_ll));
+            mSignatureView.initEraserMode(Color.TRANSPARENT, mWidth + 40f);
         } else {
 
         }
     }
 
     private void showFile(int id, String type) {
-        File fileDir = new File(OFFICE_PATH);
+        File fileDir = new File(sOfficePath);
         if (!fileDir.exists()) {
             fileDir.mkdirs();
         }
         if (isFileExist(id, type)) {
             if (isPhoto(type)) {
-                ImageView img = viewDelegate.get(R.id.sign_img);
+                ImageView img = mViewDelegate.get(R.id.sign_img);
                 img.setVisibility(View.VISIBLE);
                 Glide.with(this).load(getPath(id, type)).into(img);
-                viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
-                viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
+                mViewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
+                mViewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
             } else {
-                viewDelegate.get(R.id.sign_img).setVisibility(View.GONE);
-                if (!done && type.toLowerCase().equals("pdf")) {
+                mViewDelegate.get(R.id.sign_img).setVisibility(View.GONE);
+                if (!mDone && type.toLowerCase().equals("pdf")) {
                     //用自己的view加载
-                    viewDelegate.get(R.id.mSignatureView).setVisibility(View.VISIBLE);
-                    viewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
-                    if (!cacheFileList.get(tagPosition).isEmpty())
-                        disPlayBySignView(new File(cacheFileList.get(tagPosition)));
+                    mViewDelegate.get(R.id.mSignatureView).setVisibility(View.VISIBLE);
+                    mViewDelegate.get(R.id.tbs_contentView).setVisibility(View.GONE);
+                    if (!mCacheFileList.get(mTagPosition).isEmpty())
+                        disPlayBySignView(new File(mCacheFileList.get(mTagPosition)));
                     else {
                         disPlayBySignView(new File(getPath(id, type)));
                     }
                 } else {
-                    viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
-                    viewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
+                    mViewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
+                    mViewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
                     displayFile(new File(getPath(id, type)));
                 }
             }
@@ -273,8 +285,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void disPlayBySignView(File file) {
-        mSignatureView = viewDelegate.get(R.id.mSignatureView);
-        mSignatureView.setDocumentId(String.valueOf(id));
+        mSignatureView = mViewDelegate.get(R.id.mSignatureView);
+        mSignatureView.setDocumentId(String.valueOf(mId));
         mSignatureView.loadFile(file);
     }
 
@@ -300,9 +312,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
             localBundle.putString("tempPath", bsReaderTemp);
 
-            boolean bool = this.sign_fileView.preOpen(getFileType(mFile.toString()), false);
+            boolean bool = this.mSignFileView.preOpen(getFileType(mFile.toString()), false);
             if (bool) {
-                this.sign_fileView.openFile(localBundle);
+                this.mSignFileView.openFile(localBundle);
             }
         } else {
             LogUtil.e("文件路径无效！");
@@ -340,14 +352,14 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         if (requestCode == WRITE_STORAGE_CODE) {
             for (int i = 0; i < grantResults.length; i++) {
                 if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                    j.add(permissionStr[i]);
+                    j.add(mPermissionStr[i]);
                 }
             }
             if (j.size() == 0) {
                 startShow();
             } else {
                 // 没有获取到权限，做特殊处理
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < j.size(); i++) {
                     sb.append(j.get(i));
                     if (i == 0 && j.size() == 2)
@@ -432,7 +444,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 }
             }
         };
-        this.subscribe = subscribe;
+        this.mSubscribe = subscribe;
         return subscribe;
     }
 
@@ -467,50 +479,50 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private String getPath(int id, String type) {
-        return OFFICE_PATH + File.separator + id + "." + type;
+        return sOfficePath + File.separator + id + "." + type;
     }
 
     private String getTempPath(int id) {
-        return OFFICE_PATH + File.separator + id + ".temp";
+        return sOfficePath + File.separator + id + ".temp";
     }
 
 
     private void initView(final Boolean done) {
-        sign_right_ll = viewDelegate.get(R.id.sign_right_ll);
-        sign_full_fl = viewDelegate.get(R.id.sign_full_fl);
-        save_ll = viewDelegate.get(R.id.save_ll);
-        pen_ll = viewDelegate.get(R.id.pen_ll);
-        clear_ll = viewDelegate.get(R.id.clear_ll);
-        eraser_ll = viewDelegate.get(R.id.eraser_ll);
+        mSignRightLL = mViewDelegate.get(R.id.sign_right_ll);
+        mSignFullFL = mViewDelegate.get(R.id.sign_full_fl);
+        LinearLayout save_ll = mViewDelegate.get(R.id.save_ll);
+        LinearLayout pen_ll = mViewDelegate.get(R.id.pen_ll);
+        LinearLayout clear_ll = mViewDelegate.get(R.id.clear_ll);
+        LinearLayout eraser_ll = mViewDelegate.get(R.id.eraser_ll);
 //        yinzhang_ll = viewDelegate.get(R.id.yinzhang_ll);
-        linearList.add(save_ll);
-        linearList.add(pen_ll);
-        linearList.add(clear_ll);
-        linearList.add(eraser_ll);
+        mLinearList.add(save_ll);
+        mLinearList.add(pen_ll);
+        mLinearList.add(clear_ll);
+        mLinearList.add(eraser_ll);
 //        linearList.add(yinzhang_ll);
-        recyclerView = viewDelegate.get(R.id.sign_right_list);
+        mRecyclerView = mViewDelegate.get(R.id.sign_right_list);
         //需要代码创建view才可以显示多次
         createSignView();
         if (done) {
-            viewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
-            OFFICE_PATH = Constants.OFFICE_PREVIEW;
-            viewDelegate.getToolBarRightImg().setVisibility(View.GONE);
-            viewDelegate.get(R.id.sign_left_ll).setVisibility(View.GONE);
-            viewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.tbs_contentView).setVisibility(View.VISIBLE);
+            sOfficePath = Constants.OFFICE_PREVIEW;
+            mViewDelegate.getToolBarRightImg().setVisibility(View.GONE);
+            mViewDelegate.get(R.id.sign_left_ll).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.mSignatureView).setVisibility(View.GONE);
         } else {
-            viewDelegate.setToolBarRightImg(R.mipmap.sign);
-            viewDelegate.getToolBarRightImg().setOnClickListener(onClickListener);
+            mViewDelegate.setToolBarRightImg(R.mipmap.sign);
+            mViewDelegate.getToolBarRightImg().setOnClickListener(onClickListener);
             UserInfo.SysAuthBean authBean = UserManager.getInstance().getUserInfo().getAuthBean();
             if (authBean != null) {
-                viewDelegate.hideLeftBtn(authBean.getApp_auth());
+                mViewDelegate.hideLeftBtn(authBean.getApp_auth());
             }
-            OFFICE_PATH = Constants.SIGN_OFFICIAL;
+            sOfficePath = Constants.SIGN_OFFICIAL;
         }
-        viewDelegate.getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
+        mViewDelegate.getToolbar().setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!done) {
-                    opType = 2;
+                    mOpType = 2;
                     DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "退出前请确认工作已保存", "确定", "不确定", dOnClickListener);
                 } else finish();
             }
@@ -518,81 +530,81 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void createSignView() {
-        sign_fileView = new TbsReaderView(this, this);
-        FrameLayout tbs_contentView = viewDelegate.get(R.id.tbs_contentView);
-        tbs_contentView.addView(sign_fileView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        mSignFileView = new TbsReaderView(this, this);
+        FrameLayout tbs_contentView = mViewDelegate.get(R.id.tbs_contentView);
+        tbs_contentView.addView(mSignFileView, new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
     }
 
     private void initNotDoneView() {
-        viewDelegate.setOnClickListener(onClickListener, R.id.sign_add_advise, R.id.sign_add_person, R.id.sign_agree, R.id.sign_refuse, R.id.sign_close, R.id.sign_daiqian);
-        contentTv = new ArrayList<>();
+        mViewDelegate.setOnClickListener(onClickListener, R.id.sign_add_advise, R.id.sign_add_person, R.id.sign_agree, R.id.sign_refuse, R.id.sign_close, R.id.sign_daiqian);
+        mContentTv = new ArrayList<>();
         if (hasFormData()) {
-            contentTv.add("审批单");
+            mContentTv.add("审批单");
         }
         String text;
-        if (dispatchBean.getAccessory_list() != null) {
-            for (int i = 0; i < dispatchBean.getAccessory_list().size(); i++) {
+        if (mDispatchBean.getAccessory_list() != null) {
+            for (int i = 0; i < mDispatchBean.getAccessory_list().size(); i++) {
                 if ("xuanhan".equals(Constants.getOrg())) {
-                    String[] contentName = dispatchBean.getAccessory_list().get(i).getName().split("_");
+                    String[] contentName = mDispatchBean.getAccessory_list().get(i).getName().split("_");
                     if (contentName.length > 1) {
                         text = contentName[1];
                     } else {
                         text = contentName[0];
                     }
                     if (text.length() <= 3) {
-                        contentTv.add(text);
+                        mContentTv.add(text);
                     } else if (text.length() >= 4 && text.length() <= 6) {
-                        contentTv.add(text.substring(0, 3) + "\n" + text.substring(3, text.length()));
+                        mContentTv.add(text.substring(0, 3) + "\n" + text.substring(3, text.length()));
                     } else {
-                        contentTv.add(text.substring(0, 3) + "\n" + text.substring(3, 6));
+                        mContentTv.add(text.substring(0, 3) + "\n" + text.substring(3, 6));
                     }
                 } else {
-                    contentTv.add("附件" + (i + 1));
+                    mContentTv.add("附件" + (i + 1));
                 }
 
             }
         }
-        contentTv.add("办理\n情况");
-        SignOfficialAdapter adapter = new SignOfficialAdapter(contentTv, this);
-        viewDelegate.setRecycler(recyclerView, adapter, true);
+        mContentTv.add("办理\n情况");
+        SignOfficialAdapter adapter = new SignOfficialAdapter(mContentTv, this);
+        mViewDelegate.setRecycler(mRecyclerView, adapter, true);
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                if (position < contentTv.size() - 1) {
-                    if (tagPosition != position) {
-                        tagPosition = position;
+                if (position < mContentTv.size() - 1) {
+                    if (mTagPosition != position) {
+                        mTagPosition = position;
                         //切换界面要恢复一下设置
                         if (mSignatureView != null) {
                             mSignatureView.resetConfig();
-                            mSignatureView.setNewPath(cacheFileList.get(position));
+                            mSignatureView.setNewPath(mCacheFileList.get(position));
                         }
 
                         //回收掉原来的tbsView，否则不能显示
-                        if (sign_fileView != null) {
-                            FrameLayout frameLayout = viewDelegate.get(R.id.tbs_contentView);
+                        if (mSignFileView != null) {
+                            FrameLayout frameLayout = mViewDelegate.get(R.id.tbs_contentView);
                             frameLayout.removeAllViews();
-                            sign_fileView.onStop();
-                            sign_fileView = null;
+                            mSignFileView.onStop();
+                            mSignFileView = null;
                             createSignView();
                         }
                         if (hasFormData()) {
                             if (position == 0) {
-                                id = dispatchBean.getForm_source_id();
-                                String[] str = dispatchBean.getForm_source().getName().split("\\.");
-                                type = str[str.length - 1];
-                                showFile(dispatchBean.getForm_source_id(), str[str.length - 1]);
+                                mId = mDispatchBean.getForm_source_id();
+                                String[] str = mDispatchBean.getForm_source().getName().split("\\.");
+                                mType = str[str.length - 1];
+                                showFile(mDispatchBean.getForm_source_id(), str[str.length - 1]);
 
                             } else {
-                                id = Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id());
-                                String[] str = dispatchBean.getAccessory_list().get(position - 1).getName().split("\\.");
-                                type = str[str.length - 1];
-                                showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
+                                mId = Integer.parseInt(mDispatchBean.getAccessory_list().get(position - 1).getSource_id());
+                                String[] str = mDispatchBean.getAccessory_list().get(position - 1).getName().split("\\.");
+                                mType = str[str.length - 1];
+                                showFile(Integer.parseInt(mDispatchBean.getAccessory_list().get(position - 1).getSource_id()), str[str.length - 1]);
                             }
                         } else {
-                            id = Integer.parseInt(dispatchBean.getAccessory_list().get(position).getSource_id());
-                            String[] str = dispatchBean.getAccessory_list().get(position).getName().split("\\.");
-                            type = str[str.length - 1];
-                            showFile(Integer.parseInt(dispatchBean.getAccessory_list().get(position).getSource_id()), type);
+                            mId = Integer.parseInt(mDispatchBean.getAccessory_list().get(position).getSource_id());
+                            String[] str = mDispatchBean.getAccessory_list().get(position).getName().split("\\.");
+                            mType = str[str.length - 1];
+                            showFile(Integer.parseInt(mDispatchBean.getAccessory_list().get(position).getSource_id()), mType);
                         }
 
                     }
@@ -600,9 +612,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 //办理意见
                 else {
                     Bundle bundle = new Bundle();
-                    bundle.putInt("listId", dispatchBean.getId());
-                    bundle.putInt("itemId", itemId);
-                    bundle.putBoolean("done", done);
+                    bundle.putInt("listId", mDispatchBean.getId());
+                    bundle.putInt("itemId", mItemId);
+                    bundle.putBoolean("done", mDone);
                     startMyActivity(DealWithOptionFormActivity.class, bundle);
                 }
 
@@ -613,15 +625,15 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private String getNowType() {
         String type;
         if (hasFormData()) {
-            if (tagPosition == 0) {
-                String[] str = dispatchBean.getForm_source().getName().split("\\.");
+            if (mTagPosition == 0) {
+                String[] str = mDispatchBean.getForm_source().getName().split("\\.");
                 type = str[str.length - 1];
             } else {
-                String[] str = dispatchBean.getAccessory_list().get(tagPosition - 1).getName().split("\\.");
+                String[] str = mDispatchBean.getAccessory_list().get(mTagPosition - 1).getName().split("\\.");
                 type = str[str.length - 1];
             }
         } else {
-            String[] str = dispatchBean.getAccessory_list().get(tagPosition).getName().split("\\.");
+            String[] str = mDispatchBean.getAccessory_list().get(mTagPosition).getName().split("\\.");
             type = str[str.length - 1];
         }
         return type;
@@ -637,8 +649,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             switch (view.getId()) {
                 //判断是否是签字状态
                 case R.id.toolBar_img_right:
-                    if (isSigning) {
-                        opType = 3;
+                    if (mIsSigning) {
+                        mOpType = 3;
                         DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "您确定要取消吗？", "确定", "不确定", dOnClickListener);
                     } else {
                         if (getNowType().toLowerCase().equals("pdf")) {
@@ -651,55 +663,55 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                 //保存签字图片
                 case R.id.save_ll:
                     setSelectedSates(view);
-                    opType = 1;
+                    mOpType = 1;
                     DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "您确定要保存签批吗？", "确定", "取消", dOnClickListener);
                     break;
                 //选择笔的样式
                 case R.id.pen_ll:
-                    if (isPen) {
+                    if (mIsPen) {
                         showSettingView();
                     }
                     setSelectedSates(view);
                     break;
                 //清除
                 case R.id.clear_ll:
-                    opType = 4;
+                    mOpType = 4;
                     DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "您确定要清除签字吗？", "确定", "取消", dOnClickListener);
                     break;
                 //橡皮擦
                 case R.id.eraser_ll:
-                    eraser = !eraser;
-                    if (eraser) {
+                    mEraser = !mEraser;
+                    if (mEraser) {
                         setSelectedSates(view);
-                        mSignatureView.initEraserMode(Color.TRANSPARENT, width + 40f);
+                        mSignatureView.initEraserMode(Color.TRANSPARENT, mWidth + 40f);
                     } else {
-                        setSelectedSates(viewDelegate.get(R.id.pen_ll));
-                        mSignatureView.setPenColor(color);
-                        mSignatureView.setPenWidth(width);
+                        setSelectedSates(mViewDelegate.get(R.id.pen_ll));
+                        mSignatureView.setPenColor(mColor);
+                        mSignatureView.setPenWidth(mWidth);
                     }
                     break;
                 //确认笔记颜色
                 case R.id.confirm_color:
-                    if (tagWidth != width && tagWidth != -1) {
-                        width = tagWidth;
-                        mSignatureView.setPenWidth(width);
-                        SharedPreferencesUtil.savePenWidth(width);
+                    if (mTagWidth != mWidth && mTagWidth != -1) {
+                        mWidth = mTagWidth;
+                        mSignatureView.setPenWidth(mWidth);
+                        SharedPreferencesUtil.savePenWidth(mWidth);
                     }
-                    if (tagColor != color && tagColor != -1) {
-                        color = tagColor;
-                        mSignatureView.setPenColor(color);
-                        SharedPreferencesUtil.savePenColor(color);
+                    if (mTagColor != mColor && mTagColor != -1) {
+                        mColor = mTagColor;
+                        mSignatureView.setPenColor(mColor);
+                        SharedPreferencesUtil.savePenColor(mColor);
                     }
-                    if (dialog != null && dialog.isShowing()) {
-                        dialog.dismiss();
-                        dialog = null;
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
+                        mDialog = null;
                     }
                     break;
 
                 case R.id.cancel:
-                    if (dialog != null && dialog.isShowing()) {
-                        dialog.dismiss();
-                        dialog = null;
+                    if (mDialog != null && mDialog.isShowing()) {
+                        mDialog.dismiss();
+                        mDialog = null;
                     }
                     break;
                 //添加意见
@@ -728,8 +740,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     break;
                 //双击可以隐藏侧边栏
                 case R.id.mToolbar_rl:
-                    if (AppUtil.isFastDoubleClick(500) && !done && !isSigning) {
-                        if (!hideWeight) {
+                    if (AppUtil.isFastDoubleClick(500) && !mDone && !mIsSigning) {
+                        if (!mHideWeight) {
                             hideWeight(true);
                         } else {
                             hideWeight(false);
@@ -743,12 +755,12 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
 
     private void showUserDialog() {
-        daiqianUserBeanList = UserManager.getInstance().getAllUserInfo();
-        String[] peopleList = new String[daiqianUserBeanList.size()];
-        for (int i = 0; i < daiqianUserBeanList.size(); i++) {
-            peopleList[i] = daiqianUserBeanList.get(i).getName();
+        mEndorsementUserBeanList = UserManager.getInstance().getAllUserInfo();
+        String[] peopleList = new String[mEndorsementUserBeanList.size()];
+        for (int i = 0; i < mEndorsementUserBeanList.size(); i++) {
+            peopleList[i] = mEndorsementUserBeanList.get(i).getName();
         }
-        daiqianIndex = -1;
+        mEndorsementIndex = -1;
         DialogUtil.showSingleChoiceDialog(this, "请选择代签人员", "确定", "取消", peopleList,
                 getmOnClickListener(false, -1));
     }
@@ -758,11 +770,11 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (i >= 0) {
-                    daiqianIndex = i;
+                    mEndorsementIndex = i;
                 }
                 if (i == -1) {
                     if (!sure) {
-                        showDaiqianConfirmDialog(daiqianIndex);
+                        showDaiqianConfirmDialog(mEndorsementIndex);
                     } else {
                         toDaiqian(user_id);
                     }
@@ -788,46 +800,46 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         finish();
                     }
                 }
-            }, String.valueOf(itemId), String.valueOf(user_id));
+            }, String.valueOf(mItemId), String.valueOf(user_id));
         }
     }
 
 
     private void showDaiqianConfirmDialog(int index) {
         if (index >= 0) {
-            DialogUtil.showDialog(this, "确定 \"" + daiqianUserBeanList.get(index).getName() + "\" 帮您代签吗？"
-                    , "确定", "取消", getmOnClickListener(true, daiqianUserBeanList.get(index).getId()));
+            DialogUtil.showDialog(this, "确定 \"" + mEndorsementUserBeanList.get(index).getName() + "\" 帮您代签吗？"
+                    , "确定", "取消", getmOnClickListener(true, mEndorsementUserBeanList.get(index).getId()));
         }
     }
 
 
     private void setSigningStatus() {
-        isSigning = true;
+        mIsSigning = true;
         isSigning();
         mSignatureView.setCanSigning(true);
 //        mSignatureView.resetZoomWithAnimation();
     }
 
     private void isSigning() {
-        viewDelegate.setToolBarRightImg(R.mipmap.sign_cancel);
-        sign_full_fl.setVisibility(View.VISIBLE);
-        sign_right_ll.setVisibility(View.GONE);
+        mViewDelegate.setToolBarRightImg(R.mipmap.sign_cancel);
+        mSignFullFL.setVisibility(View.VISIBLE);
+        mSignRightLL.setVisibility(View.GONE);
         hideWeight(true);
-        setSelectedSates(viewDelegate.get(R.id.pen_ll));
-        mSignatureView.setPenColor(color);
-        mSignatureView.setPenWidth(width);
+        setSelectedSates(mViewDelegate.get(R.id.pen_ll));
+        mSignatureView.setPenColor(mColor);
+        mSignatureView.setPenWidth(mWidth);
     }
 
     private void hideWeight(boolean hide) {
-        hideWeight = hide;
+        mHideWeight = hide;
         if (hide) {
-            viewDelegate.get(R.id.sign_left_ll).setVisibility(View.GONE);
-            viewDelegate.get(R.id.sign_top_ll).setVisibility(View.VISIBLE);
-            viewDelegate.get(R.id.sign_bottom).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.sign_left_ll).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.sign_top_ll).setVisibility(View.VISIBLE);
+            mViewDelegate.get(R.id.sign_bottom).setVisibility(View.GONE);
         } else {
-            viewDelegate.get(R.id.sign_left_ll).setVisibility(View.VISIBLE);
-            viewDelegate.get(R.id.sign_top_ll).setVisibility(View.GONE);
-            viewDelegate.get(R.id.sign_bottom).setVisibility(View.VISIBLE);
+            mViewDelegate.get(R.id.sign_left_ll).setVisibility(View.VISIBLE);
+            mViewDelegate.get(R.id.sign_top_ll).setVisibility(View.GONE);
+            mViewDelegate.get(R.id.sign_bottom).setVisibility(View.VISIBLE);
         }
     }
 
@@ -843,23 +855,23 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     finish();
                 }
             }
-        }, itemId, accessoryId, form_source_id);
+        }, mItemId, accessoryId, form_source_id);
     }
 
     private void toAddPeople() {
-        if (userBeanList != null) {
-            if (userBeanList.size() == 0) {
+        if (mUserBeanList != null) {
+            if (mUserBeanList.size() == 0) {
                 ToastUtil.l("没有可添加的人员");
             } else {
-                String[] peopleList = new String[userBeanList.size()];
-                boolean[] booleanList = new boolean[userBeanList.size()];
-                for (int i = 0; i < userBeanList.size(); i++) {
-                    peopleList[i] = userBeanList.get(i).getName();
+                String[] peopleList = new String[mUserBeanList.size()];
+                boolean[] booleanList = new boolean[mUserBeanList.size()];
+                for (int i = 0; i < mUserBeanList.size(); i++) {
+                    peopleList[i] = mUserBeanList.get(i).getName();
                     booleanList[i] = false;
-                    userBeanList.get(i).setSelected(false);
+                    mUserBeanList.get(i).setSelected(false);
                 }
-                selectedUserId.setLength(0);
-                selectedUserName.setLength(0);
+                mSelectedUserId.setLength(0);
+                mSelectedUserName.setLength(0);
                 DialogUtil.showChoiceDialog(this, "请选择加签人员(请注意顺序)", "确定", "取消", peopleList, booleanList, getOnClick(5), multiChoiceClickListener);
             }
         }
@@ -868,22 +880,22 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private DialogInterface.OnMultiChoiceClickListener multiChoiceClickListener = new DialogInterface.OnMultiChoiceClickListener() {
         @Override
         public void onClick(DialogInterface dialogInterface, int i, boolean b) {
-            userBeanList.get(i).setSelected(b);
+            mUserBeanList.get(i).setSelected(b);
             if (b) {
-                selectedUserId.append(userBeanList.get(i).getId()).append(",");
-                selectedUserName.append(userBeanList.get(i).getName()).append(",");
+                mSelectedUserId.append(mUserBeanList.get(i).getId()).append(",");
+                mSelectedUserName.append(mUserBeanList.get(i).getName()).append(",");
             } else {
-                String content = selectedUserId.toString();
-                if (content.contains(userBeanList.get(i).getId() + ",")) {
-                    content = content.replace(userBeanList.get(i).getId() + ",", "");
-                    selectedUserId.setLength(0);
-                    selectedUserId.append(content);
+                String content = mSelectedUserId.toString();
+                if (content.contains(mUserBeanList.get(i).getId() + ",")) {
+                    content = content.replace(mUserBeanList.get(i).getId() + ",", "");
+                    mSelectedUserId.setLength(0);
+                    mSelectedUserId.append(content);
                 }
-                String contentName = selectedUserName.toString();
-                if (contentName.contains(userBeanList.get(i).getName() + ",")) {
-                    contentName = contentName.replace(userBeanList.get(i).getName() + ",", "");
-                    selectedUserName.setLength(0);
-                    selectedUserName.append(contentName);
+                String contentName = mSelectedUserName.toString();
+                if (contentName.contains(mUserBeanList.get(i).getName() + ",")) {
+                    contentName = contentName.replace(mUserBeanList.get(i).getName() + ",", "");
+                    mSelectedUserName.setLength(0);
+                    mSelectedUserName.append(contentName);
                 }
 
             }
@@ -892,9 +904,9 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     };
 
     private void addAccessory() {
-        addAccessoryDialog = DialogUtil.createAlertDialog(OfficialDocumentDetailActivity.this, showDialogAndItemClickListener());
+        mAddAccessoryDialog = DialogUtil.createAlertDialog(OfficialDocumentDetailActivity.this, showDialogAndItemClickListener());
         AutoSize.cancelAdapt(this);
-        addAccessoryDialog.show();
+        mAddAccessoryDialog.show();
     }
 
 
@@ -916,13 +928,13 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             switch (v.getId()) {
                 case R.id.fromDir:
                     toUserDir();
-                    addAccessoryDialog.dismiss();
+                    mAddAccessoryDialog.dismiss();
                     break;
                 case R.id.fromGallery:
                     chooseFromGallery();
                     break;
                 case R.id.cancel:
-                    addAccessoryDialog.dismiss();
+                    mAddAccessoryDialog.dismiss();
                     break;
                 default:
                     break;
@@ -957,7 +969,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     //用户从图库选择图片后会返回所选图片的Uri
                     String truePath = RealPathFromUriUtils.getRealPathFromUri(MyApplication.getContext(), data.getData());
 //                    upLoadSource(truePath);
-                    addAccessoryDialog.dismiss();
+                    mAddAccessoryDialog.dismiss();
                 }
                 break;
             default:
@@ -986,7 +998,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     ToastUtil.l("操作成功");
                 }
             }
-        }, itemId, name, id);
+        }, mItemId, name, id);
     }
 
 
@@ -1001,7 +1013,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     finish();
                 }
             }
-        }, itemId, accessoryId, form_source_id);
+        }, mItemId, accessoryId, form_source_id);
     }
 
     private DialogInterface.OnClickListener getOnClick(final int mType) {
@@ -1037,16 +1049,16 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
 
     private void showReasonDialog(final int status, final String form_source_id, final String accessoryId) {
-        remarkEt = new EditText(this);
+        mRemarkEt = new EditText(this);
         new AlertDialog.Builder(this).setTitle("退回原因(必填)")
                 .setIcon(android.R.drawable.ic_dialog_info)
-                .setView(remarkEt)
+                .setView(mRemarkEt)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        if (TextUtils.isEmpty(remarkEt.getText().toString())) {
+                        if (TextUtils.isEmpty(mRemarkEt.getText().toString())) {
                             ToastUtil.l("必须填写原因");
                         } else
-                            toExamine(status, form_source_id, accessoryId, remarkEt.getText().toString());
+                            toExamine(status, form_source_id, accessoryId, mRemarkEt.getText().toString());
                     }
                 })
                 .setNegativeButton("取消", null)
@@ -1054,7 +1066,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     }
 
     private void add_countersign() {
-        if (selectedUserId.length() == 0) {
+        if (mSelectedUserId.length() == 0) {
             ToastUtil.s("未选择加签人员");
         } else {
             PublicModel.getInstance().add_countersign(new MSubscribe<BaseEntity>() {
@@ -1067,32 +1079,32 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                         finish();
                     }
                 }
-            }, itemId, selectedUserId.substring(0, selectedUserId.length() - 1), getFormSourceId(), getAccessorySourceId());
+            }, mItemId, mSelectedUserId.substring(0, mSelectedUserId.length() - 1), getFormSourceId(), getAccessorySourceId());
         }
     }
 
     private String getFormSourceId() {
         if (hasFormData()) {
-            return String.valueOf(accessoryList.get(0));
+            return String.valueOf(mAccessoryList.get(0));
         } else return "0";
     }
 
     private String getAccessorySourceId() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         if (hasFormData()) {
-            for (int i = 1; i < accessoryList.size(); i++) {
-                if (i == accessoryList.size() - 1) {
-                    sb.append(accessoryList.get(i));
+            for (int i = 1; i < mAccessoryList.size(); i++) {
+                if (i == mAccessoryList.size() - 1) {
+                    sb.append(mAccessoryList.get(i));
                 } else {
-                    sb.append(accessoryList.get(i)).append("#");
+                    sb.append(mAccessoryList.get(i)).append("#");
                 }
             }
         } else {
-            for (int i = 0; i < accessoryList.size(); i++) {
-                if (i == accessoryList.size() - 1) {
-                    sb.append(accessoryList.get(i));
+            for (int i = 0; i < mAccessoryList.size(); i++) {
+                if (i == mAccessoryList.size() - 1) {
+                    sb.append(mAccessoryList.get(i));
                 } else {
-                    sb.append(accessoryList.get(i)).append("#");
+                    sb.append(mAccessoryList.get(i)).append("#");
                 }
             }
         }
@@ -1111,7 +1123,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
                     finish();
                 }
             }
-        }, String.valueOf(itemId), String.valueOf(status), accessoryId, form_source_id, reason);
+        }, String.valueOf(mItemId), String.valueOf(status), accessoryId, form_source_id, reason);
     }
 
     private void showSettingView() {
@@ -1123,29 +1135,29 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         width_spinner.setOnItemSelectedListener(itemClickListener);
         color_spinner = view.findViewById(R.id.color_spinner);
         color_spinner.setOnItemSelectedListener(itemClickListener);
-        width_spinner.setSelection(PenWidth.getKeyByValue(width));
-        color_spinner.setSelection(PenColor.getKeyByColor(color));
+        width_spinner.setSelection(PenWidth.getKeyByValue(mWidth));
+        color_spinner.setSelection(PenColor.getKeyByColor(mColor));
         confirm_color = view.findViewById(R.id.confirm_color);
         cancel = view.findViewById(R.id.cancel);
         confirm_color.setOnClickListener(onClickListener);
         cancel.setOnClickListener(onClickListener);
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-            dialog = null;
+        if (mDialog != null && mDialog.isShowing()) {
+            mDialog.dismiss();
+            mDialog = null;
         }
-        dialog = DialogUtil.createAlertDialog(this, view);
-        dialog.show();
+        mDialog = DialogUtil.createAlertDialog(this, view);
+        mDialog.show();
     }
 
     private AdapterView.OnItemSelectedListener itemClickListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if (parent.getId() == R.id.width_spinner) {
-                tagWidth = PenWidth.getWidthByKey(position);
+                mTagWidth = PenWidth.getWidthByKey(position);
             }
 
             if (parent.getId() == R.id.color_spinner) {
-                tagColor = PenColor.getColorByKey(position);
+                mTagColor = PenColor.getColorByKey(position);
             }
         }
 
@@ -1161,23 +1173,23 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             dialogInterface.dismiss();
             if (i == -1) {
                 //要做对应的操作
-                if (opType == 1) {
-                    setSelectedSates(viewDelegate.get(R.id.pen_ll));
+                if (mOpType == 1) {
+                    setSelectedSates(mViewDelegate.get(R.id.pen_ll));
                     saveImg(true);
                 }
-                if (opType == 2) {
+                if (mOpType == 2) {
                     finish();
                 }
-                if (opType == 3) {
-                    setSelectedSates(viewDelegate.get(R.id.toolBar_img_right));
-                    if (cacheFileList.get(tagPosition).isEmpty()) {
+                if (mOpType == 3) {
+                    setSelectedSates(mViewDelegate.get(R.id.toolBar_img_right));
+                    if (mCacheFileList.get(mTagPosition).isEmpty()) {
                         clearCanvas(null);
                     } else {
-                        clearCanvas(cacheFileList.get(tagPosition));
+                        clearCanvas(mCacheFileList.get(mTagPosition));
                     }
                     noSigning();
                 }
-                if (opType == 4) {
+                if (mOpType == 4) {
                     clearCanvas(null);
                     noSigning();
                 }
@@ -1189,8 +1201,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            if (!done) {
-                opType = 2;
+            if (!mDone) {
+                mOpType = 2;
                 DialogUtil.showDialog(OfficialDocumentDetailActivity.this, "退出前请确认工作已保存", "确定", "不确定", dOnClickListener);
                 return false;
             }
@@ -1200,16 +1212,16 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
 
     private void noSigning() {
-        isSigning = false;
-        eraser = false;
-        viewDelegate.setToolBarRightImg(R.mipmap.sign);
-        viewDelegate.get(R.id.sign_left_ll).setVisibility(View.VISIBLE);
+        mIsSigning = false;
+        mEraser = false;
+        mViewDelegate.setToolBarRightImg(R.mipmap.sign);
+        mViewDelegate.get(R.id.sign_left_ll).setVisibility(View.VISIBLE);
         initPenWidthAndColor();
         hideWeight(false);
-        sign_full_fl.setVisibility(View.GONE);
-        sign_right_ll.setVisibility(View.VISIBLE);
-        for (int j = 0; j < linearList.size(); j++) {
-            linearList.get(j).setSelected(false);
+        mSignFullFL.setVisibility(View.GONE);
+        mSignRightLL.setVisibility(View.VISIBLE);
+        for (int j = 0; j < mLinearList.size(); j++) {
+            mLinearList.get(j).setSelected(false);
         }
         mSignatureView.resetCacheMap();
     }
@@ -1217,22 +1229,22 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     private void clearCanvas(String path) {
         if (path != null) {
             //签字完成后保存一下文件路径
-            cacheFileList.set(tagPosition, path);
+            mCacheFileList.set(mTagPosition, path);
             mSignatureView.clearCanvas(new File(path));
         } else {
             //清除字迹的时候要清除掉缓存的文件路径
-            if (cacheFileList != null && cacheFileList.size() != 0) {
-                cacheFileList.set(tagPosition, "");
+            if (mCacheFileList != null && mCacheFileList.size() != 0) {
+                mCacheFileList.set(mTagPosition, "");
             }
             mSignatureView.setNewPath("");
-            mSignatureView.clearCanvas(new File(getPath(id, type)));
+            mSignatureView.clearCanvas(new File(getPath(mId, mType)));
         }
     }
 
     private void saveImg(final Boolean needUpLoad) {
         if (mSignatureView != null) {
-            LogUtil.d(TAG, "签字文件的路径" + (TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(id, getNowType()) : mSignatureView.getNewPath()));
-            mSignatureView.addSignature2Pdf(TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(id, getNowType()) : mSignatureView.getNewPath()
+            LogUtil.d(TAG, "签字文件的路径" + (TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(mId, getNowType()) : mSignatureView.getNewPath()));
+            mSignatureView.addSignature2Pdf(TextUtils.isEmpty(mSignatureView.getNewPath()) ? getPath(mId, getNowType()) : mSignatureView.getNewPath()
                     , false, new SignatureView.DataFinishListener() {
                         @Override
                         public void onFinished(String path) {
@@ -1264,7 +1276,7 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
             public void onNext(BaseEntity<UpFileBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    accessoryList.set(tagPosition, bean.getData().getId());
+                    mAccessoryList.set(mTagPosition, bean.getData().getId());
                     ToastUtil.l("签字已保存");
                     mSignatureView.setCanSigning(false);
                     ProgressDialogUtil.instance().stopLoad();
@@ -1277,23 +1289,23 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
 
 
     private void setSelectedSates(View view) {
-        for (int i = 0; i < linearList.size(); i++) {
-            if (linearList.get(i).getId() != view.getId()) {
-                linearList.get(i).setSelected(false);
-            } else linearList.get(i).setSelected(true);
+        for (int i = 0; i < mLinearList.size(); i++) {
+            if (mLinearList.get(i).getId() != view.getId()) {
+                mLinearList.get(i).setSelected(false);
+            } else mLinearList.get(i).setSelected(true);
         }
         if (view.getId() != R.id.eraser_ll) {
-            if (eraser) {
-                eraser = !eraser;
-                mSignatureView.setPenColor(color);
-                mSignatureView.setPenWidth(width);
+            if (mEraser) {
+                mEraser = !mEraser;
+                mSignatureView.setPenColor(mColor);
+                mSignatureView.setPenWidth(mWidth);
             }
         }
         if (view.getId() != R.id.pen_ll) {
-            isPen = false;
+            mIsPen = false;
         }
         if (view.getId() == R.id.pen_ll) {
-            isPen = true;
+            mIsPen = true;
         }
     }
 
@@ -1301,12 +1313,12 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (addAccessoryDialog != null && addAccessoryDialog.isShowing()) {
-            addAccessoryDialog.dismiss();
+        if (mAddAccessoryDialog != null && mAddAccessoryDialog.isShowing()) {
+            mAddAccessoryDialog.dismiss();
         }
-        if (sign_fileView != null) {
-            sign_fileView.onStop();
-            sign_fileView = null;
+        if (mSignFileView != null) {
+            mSignFileView.onStop();
+            mSignFileView = null;
         }
         if (mSignatureView != null) {
             mSignatureView.stopFling();
@@ -1314,11 +1326,11 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
         File file = new File(SIGN_RESULT);
         FileUtil.deleteFile(file);
         EventBus.getDefault().unregister(this);
-        if (cacheFileList != null) {
-            cacheFileList.clear();
+        if (mCacheFileList != null) {
+            mCacheFileList.clear();
         }
-        if (subscribe != null) {
-            subscribe.unsubscribe();
+        if (mSubscribe != null) {
+            mSubscribe.unsubscribe();
         }
     }
 

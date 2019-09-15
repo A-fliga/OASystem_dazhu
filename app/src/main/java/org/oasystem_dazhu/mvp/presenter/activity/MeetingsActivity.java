@@ -22,10 +22,10 @@ import java.util.List;
  */
 
 public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
-    private List<Integer> idList;
-    private int selectedId;
-    private MeetingListAdapter adapter;
-    private List<MeetingListBean.DataBean> beanList;
+    private MeetingListAdapter mAdapter;
+    private List<MeetingListBean.DataBean> mBeanList;
+    private List<Integer> mIdList;
+    private int mSelectedId;
 
     @Override
     public Class<MeetingDelegate> getDelegateClass() {
@@ -46,15 +46,15 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
 
 
     private void init() {
-        idList = new ArrayList<>();
-        idList.add(R.id.not_start_meeting);
-        idList.add(R.id.going_meeting);
-        idList.add(R.id.end_meeting);
-        beanList = new ArrayList<>();
-        viewDelegate.get(R.id.not_start_meeting).setSelected(true);
-        selectedId = R.id.not_start_meeting;
-        setCheckStates(selectedId);
-        viewDelegate.setOnClickListener(onClickListener, R.id.not_start_meeting, R.id.going_meeting, R.id.end_meeting);
+        mIdList = new ArrayList<>();
+        mIdList.add(R.id.not_start_meeting);
+        mIdList.add(R.id.going_meeting);
+        mIdList.add(R.id.end_meeting);
+        mBeanList = new ArrayList<>();
+        mViewDelegate.get(R.id.not_start_meeting).setSelected(true);
+        mSelectedId = R.id.not_start_meeting;
+        setCheckStates(mSelectedId);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.not_start_meeting, R.id.going_meeting, R.id.end_meeting);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -63,21 +63,21 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
             setCheckStates(view.getId());
             switch (view.getId()) {
                 case R.id.not_start_meeting:
-                    if (selectedId != view.getId()) {
+                    if (mSelectedId != view.getId()) {
                         getMeetingList(1);
-                        selectedId = view.getId();
+                        mSelectedId = view.getId();
                     }
                     break;
                 case R.id.going_meeting:
-                    if (selectedId != view.getId()) {
+                    if (mSelectedId != view.getId()) {
                         getMeetingList(2);
-                        selectedId = view.getId();
+                        mSelectedId = view.getId();
                     }
                     break;
                 case R.id.end_meeting:
-                    if (selectedId != view.getId()) {
+                    if (mSelectedId != view.getId()) {
                         getMeetingList(3);
-                        selectedId = view.getId();
+                        mSelectedId = view.getId();
                     }
                     break;
             }
@@ -85,18 +85,17 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
     };
 
 
-
     private void getMeetingList(int i) {
         PublicModel.getInstance().getMeetingList(new MSubscribe<BaseEntity<MeetingListBean>>() {
             @Override
             public void onNext(BaseEntity<MeetingListBean> bean) {
                 super.onNext(bean);
-                if (beanList != null)
-                    beanList.clear();
-                beanList.addAll(bean.getData().getData());
-                viewDelegate.initList(beanList);
-                adapter = viewDelegate.getAdapter();
-                setItemClick(adapter);
+                if (mBeanList != null)
+                    mBeanList.clear();
+                mBeanList.addAll(bean.getData().getData());
+                mViewDelegate.initList(mBeanList);
+                mAdapter = mViewDelegate.getAdapter();
+                setItemClick(mAdapter);
             }
         }, String.valueOf(i));
     }
@@ -107,9 +106,9 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
                 @Override
                 public void onItemClick(int position) {
                     Bundle bundle = new Bundle();
-                    bundle.putString("meetingId",beanList.get(position).getId());
-                    bundle.putString("meetingType",beanList.get(position).getNow_status());
-                    startMyActivity(MeetingDetailActivity.class,bundle);
+                    bundle.putString("meetingId", mBeanList.get(position).getId());
+                    bundle.putString("meetingType", mBeanList.get(position).getNow_status());
+                    startMyActivity(MeetingDetailActivity.class, bundle);
                 }
             });
         }
@@ -117,16 +116,16 @@ public class MeetingsActivity extends ActivityPresenter<MeetingDelegate> {
 
     private void setCheckStates(int id) {
         RelativeLayout parent;
-        for (int i = 0; i < idList.size(); i++) {
-            if (idList.get(i) == id) {
-                viewDelegate.get(id).setSelected(true);
-                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+        for (int i = 0; i < mIdList.size(); i++) {
+            if (mIdList.get(i) == id) {
+                mViewDelegate.get(id).setSelected(true);
+                parent = (RelativeLayout) mViewDelegate.get(id).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
 
             } else {
-                viewDelegate.get(idList.get(i)).setSelected(false);
-                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                mViewDelegate.get(mIdList.get(i)).setSelected(false);
+                parent = (RelativeLayout) mViewDelegate.get(mIdList.get(i)).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
             }

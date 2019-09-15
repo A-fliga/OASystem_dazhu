@@ -22,13 +22,14 @@ import java.util.List;
 
 /**
  * Created by www on 2019/5/22.
+ * 处理办理意见的页面
  */
 
 public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOptionFormDelegate> {
-    private List<DealWithOptionBean.DispatchSuggestBean> beanList;
-    private int listId,itemId;
-    private boolean done = false;
-    private DealWithOptionAdapter adapter;
+    private List<DealWithOptionBean.DispatchSuggestBean> mBeanList;
+    private DealWithOptionAdapter mAdapter;
+    private int mListId, mItemId;
+    private boolean mDone = false;
 
     @Override
     public Class<DealWithOptionFormDelegate> getDelegateClass() {
@@ -46,15 +47,15 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
         EventBus.getDefault().register(this);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            listId = bundle.getInt("listId");
-            itemId = bundle.getInt("itemId");
-            done = bundle.getBoolean("done");
-            if(done){
-                viewDelegate.initOptionView();
+            mListId = bundle.getInt("listId");
+            mItemId = bundle.getInt("itemId");
+            mDone = bundle.getBoolean("done");
+            if (mDone) {
+                mViewDelegate.initOptionView();
             }
             initRecyclerView();
         }
-        viewDelegate.setOnClickListener(onClickListener, R.id.add_option_btn);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.add_option_btn);
 
     }
 
@@ -63,12 +64,11 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.add_option_btn:
-                    if(!done) {
+                    if (!mDone) {
                         Bundle bundle = new Bundle();
-                        bundle.putInt("itemId", itemId);
+                        bundle.putInt("itemId", mItemId);
                         startMyActivity(AddOptionFormActivity.class, bundle);
-                    }
-                    else {
+                    } else {
                         ToastUtil.s("当前不可提出意见");
                     }
                     break;
@@ -78,22 +78,22 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
     };
 
     private void initRecyclerView() {
-        if (beanList != null) {
-            beanList.clear();
+        if (mBeanList != null) {
+            mBeanList.clear();
         } else {
-            beanList = new ArrayList<>();
+            mBeanList = new ArrayList<>();
         }
         PublicModel.getInstance().getFormList(new MSubscribe<BaseEntity<DealWithOptionBean>>() {
             @Override
             public void onNext(BaseEntity<DealWithOptionBean> bean) {
                 super.onNext(bean);
-                if (beanList.size() != 0) {
-                    beanList.clear();
+                if (mBeanList.size() != 0) {
+                    mBeanList.clear();
                 }
-                beanList.addAll(bean.getData().getDispatch_suggest());
-                viewDelegate.initLeftTv(beanList.size());
-                adapter = viewDelegate.initList(beanList,done);
-                adapter.setOnItemClickListener(new DealWithOptionAdapter.OnItemClick() {
+                mBeanList.addAll(bean.getData().getDispatch_suggest());
+                mViewDelegate.initLeftTv(mBeanList.size());
+                mAdapter = mViewDelegate.initList(mBeanList, mDone);
+                mAdapter.setOnItemClickListener(new DealWithOptionAdapter.OnItemClick() {
                     @Override
                     public void onItemOnclick(int position, int viewId) {
                         handleClickEvent(position, viewId);
@@ -104,19 +104,19 @@ public class DealWithOptionFormActivity extends ActivityPresenter<DealWithOption
                 }
 
             }
-        }, String.valueOf(listId));
+        }, String.valueOf(mListId));
 
     }
 
     private void handleClickEvent(int position, int viewId) {
         switch (viewId) {
             case R.id.item_option_delete:
-                showSureDialog(beanList.get(position).getId());
+                showSureDialog(mBeanList.get(position).getId());
                 break;
             case R.id.item_option_change:
                 Bundle bundle = new Bundle();
-                bundle.putInt("itemId", itemId);
-                bundle.putString("content", beanList.get(position).getContent());
+                bundle.putInt("itemId", mItemId);
+                bundle.putString("content", mBeanList.get(position).getContent());
                 startMyActivity(AddOptionFormActivity.class, bundle);
                 break;
 

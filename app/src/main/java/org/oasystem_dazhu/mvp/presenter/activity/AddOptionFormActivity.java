@@ -16,11 +16,13 @@ import org.oasystem_dazhu.utils.ToastUtil;
 
 /**
  * Created by www on 2019/5/23.
+ * 新增办理意见
  */
 
-public class AddOptionFormActivity extends ActivityPresenter<AddOptionFormDelegate>{
-    private int itemId;
-    private EditText add_option_et;
+public class AddOptionFormActivity extends ActivityPresenter<AddOptionFormDelegate> {
+    private EditText mAddOptionEt;
+    private int mItemId;
+
     @Override
     public Class<AddOptionFormDelegate> getDelegateClass() {
         return AddOptionFormDelegate.class;
@@ -34,23 +36,22 @@ public class AddOptionFormActivity extends ActivityPresenter<AddOptionFormDelega
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle bundle  = getIntent().getExtras();
-        if(bundle != null){
-            itemId = bundle.getInt("itemId");
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mItemId = bundle.getInt("itemId");
             String content = bundle.getString("content", "");
-            add_option_et = viewDelegate.get(R.id.add_option_et);
-            if(!TextUtils.isEmpty(content)){
-                add_option_et.setText(content);
-                add_option_et.setSelection(content.length());
+            mAddOptionEt = mViewDelegate.get(R.id.add_option_et);
+            if (!TextUtils.isEmpty(content)) {
+                mAddOptionEt.setText(content);
+                mAddOptionEt.setSelection(content.length());
             }
         }
-        viewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
+        mViewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(TextUtils.isEmpty(add_option_et.getText().toString().replaceAll(" ",""))){
+                if (TextUtils.isEmpty(mAddOptionEt.getText().toString().replaceAll(" ", ""))) {
                     ToastUtil.s("意见内容不能为空");
-                }
-                else {
+                } else {
                     toAddOption();
                 }
             }
@@ -62,12 +63,12 @@ public class AddOptionFormActivity extends ActivityPresenter<AddOptionFormDelega
             @Override
             public void onNext(BaseEntity bean) {
                 super.onNext(bean);
-                if(bean.getCode() == 0){
+                if (bean.getCode() == 0) {
                     ToastUtil.s("操作成功");
                     EventBus.getDefault().post(new DealWithOptionBean());
                     finish();
                 }
             }
-        },String.valueOf(itemId),add_option_et.getText().toString().replaceAll(" ",""));
+        }, String.valueOf(mItemId), mAddOptionEt.getText().toString().replaceAll(" ", ""));
     }
 }

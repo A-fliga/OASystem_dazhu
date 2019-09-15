@@ -28,8 +28,8 @@ import java.util.List;
  */
 
 public class CarManagementActivity extends ActivityPresenter<CarManagementDelegate> {
-    private List<Integer> idList;
-    private int selectedId;
+    private List<Integer> mIdList;
+    private int mSelectedId;
 
     @Override
     public Class<CarManagementDelegate> getDelegateClass() {
@@ -51,13 +51,13 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
     }
 
     private void init() {
-        idList = new ArrayList<>();
-        idList.add(R.id.my_apply);
-        idList.add(R.id.my_approver);
-        selectedId = R.id.my_apply;
-        setCheckStates(selectedId);
-        viewDelegate.get(R.id.my_apply).setSelected(true);
-        viewDelegate.setOnClickListener(onClickListener, R.id.my_apply, R.id.my_approver);
+        mIdList = new ArrayList<>();
+        mIdList.add(R.id.my_apply);
+        mIdList.add(R.id.my_approver);
+        mSelectedId = R.id.my_apply;
+        setCheckStates(mSelectedId);
+        mViewDelegate.get(R.id.my_apply).setSelected(true);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.my_apply, R.id.my_approver);
     }
 
 
@@ -67,17 +67,17 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
             setCheckStates(view.getId());
             switch (view.getId()) {
                 case R.id.my_apply:
-                    if (selectedId != view.getId()) {
-                        viewDelegate.getToolBarRightImg().setVisibility(View.VISIBLE);
+                    if (mSelectedId != view.getId()) {
+                        mViewDelegate.getToolBarRightImg().setVisibility(View.VISIBLE);
                         getApplyData();
-                        selectedId = view.getId();
+                        mSelectedId = view.getId();
                     }
                     break;
                 case R.id.my_approver:
-                    if (selectedId != view.getId()) {
-                        viewDelegate.getToolBarRightImg().setVisibility(View.GONE);
+                    if (mSelectedId != view.getId()) {
+                        mViewDelegate.getToolBarRightImg().setVisibility(View.GONE);
                         getApproveData();
-                        selectedId = view.getId();
+                        mSelectedId = view.getId();
                     }
                     break;
             }
@@ -89,7 +89,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
             @Override
             public void onNext(BaseEntity<CarApplyListBean> bean) {
                 super.onNext(bean);
-                CarApplyListAdapter adapter = viewDelegate.initList(bean.getData().getData());
+                CarApplyListAdapter adapter = mViewDelegate.initList(bean.getData().getData());
                 setItemCLick(adapter);
             }
         });
@@ -97,16 +97,16 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
 
     private void setCheckStates(int id) {
         RelativeLayout parent;
-        for (int i = 0; i < idList.size(); i++) {
-            if (idList.get(i) == id) {
-                viewDelegate.get(id).setSelected(true);
-                parent = (RelativeLayout) viewDelegate.get(id).getParent();
+        for (int i = 0; i < mIdList.size(); i++) {
+            if (mIdList.get(i) == id) {
+                mViewDelegate.get(id).setSelected(true);
+                parent = (RelativeLayout) mViewDelegate.get(id).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_ffffff));
 
             } else {
-                viewDelegate.get(idList.get(i)).setSelected(false);
-                parent = (RelativeLayout) viewDelegate.get(idList.get(i)).getParent();
+                mViewDelegate.get(mIdList.get(i)).setSelected(false);
+                parent = (RelativeLayout) mViewDelegate.get(mIdList.get(i)).getParent();
                 TextView childTv = (TextView) parent.getChildAt(1);
                 childTv.setTextColor(getResources().getColor(R.color.color_e8421d));
             }
@@ -118,7 +118,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
             @Override
             public void onNext(BaseEntity<CarApplyListBean> bean) {
                 super.onNext(bean);
-                CarApplyListAdapter adapter = viewDelegate.initList(bean.getData().getData());
+                CarApplyListAdapter adapter = mViewDelegate.initList(bean.getData().getData());
                 setItemCLick(adapter);
             }
         });
@@ -127,7 +127,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void refreshCarList(CarApplyBean bean) {
         if (bean != null) {
-            if (selectedId == R.id.my_apply)
+            if (mSelectedId == R.id.my_apply)
                 getApplyData();
             else {
                 getApproveData();
@@ -142,7 +142,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
             public void onItemClick(Object bean) {
                 CarApplyListBean.DataBean data = (CarApplyListBean.DataBean) bean;
                 Bundle bundle = new Bundle();
-                if (selectedId == R.id.my_apply) {
+                if (mSelectedId == R.id.my_apply) {
                     bundle.putBoolean("isApplyDetail", true);
                 } else {
                     bundle.putString("examine_id", data.getCar_use_examine_one().getId());
@@ -165,7 +165,7 @@ public class CarManagementActivity extends ActivityPresenter<CarManagementDelega
     }
 
     private void setOnclick() {
-        viewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
+        mViewDelegate.getToolBarRightTv().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startMyActivity(AddCarApplyActivity.class, null);

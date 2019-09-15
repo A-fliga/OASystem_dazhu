@@ -16,10 +16,14 @@ import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
  */
 
 public class AskForLeaveDetailDelegate extends ViewDelegate {
-    private RecyclerView apply_detail_recyclerView;
-    private LinearLayout approve_ll;
-    private TextView leave_apply_detail_user_name,leave_apply_detail_type_name,
-            leave_apply_detail_during_time,leave_apply_detail_user_approver,leave_apply_detail_reason;
+    private RecyclerView mApplyDetailRecyclerView;
+    private LinearLayout mApproveLL;
+    private TextView mLeaveApplyDetailUserName;
+    private TextView mLeaveApplyDetailDuringTime;
+    private TextView mLeaveApplyDetailTypeName;
+    private TextView mLeaveApplyDetailUserApprover;
+    private TextView mLeaveApplyDetailReason;
+
     @Override
     public void onDestroy() {
 
@@ -33,35 +37,34 @@ public class AskForLeaveDetailDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("申请详情");
-        approve_ll = get(R.id.approve_ll);
-        apply_detail_recyclerView = get(R.id.apply_detail_recyclerView);
-        leave_apply_detail_user_name = get(R.id.leave_apply_detail_user_name);
-        leave_apply_detail_type_name = get(R.id.leave_apply_detail_type_name);
-        leave_apply_detail_during_time = get(R.id.leave_apply_detail_during_time);
-        leave_apply_detail_user_approver = get(R.id.leave_apply_detail_user_approver);
-        leave_apply_detail_reason = get(R.id.leave_apply_detail_reason);
+        mApproveLL = get(R.id.approve_ll);
+        mApplyDetailRecyclerView = get(R.id.apply_detail_recyclerView);
+        mLeaveApplyDetailUserName = get(R.id.leave_apply_detail_user_name);
+        mLeaveApplyDetailTypeName = get(R.id.leave_apply_detail_type_name);
+        mLeaveApplyDetailDuringTime = get(R.id.leave_apply_detail_during_time);
+        mLeaveApplyDetailUserApprover = get(R.id.leave_apply_detail_user_approver);
+        mLeaveApplyDetailReason = get(R.id.leave_apply_detail_reason);
     }
 
-    public void initView(AskForLeaveDetailBean bean){
-        leave_apply_detail_user_name.setText("申请人："+bean.getUser().getName());
-        leave_apply_detail_type_name.setText("请假类型："+bean.getType_name());
-        leave_apply_detail_during_time.setText("请假时间："+bean.getDate());
-        leave_apply_detail_user_approver.setText("审批人："+bean.getUser_ids_name());
-        leave_apply_detail_reason.setText("请假内容：\n\n"+bean.getRemark());
+    public void initView(AskForLeaveDetailBean bean) {
+        mLeaveApplyDetailUserName.setText("申请人：" + bean.getUser().getName());
+        mLeaveApplyDetailTypeName.setText("请假类型：" + bean.getType_name());
+        mLeaveApplyDetailDuringTime.setText("请假时间：" + bean.getDate());
+        mLeaveApplyDetailUserApprover.setText("审批人：" + bean.getUser_ids_name());
+        mLeaveApplyDetailReason.setText("请假内容：\n\n" + bean.getRemark());
     }
 
     public void showBottom(Boolean show) {
         if (show) {
-            approve_ll.setVisibility(View.VISIBLE);
-        }
-        else
-            approve_ll.setVisibility(View.GONE);
+            mApproveLL.setVisibility(View.VISIBLE);
+        } else
+            mApproveLL.setVisibility(View.GONE);
     }
 
 
     public void initFlows(AskForLeaveDetailBean bean) {
         AskForLeaveFlowAdapter adapter = new AskForLeaveFlowAdapter(bean);
-        setRecyclerView(apply_detail_recyclerView, adapter);
+        setRecyclerView(mApplyDetailRecyclerView, adapter);
     }
 
     private void setRecyclerView(RecyclerView recyclerView, AskForLeaveFlowAdapter adapter) {

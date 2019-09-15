@@ -16,8 +16,8 @@ import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
  */
 
 public class CarApplyDetailDelegate extends ViewDelegate {
-    private RecyclerView apply_detail_recyclerView;
-    private LinearLayout approve_ll;
+    private RecyclerView mApplyDetailRecyclerView;
+    private LinearLayout mApproveLL;
 
     @Override
     public void onDestroy() {
@@ -32,8 +32,8 @@ public class CarApplyDetailDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("申请详情");
-        apply_detail_recyclerView = get(R.id.apply_detail_recyclerView);
-        approve_ll = get(R.id.approve_ll);
+        mApplyDetailRecyclerView = get(R.id.apply_detail_recyclerView);
+        mApproveLL = get(R.id.approve_ll);
     }
 
 
@@ -58,13 +58,13 @@ public class CarApplyDetailDelegate extends ViewDelegate {
 
     public void showBottom(Boolean show) {
         if (show) {
-            approve_ll.setVisibility(View.VISIBLE);
-        } else approve_ll.setVisibility(View.GONE);
+            mApproveLL.setVisibility(View.VISIBLE);
+        } else mApproveLL.setVisibility(View.GONE);
     }
 
     public void initFlows(CarApplyDetailBean bean) {
         CarApplyFlowAdapter adapter = new CarApplyFlowAdapter(bean);
-        setRecyclerView(apply_detail_recyclerView, adapter);
+        setRecyclerView(mApplyDetailRecyclerView, adapter);
     }
 
     private void setRecyclerView(RecyclerView recyclerView, CarApplyFlowAdapter adapter) {

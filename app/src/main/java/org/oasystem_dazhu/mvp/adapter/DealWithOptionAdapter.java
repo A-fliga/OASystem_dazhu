@@ -17,39 +17,40 @@ import java.util.List;
 
 /**
  * Created by www on 2019/5/22.
+ * 处理流程的Adapter
  */
 
 public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAdapter.DealWithOptionViewHolder> {
-    private Context context;
-    private List<DealWithOptionBean.DispatchSuggestBean> beanList;
-    private OnItemClick itemClick;
-    private boolean done;
+    private Context mContext;
+    private List<DealWithOptionBean.DispatchSuggestBean> mBeanList;
+    private OnItemClick mItemClick;
+    private boolean mDone;
 
     public DealWithOptionAdapter(Context context, List<DealWithOptionBean.DispatchSuggestBean> beanList, boolean done) {
-        this.done = done;
-        this.context = context;
-        this.beanList = beanList;
+        this.mDone = done;
+        this.mContext = context;
+        this.mBeanList = beanList;
     }
 
     @NonNull
     @Override
     public DealWithOptionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DealWithOptionViewHolder(LayoutInflater.from(context).inflate(R.layout.item_deal_with_option, null));
+        return new DealWithOptionViewHolder(LayoutInflater.from(mContext).inflate(R.layout.item_deal_with_option, null));
     }
 
     @Override
     public void onBindViewHolder(@NonNull DealWithOptionViewHolder holder, int position) {
-        DealWithOptionBean.DispatchSuggestBean bean = beanList.get(position);
+        DealWithOptionBean.DispatchSuggestBean bean = mBeanList.get(position);
         holder.item_deal_option_name.setText("办理人：" + bean.getUser().getName());
         holder.item_deal_option_flow.setText("办理步骤：" + bean.getFlow().getName());
         holder.item_deal_option_time.setText(bean.getCreated_at());
         holder.item_option_content.setText(bean.getContent());
-        if (Integer.parseInt(bean.getUser().getId()) == UserManager.getInstance().getUserInfo().getId() && !done) {
+        if (Integer.parseInt(bean.getUser().getId()) == UserManager.getInstance().getUserInfo().getId() && !mDone) {
             holder.item_deal_option_ll.setVisibility(View.VISIBLE);
-            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.color_f5f5f5));
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.color_f5f5f5));
         } else {
             holder.item_deal_option_ll.setVisibility(View.GONE);
-            holder.itemView.setBackgroundColor(context.getResources().getColor(R.color.color_ffffff));
+            holder.itemView.setBackgroundColor(mContext.getResources().getColor(R.color.color_ffffff));
         }
         if (holder.item_deal_option_ll.getVisibility() == View.VISIBLE) {
             holder.item_option_change.setOnClickListener(getOnClickListener(position));
@@ -61,8 +62,8 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (itemClick != null) {
-                    itemClick.onItemOnclick(position, view.getId());
+                if (mItemClick != null) {
+                    mItemClick.onItemOnclick(position, view.getId());
                 }
             }
         };
@@ -72,7 +73,7 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     class DealWithOptionViewHolder extends RecyclerView.ViewHolder {
@@ -93,7 +94,7 @@ public class DealWithOptionAdapter extends RecyclerView.Adapter<DealWithOptionAd
     }
 
     public void setOnItemClickListener(OnItemClick itemClickListener) {
-        itemClick = itemClickListener;
+        mItemClick = itemClickListener;
     }
 
     public interface OnItemClick {

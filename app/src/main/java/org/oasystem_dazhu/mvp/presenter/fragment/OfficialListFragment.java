@@ -29,10 +29,12 @@ import java.util.List;
  */
 
 public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate> {
-    private Boolean done = false;
-    private int typeId = 0;
-    public OfficialDocumentAdapter doneAdapter, notDoneAdapter;
-    private List<DocumentBean.DataBean> doneBeanList, notDoneBeanList;
+    public OfficialDocumentAdapter mDoneAdapter, mNotDoneAdapter;
+    private List<DocumentBean.DataBean> mDoneBeanList;
+    private List<DocumentBean.DataBean> mNotDoneBeanList;
+    private boolean mDone = false;
+    private int mTypeId = 0;
+
 
     @Override
     public Class<OfficialListDelegate> getDelegateClass() {
@@ -55,8 +57,8 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
         if (bundle != null) {
-            done = bundle.getBoolean("done");
-            typeId = bundle.getInt("typeId");
+            mDone = bundle.getBoolean("done");
+            mTypeId = bundle.getInt("typeId");
         }
     }
 
@@ -64,7 +66,7 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         EventBus.getDefault().register(this);
-        if (done) {
+        if (mDone) {
             getDoneDocument(new ScreenBean());
         } else
             getNotDoneDocument(new ScreenBean());
@@ -73,45 +75,45 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
     public void notifyDataSetChanged(Boolean done, Boolean positive, Boolean isCreate) {
         if (done) {
             if (positive) {
-                doneBeanList = SortUtl.sort(doneBeanList, SortUtl.POSITIVE, isCreate);
-                doneAdapter.setBeanList(doneBeanList);
+                mDoneBeanList = SortUtl.sort(mDoneBeanList, SortUtl.POSITIVE, isCreate);
+                mDoneAdapter.setBeanList(mDoneBeanList);
             } else {
-                doneBeanList = SortUtl.sort(doneBeanList, SortUtl.REVERSE, isCreate);
-                doneAdapter.setBeanList(doneBeanList);
+                mDoneBeanList = SortUtl.sort(mDoneBeanList, SortUtl.REVERSE, isCreate);
+                mDoneAdapter.setBeanList(mDoneBeanList);
             }
-            doneAdapter.notifyDataSetChanged();
+            mDoneAdapter.notifyDataSetChanged();
         } else {
             if (positive) {
-                notDoneBeanList = SortUtl.sort(notDoneBeanList, SortUtl.POSITIVE, isCreate);
-                notDoneAdapter.setBeanList(notDoneBeanList);
+                mNotDoneBeanList = SortUtl.sort(mNotDoneBeanList, SortUtl.POSITIVE, isCreate);
+                mNotDoneAdapter.setBeanList(mNotDoneBeanList);
             } else {
-                notDoneBeanList = SortUtl.sort(notDoneBeanList, SortUtl.REVERSE, isCreate);
-                notDoneAdapter.setBeanList(notDoneBeanList);
+                mNotDoneBeanList = SortUtl.sort(mNotDoneBeanList, SortUtl.REVERSE, isCreate);
+                mNotDoneAdapter.setBeanList(mNotDoneBeanList);
             }
-            notDoneAdapter.notifyDataSetChanged();
+            mNotDoneAdapter.notifyDataSetChanged();
         }
     }
 
     public void getDoneDocument(ScreenBean screenBean) {
-        screenBean.setType(String.valueOf(typeId));
+        screenBean.setType(String.valueOf(mTypeId));
         final RecyclerView recyclerView = mViewDelegate.get(R.id.official_document_recycler);
         PublicModel.getInstance().getDoneDocument(new MSubscribe<BaseEntity<DocumentBean>>() {
             @Override
             public void onNext(final BaseEntity<DocumentBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    if (doneBeanList != null)
-                        doneBeanList.clear();
-                    doneBeanList = new ArrayList<>();
-                    doneBeanList.addAll(SortUtl.sort(bean.getData().getData()));
-                    doneAdapter = new OfficialDocumentAdapter(true, getActivity(), doneBeanList);
-                    mViewDelegate.setRecycler(recyclerView, doneAdapter, true);
-                    doneAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    if (mDoneBeanList != null)
+                        mDoneBeanList.clear();
+                    mDoneBeanList = new ArrayList<>();
+                    mDoneBeanList.addAll(SortUtl.sort(bean.getData().getData()));
+                    mDoneAdapter = new OfficialDocumentAdapter(true, getActivity(), mDoneBeanList);
+                    mViewDelegate.setRecycler(recyclerView, mDoneAdapter, true);
+                    mDoneAdapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
                             Bundle bundle = new Bundle();
-                            bundle.putBoolean("done", done);
-                            bundle.putSerializable("DocumentDataBean", doneBeanList.get(position));
+                            bundle.putBoolean("done", mDone);
+                            bundle.putSerializable("DocumentDataBean", mDoneBeanList.get(position));
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });
@@ -122,38 +124,38 @@ public class OfficialListFragment extends FragmentPresenter<OfficialListDelegate
     }
 
     public void getNotDoneDocument(ScreenBean screenBean) {
-        screenBean.setType(String.valueOf(typeId));
+        screenBean.setType(String.valueOf(mTypeId));
         final RecyclerView recyclerView = mViewDelegate.get(R.id.official_document_recycler);
         PublicModel.getInstance().getNotDoneDocument(new MSubscribe<BaseEntity<DocumentBean>>() {
             @Override
             public void onNext(final BaseEntity<DocumentBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    if (notDoneBeanList != null)
-                        notDoneBeanList.clear();
-                    notDoneBeanList = new ArrayList<>();
-                    notDoneBeanList.addAll(SortUtl.sort(bean.getData().getData()));
-                    notDoneAdapter = new OfficialDocumentAdapter(false, getActivity(), notDoneBeanList);
-                    mViewDelegate.setRecycler(recyclerView, notDoneAdapter, true);
-                    notDoneAdapter.setOnItemClickListener(new OnItemClickListener() {
+                    if (mNotDoneBeanList != null)
+                        mNotDoneBeanList.clear();
+                    mNotDoneBeanList = new ArrayList<>();
+                    mNotDoneBeanList.addAll(SortUtl.sort(bean.getData().getData()));
+                    mNotDoneAdapter = new OfficialDocumentAdapter(false, getActivity(), mNotDoneBeanList);
+                    mViewDelegate.setRecycler(recyclerView, mNotDoneAdapter, true);
+                    mNotDoneAdapter.setOnItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(int position) {
                             Bundle bundle = new Bundle();
-                            bundle.putBoolean("done", done);
-                            bundle.putSerializable("DocumentDataBean", notDoneBeanList.get(position));
+                            bundle.putBoolean("done", mDone);
+                            bundle.putSerializable("DocumentDataBean", mNotDoneBeanList.get(position));
                             startMyActivity(OfficialDocumentDetailActivity.class, bundle);
                         }
                     });
                 }
             }
-        }, screenBean,-1);
+        }, screenBean, -1);
     }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void refreshList(RefreshListBean bean) {
         if (bean != null && bean.isNeedRefresh()) {
-            if (done) {
+            if (mDone) {
                 getDoneDocument(new ScreenBean());
             } else {
                 getNotDoneDocument(new ScreenBean());

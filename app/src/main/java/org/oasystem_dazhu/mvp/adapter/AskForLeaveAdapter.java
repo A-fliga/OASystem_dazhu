@@ -15,11 +15,12 @@ import java.util.List;
 
 /**
  * Created by www on 2019/3/26.
+ * 请假的Adapter
  */
 
 public class AskForLeaveAdapter extends RecyclerView.Adapter<AskForLeaveAdapter.AskForLeaveViewHolder> {
-    private List<AskLeaveBean.DataBean> beanList;
-    private OnItemClickListenerWithData itemClickListenerWithData;
+    private List<AskLeaveBean.DataBean> mBeanList;
+    private OnItemClickListenerWithData mItemClickListenerWithData;
     @NonNull
     @Override
     public AskForLeaveViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -27,12 +28,12 @@ public class AskForLeaveAdapter extends RecyclerView.Adapter<AskForLeaveAdapter.
     }
 
     public AskForLeaveAdapter(List<AskLeaveBean.DataBean> beanList) {
-        this.beanList = beanList;
+        this.mBeanList = beanList;
     }
 
     @Override
     public void onBindViewHolder(@NonNull AskForLeaveViewHolder holder, int position) {
-        final AskLeaveBean.DataBean bean = beanList.get(position);
+        final AskLeaveBean.DataBean bean = mBeanList.get(position);
         holder.ask_for_leave_status.setText(bean.getStatus_name());
         holder.ask_for_leave_user_name.setText("申请人："+bean.getUser().getName());
         holder.ask_for_leave_type.setText("请假类型："+bean.getType_name());
@@ -41,8 +42,8 @@ public class AskForLeaveAdapter extends RecyclerView.Adapter<AskForLeaveAdapter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (itemClickListenerWithData != null) {
-                    itemClickListenerWithData.onItemClick(bean);
+                if (mItemClickListenerWithData != null) {
+                    mItemClickListenerWithData.onItemClick(bean);
                 }
             }
         });
@@ -51,7 +52,7 @@ public class AskForLeaveAdapter extends RecyclerView.Adapter<AskForLeaveAdapter.
 
     @Override
     public int getItemCount() {
-        return beanList.size();
+        return mBeanList.size();
     }
 
     class AskForLeaveViewHolder extends RecyclerView.ViewHolder {
@@ -68,6 +69,6 @@ public class AskForLeaveAdapter extends RecyclerView.Adapter<AskForLeaveAdapter.
     }
 
     public void setOnItemClickListener(OnItemClickListenerWithData itemClickListener) {
-        this.itemClickListenerWithData = itemClickListener;
+        this.mItemClickListenerWithData = itemClickListener;
     }
 }

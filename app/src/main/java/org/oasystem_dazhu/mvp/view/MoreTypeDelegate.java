@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 public class MoreTypeDelegate extends ViewDelegate {
-    private RecyclerView customizeRecyclerView, regularRecyclerView;
+    private RecyclerView mCustomizeRecyclerView, mRegularRecyclerView;
 
     @Override
     public void onDestroy() {
@@ -35,8 +35,8 @@ public class MoreTypeDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("更多应用");
-        regularRecyclerView = get(R.id.more_type_regular);
-        customizeRecyclerView = get(R.id.more_type_customize);
+        mRegularRecyclerView = get(R.id.more_type_regular);
+        mCustomizeRecyclerView = get(R.id.more_type_customize);
     }
 
     public MoreRegularAdapter initRegularAdapter() {
@@ -72,7 +72,7 @@ public class MoreTypeDelegate extends ViewDelegate {
             beanList.add(bean);
         }
         MoreRegularAdapter adapter = new MoreRegularAdapter(beanList, this.getActivity());
-        setRecycler(regularRecyclerView, adapter, 6, true);
+        setRecycler(mRegularRecyclerView, adapter, 6, true);
         return adapter;
     }
 
@@ -87,7 +87,7 @@ public class MoreTypeDelegate extends ViewDelegate {
             newList.add(beanList.get(i));
         }
         HomeTypeAdapter adapter = new HomeTypeAdapter(this.getActivity(), imgIdList, typeContentList, newList, false);
-        setRecycler(customizeRecyclerView, adapter, 6, true);
+        setRecycler(mCustomizeRecyclerView, adapter, 6, true);
         return adapter;
     }
 }

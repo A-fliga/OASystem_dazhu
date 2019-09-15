@@ -16,8 +16,8 @@ import java.util.List;
  */
 
 public class DealWithOptionFormDelegate extends ViewDelegate {
-    private RecyclerView deal_with_option_recycler;
-    public DealWithOptionAdapter adapter;
+    private RecyclerView mDealWithOptionRecycler;
+    public DealWithOptionAdapter mAdapter;
     @Override
     public void onDestroy() {
 
@@ -31,13 +31,13 @@ public class DealWithOptionFormDelegate extends ViewDelegate {
     @Override
     public void initWidget() {
         getTitleView().setText("历史记录");
-        deal_with_option_recycler = get(R.id.deal_with_option_recycler);
+        mDealWithOptionRecycler = get(R.id.deal_with_option_recycler);
     }
 
     public DealWithOptionAdapter initList(List<DealWithOptionBean.DispatchSuggestBean> beanList,boolean done){
-        adapter = new DealWithOptionAdapter(this.getActivity(),beanList,done);
-        setRecycler(deal_with_option_recycler,adapter,true);
-        return adapter;
+        mAdapter = new DealWithOptionAdapter(this.getActivity(),beanList,done);
+        setRecycler(mDealWithOptionRecycler, mAdapter,true);
+        return mAdapter;
     }
 
     public void initLeftTv(int count){

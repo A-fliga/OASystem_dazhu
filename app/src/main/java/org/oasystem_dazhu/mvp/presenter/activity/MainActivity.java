@@ -62,12 +62,12 @@ import me.jessyan.autosize.AutoSize;
 
 
 public class MainActivity extends ActivityPresenter<MainDelegate> {
-    public NoScrollViewPager viewPager;
     private final int WRITE_STORAGE_CODE = 1000;
-    private Boolean canFinish = false;//按两次退出APP的标志
-    private TimerTask task;
-    private Timer timer = new Timer();
-    private static UpdateAsync async;
+    private static UpdateAsync sAsync;
+    public NoScrollViewPager mViewPager;
+    private TimerTask mTask;
+    private Timer mTimer = new Timer();
+    private boolean mCanFinish = false;//按两次退出APP的标志
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +86,8 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
         }
         if (Float.parseFloat(AppUtil.getVersionName()) < Float.parseFloat(sb.toString())) {
             //开始下载更新并安装
-            async = new UpdateAsync(new WeakReference<MainActivity>(this));
-            async.execute(UserManager.getInstance().getUserInfo().getSys_app().getApp_path());
+            sAsync = new UpdateAsync(new WeakReference<MainActivity>(this));
+            sAsync.execute(UserManager.getInstance().getUserInfo().getSys_app().getApp_path());
         }
     }
 
@@ -174,14 +174,14 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
                     }
                     InputStream is = url.openStream();
                     OutputStream os = new FileOutputStream(apkPath);
-                    async.setMax(conn.getContentLength());
+                    sAsync.setMax(conn.getContentLength());
                     byte[] fileByte = new byte[4096];
                     int len;
                     int per = 0;
                     while ((len = is.read(fileByte)) != -1) {
                         os.write(fileByte, 0, len);
                         per += len;
-                        async.upDateProgress(per);
+                        sAsync.upDateProgress(per);
                     }
                     is.close();
                     os.close();
@@ -264,7 +264,7 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
     };
 
     public void setCheck(int position) {
-        viewDelegate.setCheck(position);
+        mViewDelegate.setCheck(position);
     }
 
     private void getUserInfo() {
@@ -294,10 +294,10 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
     }
 
     private void initTabView() {
-        viewPager = viewDelegate.get(R.id.content_pager);
+        mViewPager = mViewDelegate.get(R.id.content_pager);
         mFragmentPagerAdapter mFragmentPagerAdapter = new mFragmentPagerAdapter(getSupportFragmentManager(), getFragments());
-        viewPager.setAdapter(mFragmentPagerAdapter);
-        viewDelegate.setOnClickListener(mOnclickListener, R.id.home_official_btn, R.id.home_mine_btn);
+        mViewPager.setAdapter(mFragmentPagerAdapter);
+        mViewDelegate.setOnClickListener(mOnclickListener, R.id.home_official_btn, R.id.home_mine_btn);
         setCheck(0);
     }
 
@@ -307,14 +307,14 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.home_official_btn:
-                    if (viewPager != null) {
-                        viewPager.setCurrentItem(0);
+                    if (mViewPager != null) {
+                        mViewPager.setCurrentItem(0);
                         setCheck(0);
                     }
                     break;
                 case R.id.home_mine_btn:
-                    if (viewPager != null) {
-                        viewPager.setCurrentItem(1);
+                    if (mViewPager != null) {
+                        mViewPager.setCurrentItem(1);
                         setCheck(1);
                     }
                     break;
@@ -370,16 +370,16 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
 
     private boolean doubleClickToQuit(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            if (!canFinish) {
-                canFinish = true;
+            if (!mCanFinish) {
+                mCanFinish = true;
                 ToastUtil.s("再按一次退出");
-                task = new TimerTask() {
+                mTask = new TimerTask() {
                     @Override
                     public void run() {
-                        canFinish = false;
+                        mCanFinish = false;
                     }
                 };
-                timer.schedule(task, 2500);
+                mTimer.schedule(mTask, 2500);
                 return false;
             }
         }
@@ -389,11 +389,11 @@ public class MainActivity extends ActivityPresenter<MainDelegate> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (task != null) {
-            task.cancel();
+        if (mTask != null) {
+            mTask.cancel();
         }
-        if (async != null) {
-            async.cancel(true);
+        if (sAsync != null) {
+            sAsync.cancel(true);
         }
     }
 }

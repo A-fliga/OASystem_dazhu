@@ -15,8 +15,8 @@ import java.util.List;
  */
 
 public class AskForLeaveDelegate extends ViewDelegate {
-    private RecyclerView recyclerView;
-    private AskForLeaveAdapter adapter;
+    private RecyclerView mRecyclerView;
+    private AskForLeaveAdapter mAdapter;
 
     @Override
     public void onDestroy() {
@@ -32,15 +32,15 @@ public class AskForLeaveDelegate extends ViewDelegate {
     public void initWidget() {
         getTitleView().setText("请假管理");
         setToolBarRightTv("新增");
-        recyclerView = get(R.id.car_apply_list);
+        mRecyclerView = get(R.id.car_apply_list);
     }
 
     public AskForLeaveAdapter initList(List<AskLeaveBean.DataBean> beanList) {
-        adapter = new AskForLeaveAdapter(beanList);
-        setRecycler(recyclerView, adapter, true);
+        mAdapter = new AskForLeaveAdapter(beanList);
+        setRecycler(mRecyclerView, mAdapter, true);
         if (beanList.size() == 0) {
             ToastUtil.s("暂无数据");
         }
-        return adapter;
+        return mAdapter;
     }
 }

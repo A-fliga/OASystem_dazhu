@@ -19,8 +19,8 @@ import cn.jpush.android.api.JPushInterface;
  */
 
 public class SplashActivity extends ActivityPresenter {
-    private Handler handler;
-    private boolean canStart2Main = false;
+    private Handler sHandler;
+    private boolean mCanStart2Main = false;
 
     @Override
     public Class getDelegateClass() {
@@ -35,8 +35,8 @@ public class SplashActivity extends ActivityPresenter {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        handler = new Handler();
-        handler.postDelayed(mRun, 1500);
+        sHandler = new Handler();
+        sHandler.postDelayed(mRun, 1500);
         EventBus.getDefault().register(this);
     }
 
@@ -51,7 +51,7 @@ public class SplashActivity extends ActivityPresenter {
                     if (!TextUtils.isEmpty(JPushInterface.getRegistrationID(SplashActivity.this))) {
                         startMyActivityWithFinish(MainActivity.class);
                     } else {
-                        canStart2Main = true;
+                        mCanStart2Main = true;
                         ProgressDialogUtil.instance().startLoad("初始化中");
                     }
                 }
@@ -65,7 +65,7 @@ public class SplashActivity extends ActivityPresenter {
     @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
     public void jPushRegister(JPushRegisterBean bean) {
         if (bean != null) {
-            if (canStart2Main) {
+            if (mCanStart2Main) {
                 ProgressDialogUtil.instance().stopLoad();
                 startMyActivityWithFinish(MainActivity.class);
             }
@@ -75,7 +75,7 @@ public class SplashActivity extends ActivityPresenter {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        handler.removeCallbacks(mRun);
+        sHandler.removeCallbacks(mRun);
         EventBus.getDefault().unregister(this);
     }
 }

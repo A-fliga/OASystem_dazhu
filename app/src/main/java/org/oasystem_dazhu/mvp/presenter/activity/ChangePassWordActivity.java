@@ -18,7 +18,7 @@ import org.oasystem_dazhu.utils.ToastUtil;
  */
 
 public class ChangePassWordActivity extends ActivityPresenter<ChangePwdDelegate> {
-    private EditText source_password, new_password, new_password_two;
+    private EditText mSourcePassword, mNewPassword, mNewPasswordConfirm;
 
     @Override
     public Class<ChangePwdDelegate> getDelegateClass() {
@@ -34,13 +34,13 @@ public class ChangePassWordActivity extends ActivityPresenter<ChangePwdDelegate>
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initView();
-        viewDelegate.setOnClickListener(onClickListener, R.id.sure_btn);
+        mViewDelegate.setOnClickListener(onClickListener, R.id.sure_btn);
     }
 
     private void initView() {
-        source_password = viewDelegate.get(R.id.source_password);
-        new_password = viewDelegate.get(R.id.new_password);
-        new_password_two = viewDelegate.get(R.id.new_password_two);
+        mSourcePassword = mViewDelegate.get(R.id.source_password);
+        mNewPassword = mViewDelegate.get(R.id.new_password);
+        mNewPasswordConfirm = mViewDelegate.get(R.id.new_password_two);
     }
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -48,24 +48,24 @@ public class ChangePassWordActivity extends ActivityPresenter<ChangePwdDelegate>
         public void onClick(View view) {
             switch (view.getId()) {
                 case R.id.sure_btn:
-                    if (isEmpty(source_password)) {
+                    if (isEmpty(mSourcePassword)) {
                         ToastUtil.l("原密码不能为空");
                         break;
                     }
 
-                    if (isEmpty(new_password) || isEmpty(new_password_two)) {
+                    if (isEmpty(mNewPassword) || isEmpty(mNewPasswordConfirm)) {
                         ToastUtil.l("新密码不能为空");
                         break;
                     }
 
-                    if (!new_password.getText().toString().replaceAll(" ", "")
-                            .equals(new_password_two.getText().toString().replaceAll(" ", ""))) {
+                    if (!mNewPassword.getText().toString().replaceAll(" ", "")
+                            .equals(mNewPasswordConfirm.getText().toString().replaceAll(" ", ""))) {
                         ToastUtil.l("两次密码输入不一致");
                         break;
                     }
 
-                    if (new_password.getText().toString().replaceAll(" ", "").length() < 6 ||
-                            new_password_two.getText().toString().replaceAll(" ", "").length() < 6) {
+                    if (mNewPassword.getText().toString().replaceAll(" ", "").length() < 6 ||
+                            mNewPasswordConfirm.getText().toString().replaceAll(" ", "").length() < 6) {
                         ToastUtil.l("新密码不能少于6位");
                         break;
                     }
@@ -88,7 +88,7 @@ public class ChangePassWordActivity extends ActivityPresenter<ChangePwdDelegate>
                     ActivityPresenter.finishAllActivity();
                 }
             }
-        }, source_password.getText().toString().replaceAll(" ", ""), new_password.getText().toString().replaceAll(" ", ""));
+        }, mSourcePassword.getText().toString().replaceAll(" ", ""), mNewPassword.getText().toString().replaceAll(" ", ""));
     }
 
     private Boolean isEmpty(EditText editText) {

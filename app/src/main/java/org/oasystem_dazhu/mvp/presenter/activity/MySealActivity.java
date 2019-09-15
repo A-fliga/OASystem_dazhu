@@ -19,10 +19,11 @@ import okhttp3.ResponseBody;
 
 /**
  * Created by www on 2019/1/5.
+ * 我的印章界面
  */
 
 public class MySealActivity extends ActivityPresenter<MySealDelegate> {
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
 
 
     @Override
@@ -33,8 +34,8 @@ public class MySealActivity extends ActivityPresenter<MySealDelegate> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewDelegate.initTitle();
-        recyclerView = viewDelegate.get(R.id.my_seal_recycler);
+        mViewDelegate.initTitle();
+        mRecyclerView = mViewDelegate.get(R.id.my_seal_recycler);
         UserInfo userInfo = UserManager.getInstance().getUserInfo();
         final List<byte[]> imgList = new ArrayList<>();
         if (userInfo != null) {
@@ -51,7 +52,7 @@ public class MySealActivity extends ActivityPresenter<MySealDelegate> {
                         }
                         if (imgList.size() == officeSealBeen.size()) {
                             MySealAdapter adapter = new MySealAdapter(imgList, MySealActivity.this);
-                            viewDelegate.setRecycler(recyclerView, adapter, true);
+                            mViewDelegate.setRecycler(mRecyclerView, adapter, true);
                         }
                     }
                 }, officeSealBeen.get(i).getSource_id());

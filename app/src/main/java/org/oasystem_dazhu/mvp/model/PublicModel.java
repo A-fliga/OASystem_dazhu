@@ -39,12 +39,12 @@ public class PublicModel implements IModel {
     private PublicModel() {
     }
 
-    private static PublicModel model;
+    private static PublicModel sModel;
 
     public static PublicModel getInstance() {
-        if (null == model)
-            model = new PublicModel();
-        return model;
+        if (null == sModel)
+            sModel = new PublicModel();
+        return sModel;
     }
 
     /**

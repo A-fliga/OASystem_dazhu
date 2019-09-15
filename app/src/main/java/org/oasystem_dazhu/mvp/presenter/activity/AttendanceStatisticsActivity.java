@@ -22,11 +22,12 @@ import java.util.List;
 
 /**
  * Created by www on 2019/3/25.
+ * 考勤统计页面
  */
 
 public class AttendanceStatisticsActivity extends ActivityPresenter<AttendanceStatisticsDelegate> {
-    private MyMonthCalendar calendar;
-    private LocalDate selectedDate;
+    private MyMonthCalendar mCalendar;
+    private LocalDate mSelectedDate;
 
     @Override
     public Class<AttendanceStatisticsDelegate> getDelegateClass() {
@@ -42,11 +43,11 @@ public class AttendanceStatisticsActivity extends ActivityPresenter<AttendanceSt
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getAttendanceBean();
-        calendar = viewDelegate.initCalendar();
-        setOnCalendarItemClickListener(calendar);
-        selectedDate = new LocalDate(InitDateUtil.getTime());
-        viewDelegate.setDate(selectedDate.toString());
-        getAttendanceDetail(selectedDate);
+        mCalendar = mViewDelegate.initCalendar();
+        setOnCalendarItemClickListener(mCalendar);
+        mSelectedDate = new LocalDate(InitDateUtil.getTime());
+        mViewDelegate.setDate(mSelectedDate.toString());
+        getAttendanceDetail(mSelectedDate);
     }
 
     private void getAttendanceDetail(LocalDate selectedDate) {
@@ -55,7 +56,7 @@ public class AttendanceStatisticsActivity extends ActivityPresenter<AttendanceSt
             public void onNext(BaseEntity<AttendanceBean> bean) {
                 super.onNext(bean);
                 if (bean.getCode() == 0) {
-                    viewDelegate.initView(bean.getData());
+                    mViewDelegate.initView(bean.getData());
                 }
             }
         }, selectedDate.toString());
@@ -65,9 +66,9 @@ public class AttendanceStatisticsActivity extends ActivityPresenter<AttendanceSt
         calendar.setOnMonthSelectListener(new OnMonthSelectListener() {
             @Override
             public void onMonthSelect(NDate date, boolean isClick) {
-                if (isClick && !selectedDate.toString().equals(date.localDate.toString())) {
-                    selectedDate = date.localDate;
-                    viewDelegate.setDate(date.localDate.toString());
+                if (isClick && !mSelectedDate.toString().equals(date.localDate.toString())) {
+                    mSelectedDate = date.localDate;
+                    mViewDelegate.setDate(date.localDate.toString());
                     getAttendanceDetail(date.localDate);
                 }
             }
@@ -123,11 +124,11 @@ public class AttendanceStatisticsActivity extends ActivityPresenter<AttendanceSt
                 }
             }
         }
-        viewDelegate.getMyPainter().addNormalData(normalBean);
-        viewDelegate.getMyPainter().addAbNormalData(lateOrLeaveBean);
-        viewDelegate.getMyPainter().addLakeData(lakeBean);
-        viewDelegate.getMyPainter().addLeaveData(ask_leaveBean);
-        viewDelegate.getCalendar().notifyAllView();
+        mViewDelegate.getMyPainter().addNormalData(normalBean);
+        mViewDelegate.getMyPainter().addAbNormalData(lateOrLeaveBean);
+        mViewDelegate.getMyPainter().addLakeData(lakeBean);
+        mViewDelegate.getMyPainter().addLeaveData(ask_leaveBean);
+        mViewDelegate.getCalendar().notifyAllView();
     }
 
     public static List<Date> getMonthBetweenDate(Date beginDate, Date endDate) {

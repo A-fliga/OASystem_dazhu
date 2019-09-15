@@ -7,7 +7,7 @@ import android.view.MotionEvent;
 
 /**
  * 禁止左右滑动
- * Created by zhiqiang on 3/22/17.
+ * Created by www
  */
 public class NoScrollViewPager extends ViewPager {
 

@@ -18,19 +18,20 @@ import org.oasystem_dazhu.R;
  */
 
 public class XCRoundProgressBar extends View {
-    private Paint paint;//画笔对象的引用
-    private int roundColor;//圆环的颜色
-    private int roundProgressColor;//圆环进度的颜色
-    private int innerRoundColor;//圆环内部圆颜色
-    private float roundWidth;//圆环的宽度
-    private int textColor;//中间进度百分比字符串的颜色
-    private float textSize;//中间进度百分比字符串的字体
-    private int max;//最大进度
-    private int progress;//当前进度
-    private boolean isDisplayText;//是否显示中间百分比进度字符串
-    private int style;//进度条的风格：空心圆环或者实心圆环
     private static final int STROKE = 0;//空心
     private static final int FILL = 1;//实心
+    private Paint mPaint;//画笔对象的引用
+    private boolean mIsDisplayText;//是否显示中间百分比进度字符串
+    private float mTextSize;//中间进度百分比字符串的字体
+    private float mRoundWidth;//圆环的宽度
+    private int mRoundColor;//圆环的颜色
+    private int mRoundProgressColor;//圆环进度的颜色
+    private int mInnerRoundColor;//圆环内部圆颜色
+    private int mTextColor;//中间进度百分比字符串的颜色
+    private int mMax;//最大进度
+    private int mProgress;//当前进度
+    private int mStyle;//进度条的风格：空心圆环或者实心圆环
+
 
     public XCRoundProgressBar(Context context) {
         this(context, null);
@@ -45,18 +46,18 @@ public class XCRoundProgressBar extends View {
         super(context, attrs, defStyleAttr);
         // TODO Auto-generated constructor stub
 
-        paint = new Paint();
+        mPaint = new Paint();
         //从attrs.xml中获取自定义属性和默认值
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.XCRoundProgressBar);
-        roundColor = typedArray.getColor(R.styleable.XCRoundProgressBar_roundColor, Color.GREEN);
-        roundProgressColor = typedArray.getColor(R.styleable.XCRoundProgressBar_roundProgressColor, Color.RED);
-        innerRoundColor = typedArray.getColor(R.styleable.XCRoundProgressBar_innerRoundColor, Color.GRAY);
-        roundWidth = typedArray.getDimension(R.styleable.XCRoundProgressBar_roundWidth, 5);
-        textColor = typedArray.getColor(R.styleable.XCRoundProgressBar_textColor, Color.RED);
-        textSize = typedArray.getDimension(R.styleable.XCRoundProgressBar_textSize, 15);
-        max = typedArray.getInteger(R.styleable.XCRoundProgressBar_max, 100);
-        style = typedArray.getInt(R.styleable.XCRoundProgressBar_style, STROKE);
-        isDisplayText = typedArray.getBoolean(R.styleable.XCRoundProgressBar_textIsDisplayable, true);
+        mRoundColor = typedArray.getColor(R.styleable.XCRoundProgressBar_roundColor, Color.GREEN);
+        mRoundProgressColor = typedArray.getColor(R.styleable.XCRoundProgressBar_roundProgressColor, Color.RED);
+        mInnerRoundColor = typedArray.getColor(R.styleable.XCRoundProgressBar_innerRoundColor, Color.GRAY);
+        mRoundWidth = typedArray.getDimension(R.styleable.XCRoundProgressBar_roundWidth, 5);
+        mTextColor = typedArray.getColor(R.styleable.XCRoundProgressBar_textColor, Color.RED);
+        mTextSize = typedArray.getDimension(R.styleable.XCRoundProgressBar_textSize, 15);
+        mMax = typedArray.getInteger(R.styleable.XCRoundProgressBar_max, 100);
+        mStyle = typedArray.getInt(R.styleable.XCRoundProgressBar_style, STROKE);
+        mIsDisplayText = typedArray.getBoolean(R.styleable.XCRoundProgressBar_textIsDisplayable, true);
         typedArray.recycle();
 
     }
@@ -69,111 +70,111 @@ public class XCRoundProgressBar extends View {
         //画最外层大圆环
         int centerX = getWidth() / 2;//获取中心点X坐标
         int centerY = getHeight() / 2;//获取中心点Y坐标
-        int radius = (int) (centerX - roundWidth / 2);//圆环的半径
-        paint.setColor(roundColor);
-        paint.setStyle(Paint.Style.STROKE);//设置空心
-        paint.setStrokeWidth(roundWidth);//设置圆环宽度
-        paint.setAntiAlias(true);//消除锯齿
-        canvas.drawCircle(centerX, centerY, radius, paint);//绘制圆环
+        int radius = (int) (centerX - mRoundWidth / 2);//圆环的半径
+        mPaint.setColor(mRoundColor);
+        mPaint.setStyle(Paint.Style.STROKE);//设置空心
+        mPaint.setStrokeWidth(mRoundWidth);//设置圆环宽度
+        mPaint.setAntiAlias(true);//消除锯齿
+        canvas.drawCircle(centerX, centerY, radius, mPaint);//绘制圆环
 
         //绘制圆环内部圆
-        paint.setColor(innerRoundColor);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAntiAlias(true);
-        canvas.drawCircle(centerX, centerY, radius - roundWidth / 2, paint);
+        mPaint.setColor(mInnerRoundColor);
+        mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setAntiAlias(true);
+        canvas.drawCircle(centerX, centerY, radius - mRoundWidth / 2, mPaint);
 
 
         //画进度
-        paint.setStrokeWidth(roundWidth);//设置圆环宽度
-        paint.setColor(roundProgressColor);//设置进度颜色
+        mPaint.setStrokeWidth(mRoundWidth);//设置圆环宽度
+        mPaint.setColor(mRoundProgressColor);//设置进度颜色
         RectF oval = new RectF(centerX - radius, centerX - radius, centerX
                 + radius, centerX + radius);  //用于定义的圆弧的形状和大小的界限
-        switch (style) {
+        switch (mStyle) {
             case STROKE: {
-                paint.setStyle(Paint.Style.STROKE);
-                canvas.drawArc(oval, -90, 360 * progress / max, false, paint); // 根据进度画圆弧
+                mPaint.setStyle(Paint.Style.STROKE);
+                canvas.drawArc(oval, -90, 360 * mProgress / mMax, false, mPaint); // 根据进度画圆弧
                 break;
             }
             case FILL: {
-                paint.setStyle(Paint.Style.FILL);
-                if (progress != 0)
-                    canvas.drawArc(oval, -90, 360 * progress / max, true, paint); // 根据进度画圆弧
+                mPaint.setStyle(Paint.Style.FILL);
+                if (mProgress != 0)
+                    canvas.drawArc(oval, -90, 360 * mProgress / mMax, true, mPaint); // 根据进度画圆弧
                 break;
             }
         }
         //画中间进度百分比字符串
-        paint.setStrokeWidth(0);
-        paint.setColor(textColor);
-        paint.setTextSize(textSize);
-        paint.setTypeface(Typeface.DEFAULT_BOLD);
-        int percent = (int) (((float) progress / (float) max) * 100);//计算百分比
-        float textWidth = paint.measureText(percent + "%");//测量字体宽度，需要居中显示
-        if (isDisplayText && style == STROKE) {
-            canvas.drawText(percent + "%", centerX - textWidth / 2, centerY+textSize/3, paint);
+        mPaint.setStrokeWidth(0);
+        mPaint.setColor(mTextColor);
+        mPaint.setTextSize(mTextSize);
+        mPaint.setTypeface(Typeface.DEFAULT_BOLD);
+        int percent = (int) (((float) mProgress / (float) mMax) * 100);//计算百分比
+        float textWidth = mPaint.measureText(percent + "%");//测量字体宽度，需要居中显示
+        if (mIsDisplayText && mStyle == STROKE) {
+            canvas.drawText(percent + "%", centerX - textWidth / 2, centerY + mTextSize / 3, mPaint);
         }
     }
 
     public Paint getPaint() {
-        return paint;
+        return mPaint;
     }
 
     public void setPaint(Paint paint) {
-        this.paint = paint;
+        this.mPaint = paint;
     }
 
     public int getRoundColor() {
-        return roundColor;
+        return mRoundColor;
     }
 
     public void setRoundColor(int roundColor) {
-        this.roundColor = roundColor;
+        this.mRoundColor = roundColor;
     }
 
     public int getRoundProgressColor() {
-        return roundProgressColor;
+        return mRoundProgressColor;
     }
 
     public void setRoundProgressColor(int roundProgressColor) {
-        this.roundProgressColor = roundProgressColor;
+        this.mRoundProgressColor = roundProgressColor;
     }
 
     public float getRoundWidth() {
-        return roundWidth;
+        return mRoundWidth;
     }
 
     public void setRoundWidth(float roundWidth) {
-        this.roundWidth = roundWidth;
+        this.mRoundWidth = roundWidth;
     }
 
     public int getTextColor() {
-        return textColor;
+        return mTextColor;
     }
 
     public void setTextColor(int textColor) {
-        this.textColor = textColor;
+        this.mTextColor = textColor;
     }
 
     public float getTextSize() {
-        return textSize;
+        return mTextSize;
     }
 
     public void setTextSize(float textSize) {
-        this.textSize = textSize;
+        this.mTextSize = textSize;
     }
 
     public synchronized int getMax() {
-        return max;
+        return mMax;
     }
 
     public synchronized void setMax(int max) {
         if (max < 0) {
             throw new IllegalArgumentException("max must more than 0");
         }
-        this.max = max;
+        this.mMax = max;
     }
 
     public synchronized int getProgress() {
-        return progress;
+        return mProgress;
     }
 
     /**
@@ -186,29 +187,29 @@ public class XCRoundProgressBar extends View {
         if (progress < 0) {
             throw new IllegalArgumentException("progress must more than 0");
         }
-        if (progress > max) {
-            this.progress = progress;
+        if (progress > mMax) {
+            this.mProgress = progress;
         }
-        if (progress <= max) {
-            this.progress = progress;
+        if (progress <= mMax) {
+            this.mProgress = progress;
             postInvalidate();
         }
     }
 
     public boolean isDisplayText() {
-        return isDisplayText;
+        return mIsDisplayText;
     }
 
     public void setDisplayText(boolean isDisplayText) {
-        this.isDisplayText = isDisplayText;
+        this.mIsDisplayText = isDisplayText;
     }
 
     public int getStyle() {
-        return style;
+        return mStyle;
     }
 
     public void setStyle(int style) {
-        this.style = style;
+        this.mStyle = style;
     }
 
 }

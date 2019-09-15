@@ -288,7 +288,7 @@ public class OfficialFragment extends FragmentPresenter<OfficialDelegate> {
                 case R.id.home_user_icon:
                     MainActivity activity = (MainActivity) getActivity();
                     if (activity != null) {
-                        activity.viewPager.setCurrentItem(1);
+                        activity.mViewPager.setCurrentItem(1);
                         activity.setCheck(1);
                     }
                     break;

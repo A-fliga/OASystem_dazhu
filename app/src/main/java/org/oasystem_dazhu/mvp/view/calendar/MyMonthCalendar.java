@@ -25,16 +25,14 @@ import org.joda.time.LocalDate;
  */
 
 public class MyMonthCalendar extends BaseCalendar implements OnClickMonthViewListener, ValueAnimator.AnimatorUpdateListener {
-    private Attrs attr;
-    protected ValueAnimator monthValueAnimator;//月日历动画
-    private OnMonthSelectListener onMonthSelectListener;
-    private OnMonthAnimatorListener onMonthAnimatorListener;
-
+    protected ValueAnimator mMonthValueAnimator;//月日历动画
+    private OnMonthSelectListener mOnMonthSelectListener;
+    private OnMonthAnimatorListener mOnMonthAnimatorListener;
 
     public MyMonthCalendar(@NonNull Context context, @Nullable AttributeSet attributeSet) {
         super(context, attributeSet);
-        attr = AttrsUtil.getAttrs(context, attributeSet);
-        MyPainter painter = new MyPainter(attr,context);
+        Attrs mAttr = AttrsUtil.getAttrs(context, attributeSet);
+        MyPainter painter = new MyPainter(mAttr,context);
         setCalendarPainter(painter);
     }
 
@@ -45,10 +43,10 @@ public class MyMonthCalendar extends BaseCalendar implements OnClickMonthViewLis
 
     public MyMonthCalendar(Context context, Attrs attrs, CalendarPainter calendarPainter, int duration, OnMonthAnimatorListener onMonthAnimatorListener) {
         super(context, attrs, calendarPainter);
-        this.onMonthAnimatorListener = onMonthAnimatorListener;
-        monthValueAnimator = new ValueAnimator();
-        monthValueAnimator.setDuration(duration);
-        monthValueAnimator.addUpdateListener(this);
+        this.mOnMonthAnimatorListener = onMonthAnimatorListener;
+        mMonthValueAnimator = new ValueAnimator();
+        mMonthValueAnimator.setDuration(duration);
+        mMonthValueAnimator.addUpdateListener(this);
     }
 
     @Override
@@ -74,8 +72,8 @@ public class MyMonthCalendar extends BaseCalendar implements OnClickMonthViewLis
 
     @Override
     protected void onSelcetDate(NDate nDate, boolean isClick) {
-        if (onMonthSelectListener != null) {
-            onMonthSelectListener.onMonthSelect(nDate, isClick);
+        if (mOnMonthSelectListener != null) {
+            mOnMonthSelectListener.onMonthSelect(nDate, isClick);
         }
     }
 
@@ -109,7 +107,7 @@ public class MyMonthCalendar extends BaseCalendar implements OnClickMonthViewLis
     }
 
     public void setOnMonthSelectListener(OnMonthSelectListener onMonthSelectListener) {
-        this.onMonthSelectListener = onMonthSelectListener;
+        this.mOnMonthSelectListener = onMonthSelectListener;
     }
 
 
@@ -123,23 +121,23 @@ public class MyMonthCalendar extends BaseCalendar implements OnClickMonthViewLis
     public void autoToMonth() {
         float top = getY();//起始位置
         int end = 0;
-        monthValueAnimator.setFloatValues(top, end);
-        monthValueAnimator.start();
+        mMonthValueAnimator.setFloatValues(top, end);
+        mMonthValueAnimator.start();
     }
 
 
     public void autoToMIUIWeek() {
         float top = getY();//起始位置
         int end = -getMonthCalendarOffset(); //结束位置
-        monthValueAnimator.setFloatValues(top, end);
-        monthValueAnimator.start();
+        mMonthValueAnimator.setFloatValues(top, end);
+        mMonthValueAnimator.start();
     }
 
     public void autoToEMUIWeek() {
         float top = getY();//起始位置
         int end = -getHeight() * 4 / 5; //结束位置
-        monthValueAnimator.setFloatValues(top, end);
-        monthValueAnimator.start();
+        mMonthValueAnimator.setFloatValues(top, end);
+        mMonthValueAnimator.start();
     }
 
 
@@ -159,9 +157,9 @@ public class MyMonthCalendar extends BaseCalendar implements OnClickMonthViewLis
         float y = getY();
         setY(i + y);
 
-        if (onMonthAnimatorListener != null) {
+        if (mOnMonthAnimatorListener != null) {
             //回调遵循>0向上，<0向下
-            onMonthAnimatorListener.onMonthAnimatorChanged((int) -i);
+            mOnMonthAnimatorListener.onMonthAnimatorChanged((int) -i);
         }
     }
 
