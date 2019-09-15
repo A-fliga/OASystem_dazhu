@@ -96,7 +96,8 @@ public class OfficialDocumentDetailActivity extends ActivityPresenter<OfficialDo
     //加签用的
     private StringBuilder mSelectedUserId;
     private StringBuilder mSelectedUserName;
-    private AlertDialog mDialog, mAddAccessoryDialog;
+    private AlertDialog mDialog;
+    private AlertDialog mAddAccessoryDialog;
     private MSubscribe<ResponseBody> mSubscribe;
     private EditText mRemarkEt;
     private List<LinearLayout> mLinearList = new ArrayList<>();
