@@ -7,6 +7,7 @@ import org.oasystem_dazhu.R;
 import org.oasystem_dazhu.manager.UserManager;
 import org.oasystem_dazhu.mvp.model.bean.UserInfo;
 import org.oasystem_dazhu.mvp.view.baseDelegate.ViewDelegate;
+import org.oasystem_dazhu.utils.AppUtil;
 import org.oasystem_dazhu.utils.LoadImgUtil;
 
 /**
@@ -36,5 +37,8 @@ public class UserCenterDelegate extends ViewDelegate {
             name.setText(userInfo.getName());
             unit.setText(userInfo.getCompany_name());
         }
+
+        TextView versionCode = get(R.id.versionCode);
+        versionCode.setText("版本号：" + AppUtil.getVersionCode());
     }
 }

@@ -7,40 +7,40 @@ package org.oasystem_dazhu.mvp.model;
 public class BaseEntity<T> {
 
 
-    private int mStatus;
-    private T mData;
-    private String mMsg;
-    private int mCode;
+    private int status;
+    private T data;
+    private String msg;
+    private int code;
 
     public int getStatus() {
-        return mStatus;
+        return status;
     }
 
     public void setStatus(int status) {
-        this.mStatus = status;
+        this.status = status;
     }
 
     public T getData() {
-        return mData;
+        return data;
     }
 
     public void setData(T data) {
-        this.mData = data;
+        this.data = data;
     }
 
     public String getMsg() {
-        return mMsg;
+        return msg;
     }
 
     public void setMsg(String msg) {
-        this.mMsg = msg;
+        this.msg = msg;
     }
 
     public int getCode() {
-        return mCode;
+        return code;
     }
 
     public void setCode(int code) {
-        this.mCode = code;
+        this.code = code;
     }
 }

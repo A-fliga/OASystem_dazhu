@@ -85,9 +85,9 @@ android {
             //大竹
 //            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //渠县
-//            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
+            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
             //测试
-            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
+//            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
         }
 
         release {
@@ -96,7 +96,7 @@ android {
             //经开区
 //            buildConfigField "String", "HOST", '"http://112.33.26.41:9098/api/"'
             //宣汉
-//            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
+            buildConfigField "String", "HOST", '"http://112.35.0.188:9098/api/"'
             //大竹
 //            buildConfigField "String", "HOST", '"http://112.35.1.224:9099/api/"'
             //威远
@@ -104,7 +104,7 @@ android {
             //渠县
 //            buildConfigField "String", "HOST", '"http://112.33.63.90:9098/api/"'
             //测试
-            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
+//            buildConfigField "String", "HOST", '"http://106.12.106.117/api/"'
 
             signingConfig android.signingConfigs.release
             minifyEnabled true
