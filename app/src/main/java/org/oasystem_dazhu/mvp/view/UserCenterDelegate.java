@@ -38,7 +38,7 @@ public class UserCenterDelegate extends ViewDelegate {
             unit.setText(userInfo.getCompany_name());
         }
 
-        TextView versionCode = get(R.id.versionCode);
-        versionCode.setText("版本号：" + AppUtil.getVersionCode());
+        TextView versionCode = get(R.id.version_name);
+        versionCode.setText("版本号：" + AppUtil.getVersionName());
     }
 }
